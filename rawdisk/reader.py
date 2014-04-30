@@ -20,6 +20,6 @@ class Reader:
 
         if (bootsector.load(raw_record)):
             # This is MBR bootsector (also could be GUID)
-            bootsector.hexdump()                
+            bootsector.hexdump()
 
         self.source.close()

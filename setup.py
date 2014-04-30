@@ -1,11 +1,11 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='rawdisk',
     author='D. Bakunas',
     version='0.1dev',
     description='Experimental python code to learn different disk formats',
-    packages=['rawdisk',],
+    packages=find_packages(),
     license='LICENSE.txt',
     long_description=open('README.txt').read(),
     install_requires=[

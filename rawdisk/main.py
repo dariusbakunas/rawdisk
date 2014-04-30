@@ -1,7 +1,7 @@
 from optparse import OptionParser
 import os
 import sys
-from reader import *
+import rawdisk
 
 def main():
     parser = OptionParser(
@@ -19,8 +19,5 @@ def main():
     if options.filename is None:
         parser.error('Filename not given')
 
-    r = Reader()
+    r = rawdisk.reader.Reader()
     r.analyse(options.filename)
-
-if __name__ == "__main__":
-    main()
