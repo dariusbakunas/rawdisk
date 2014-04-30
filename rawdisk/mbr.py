@@ -1,4 +1,5 @@
 import struct
+import hexdump
 
 
 class MBR:
@@ -11,4 +12,9 @@ class MBR:
         if (signature != 0xAA55):
             return False
 
+        self.raw = raw_data
+
         return True
+
+    def hexdump(self):
+        hexdump.hexdump(self.raw)
