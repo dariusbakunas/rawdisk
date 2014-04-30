@@ -49,5 +49,7 @@ coverage.xml
 *.log
 *.pot
 
+sample_images/
+
 # Sphinx documentation
 docs/_build/
