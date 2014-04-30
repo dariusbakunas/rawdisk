@@ -1,7 +1,6 @@
 import sys
 import hexdump
-import mbr
-
+import scheme
 
 class Reader:
     def __init__(self):
@@ -17,11 +16,10 @@ class Reader:
         self.source.seek(0)
         raw_record = self.source.read(512)
 
-        bootsector = mbr.MBR()
+        bootsector = scheme.mbr.MBR()
 
         if (bootsector.load(raw_record)):
             # This is MBR bootsector (also could be GUID)
-        else:
-            # Something else
+            bootsector.hexdump()                
 
         self.source.close()
