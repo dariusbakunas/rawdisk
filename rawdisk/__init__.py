@@ -1,3 +1,3 @@
 from rawdisk.reader import Reader
-from rawdisk.mbr import MBR
-from rawdisk.guid import GUID
+from rawdisk.scheme.mbr import MBR
+from rawdisk.scheme.gpt import GPT

@@ -4,7 +4,7 @@ import hexdump
 
 class MBR:
     def __init__(self):
-        pass
+        self.raw = None
 
     def load(self, raw_data):
         signature = struct.unpack("<H", raw_data[510:512])[0]
