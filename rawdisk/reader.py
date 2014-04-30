@@ -4,22 +4,23 @@ import scheme
 
 class Reader:
     def __init__(self):
-        self.debug = False
+        self.debug = False        
 
-    def analyse(self, source):
+    def load(self, source):
         try:
             self.source = open(source, 'rb')
         except:
             print "Unable to open file: %s" % source
             sys.exit()
 
-        self.source.seek(0)
-        raw_record = self.source.read(512)
+        # Detect partitioning scheme
+        self.scheme = scheme.common.detect_scheme(self.source)
 
-        bootsector = scheme.mbr.MBR()
-
-        if (bootsector.load(raw_record)):
-            # This is MBR bootsector (also could be GUID)
-            bootsector.partition_table.hexdump()
+        if (self.scheme == scheme.common.SCHEME_MBR):
+            print 'Partitioning scheme: MBR'
+        elif (self.scheme == scheme.common.SCHEME_GPT):
+            print 'Partitioning scheme: GPT'
+        else:
+            print 'Partitioning scheme is not supported.'
 
         self.source.close()
