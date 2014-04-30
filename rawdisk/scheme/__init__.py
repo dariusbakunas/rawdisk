@@ -1,4 +1,5 @@
-__all__ = ['mbr', 'gpt']
+__all__ = ['mbr', 'gpt', 'common']
 
+import common
 import mbr
 import gpt
