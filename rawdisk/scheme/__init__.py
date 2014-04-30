@@ -1,2 +1,4 @@
-from mbr import *
-from gpt import *
+
+__all__ = ['mbr', 'gpt']
+import mbr
+import gpt
