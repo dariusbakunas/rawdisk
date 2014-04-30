@@ -20,4 +20,4 @@ def main():
         parser.error('Filename not given')
 
     r = rawdisk.reader.Reader()
-    r.analyse(options.filename)
+    r.load(options.filename)
