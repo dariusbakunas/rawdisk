@@ -21,6 +21,10 @@ class RawStruct:
     def data(self, value):
         self._data = value
 
+    def load_from_source(self, source, offset, length):
+        source.seek(offset)
+        self._data = source.read(length)
+
     def get_chunk(self, offset, length):
         return self.data[offset:offset+length]
 
@@ -91,22 +95,23 @@ class MBR(RawStruct):
         RawStruct.__init__(self)
         self.partition_table = PartitionTable()
 
-    def load(self, source):
-        source.seek(0)        
-        RawStruct.data.fset(self, source.read(512))        
-        
-        signature = self.get_field(MBR_SIG_OFFSET, MBR_SIG_SIZE, "<H")        
+    def load(self, filename):
+        try:            
+            with open(filename, 'rb') as f:
+                # Look for MBR signature first
+                self.load_from_source(f, 0, 512)
+                signature = self.get_field(MBR_SIG_OFFSET, MBR_SIG_SIZE, "<H")
 
-        if (signature != MBR_SIGNATURE):
-            raise Exception("Invalid MBR signature")
+                if (signature != MBR_SIGNATURE):
+                    raise Exception("Invalid MBR signature")
 
-        self.partition_table.load(
-            self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
-        )
-            
-        # self.partition_table.load(self.data[
-        #     PT_TABLE_OFFSET:PT_TABLE_OFFSET + PT_TABLE_SIZE
-        # ])
+                self.partition_table.load(
+                    self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
+                )
 
-        # for entry in self.partition_table.entries:
-        #     entry.hexdump()
+                # for entry in self.partition_table.entries:
+                #     entry.hexdump()
+        except IOError, e:
+            print e
+        except Exception, e:
+            print e                     
