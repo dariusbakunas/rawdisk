@@ -1,5 +1,6 @@
-import struct
-import hexdump
+from rawdisk.util.rawstruct import RawStruct
+from rawdisk.filesystems.common import detect_partition_type
+
 
 MBR_SIGNATURE = 0xAA55
 MBR_SIG_SIZE = 2
@@ -10,45 +11,11 @@ PT_TABLE_SIZE = PT_ENTRY_SIZE * 4
 SECTOR_SIZE = 512
 
 
-class RawStruct:
-    def __init__(self):
-        self._data = None
-
-    @property
-    def data(self):
-        return self._data
-
-    @data.setter
-    def data(self, value):
-        self._data = value
-
-    def load_from_source(self, source, offset, length):
-        source.seek(offset)
-        self._data = source.read(length)
-
-    def get_chunk(self, offset, length):
-        return self.data[offset:offset+length]
-
-    def get_field(self, offset, length, format):
-        return struct.unpack(format, self.data[offset:offset+length])[0]
-
-    def get_ubyte(self, offset):
-        return struct.unpack("<B", self.data[offset:offset+1])[0]
-
-    def get_ushort(self, offset):
-        return struct.unpack("<H", self.data[offset:offset+2])[0]
-
-    def get_uint(self, offset):
-        return struct.unpack("<I", self.data[offset:offset+4])[0]
-
-    def hexdump(self):
-        hexdump.hexdump(self._data)
-
-
+# This belongs to NTFS, FAT etc
 class VBR:
     def load(self, raw_data):
         self.raw = raw_data
-        self.oem_id = struct.unpack("<8s", raw_data[3:11])[0]
+        # self.oem_id = struct.unpack("<8s", raw_data[3:11])[0]
 
     def hexdump(self):
         hexdump.hexdump(self.raw)
@@ -98,11 +65,16 @@ class MBR(RawStruct):
     def __init__(self):
         RawStruct.__init__(self)
         self.partition_table = PartitionTable()
+        self.partitions = []
 
     def load(self, filename):
+        """Reads Master Boot Record
+
+        Loads partition table entries
+        """
         try:
             with open(filename, 'rb') as f:
-                # Look for MBR signature first
+                # Verify MBR signature first
                 self.load_from_source(f, 0, 512)
                 signature = self.get_ushort(MBR_SIG_OFFSET)
 
@@ -114,6 +86,9 @@ class MBR(RawStruct):
                 )
 
                 for entry in self.partition_table.entries:
-                    entry.hexdump()
+                    # print "Partition Type:", entry.part_type
+                    f.seek(entry.part_offset)
+                    part_data = f.read(512) # not sure how much is sufficient
+                    print detect_partition_type(part_data, entry.part_type)
         except IOError, e:
             print e
