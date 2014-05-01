@@ -9,11 +9,36 @@ PT_TABLE_OFFSET = 0x1BE
 PT_TABLE_SIZE = PT_ENTRY_SIZE * 4
 SECTOR_SIZE = 512
 
+class RawStruct:
+    def __init__(self):
+        self._data = None            
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, value):
+        self._data = value
+
+    def load_from_source(self, source, offset, length):
+        source.seek(offset)
+        self._data = source.read(length)
+
+    def get_chunk(self, offset, length):
+        return self.data[offset:offset+length]
+
+    def get_field(self, offset, length, format):       
+        return struct.unpack(format, self.data[offset:offset+length])[0]
+
+    def hexdump(self):
+        hexdump.hexdump(self._data)
 
 class VBR:
     def load(self, raw_data):
         self.raw = raw_data
         self.oem_id = struct.unpack("<8s", raw_data[3:11])[0]
+
         
     def hexdump(self):
         hexdump.hexdump(self.raw)
@@ -41,6 +66,9 @@ class PartitionEntry:
         self.total_sectors = struct.unpack("<I", raw_data[12:16])[0]
         self.part_offset = SECTOR_SIZE*self.relative_sector
 
+    def hexdump(self):
+        hexdump.hexdump(self.raw)
+
 
 class PartitionTable:
     def __init__(self):
@@ -62,33 +90,28 @@ class PartitionTable:
         hexdump.hexdump(self.raw)
 
 
-class MBR:
+class MBR(RawStruct):
     def __init__(self):
+        RawStruct.__init__(self)
         self.partition_table = PartitionTable()
 
-    def load(self, source):
-        source.seek(0)
-        mbr_data = source.read(512)
-        
-        signature = struct.unpack("<H", mbr_data[
-            MBR_SIG_OFFSET:MBR_SIG_OFFSET+MBR_SIG_SIZE
-        ])[0]
+    def load(self, filename):
+        try:            
+            with open(filename, 'rb') as f:
+                # Look for MBR signature first
+                self.load_from_source(f, 0, 512)
+                signature = self.get_field(MBR_SIG_OFFSET, MBR_SIG_SIZE, "<H")
 
-        if (signature != MBR_SIGNATURE):
-            return False
+                if (signature != MBR_SIGNATURE):
+                    raise Exception("Invalid MBR signature")
 
-        self.raw = mbr_data
-        self.partition_table.load(self.raw[
-            PT_TABLE_OFFSET:PT_TABLE_OFFSET + PT_TABLE_SIZE
-        ])            
-        
-        for entry in self.partition_table.entries:
-            source.seek(entry.part_offset)
-            vbr_data = source.read(SECTOR_SIZE)            
-            entry.vbr.load(vbr_data)
-            entry.vbr.hexdump()
+                self.partition_table.load(
+                    self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
+                )
 
-        return True
-
-    def hexdump(self):
-        hexdump.hexdump(self.raw)
+                # for entry in self.partition_table.entries:
+                #     entry.hexdump()
+        except IOError, e:
+            print e
+        except Exception, e:
+            print e                     
