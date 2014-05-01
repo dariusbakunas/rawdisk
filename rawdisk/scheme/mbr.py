@@ -1,4 +1,6 @@
 from rawdisk.util.rawstruct import RawStruct
+from rawdisk.filesystems.common import detect_partition_type
+
 
 MBR_SIGNATURE = 0xAA55
 MBR_SIG_SIZE = 2
@@ -63,6 +65,7 @@ class MBR(RawStruct):
     def __init__(self):
         RawStruct.__init__(self)
         self.partition_table = PartitionTable()
+        self.partitions = []
 
     def load(self, filename):
         """Reads Master Boot Record
@@ -83,6 +86,9 @@ class MBR(RawStruct):
                 )
 
                 for entry in self.partition_table.entries:
-                    entry.hexdump()
+                    # print "Partition Type:", entry.part_type
+                    f.seek(entry.part_offset)
+                    part_data = f.read(512) # not sure how much is sufficient
+                    print detect_partition_type(part_data, entry.part_type)
         except IOError, e:
             print e
