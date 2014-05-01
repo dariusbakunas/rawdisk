@@ -1,5 +1,5 @@
+import rawdisk.filesystems
 from rawdisk.util.rawstruct import RawStruct
-from rawdisk.filesystems.common import detect_partition_type
 
 
 MBR_SIGNATURE = 0xAA55
@@ -85,10 +85,5 @@ class MBR(RawStruct):
                     self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
                 )
 
-                for entry in self.partition_table.entries:
-                    # print "Partition Type:", entry.part_type
-                    f.seek(entry.part_offset)
-                    part_data = f.read(512) # not sure how much is sufficient
-                    print detect_partition_type(part_data, entry.part_type)
         except IOError, e:
             print e
