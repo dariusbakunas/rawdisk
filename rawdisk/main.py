@@ -21,5 +21,3 @@ def main():
 
     r = rawdisk.reader.Reader()
     r.load(options.filename)
-
-    
