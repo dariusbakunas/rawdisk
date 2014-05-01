@@ -3,6 +3,7 @@ import hexdump
 import scheme
 import rawdisk.filesystems
 from rawdisk.filesystems.common import detect_partition_format
+from rawdisk.filesystems.ntfs import Partition_NTFS
 
 
 class Reader:
@@ -28,7 +29,7 @@ class Reader:
                 )
 
                 if pt_format == rawdisk.filesystems.common.PART_FORMAT_NTFS:
-                    partition = rawdisk.filesystems.ntfs.Partition_NTFS()
+                    partition = Partition_NTFS(filename, entry.part_offset)
 
         elif (self.scheme == scheme.common.SCHEME_GPT):
             print 'Partitioning scheme: GPT'
