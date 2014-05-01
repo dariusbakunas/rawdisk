@@ -3,8 +3,8 @@ import hexdump
 
 
 class RawStruct:
-    def __init__(self):
-        self._data = None
+    def __init__(self, data = None):
+        self._data = data
 
     @property
     def data(self):
@@ -37,7 +37,7 @@ class RawStruct:
         return struct.unpack("<L", self.data[offset:offset+4])[0]
 
     def get_string(self, offset, length):
-        return struct.unpack("<" + str(length + "s"), self.data[
+        return struct.unpack("<" + str(length) + "s", self.data[
             offset:offset+length
         ])[0]
 
