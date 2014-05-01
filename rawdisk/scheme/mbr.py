@@ -9,9 +9,10 @@ PT_TABLE_OFFSET = 0x1BE
 PT_TABLE_SIZE = PT_ENTRY_SIZE * 4
 SECTOR_SIZE = 512
 
+
 class RawStruct:
     def __init__(self):
-        self._data = None            
+        self._data = None
 
     @property
     def data(self):
@@ -28,18 +29,18 @@ class RawStruct:
     def get_chunk(self, offset, length):
         return self.data[offset:offset+length]
 
-    def get_field(self, offset, length, format):       
+    def get_field(self, offset, length, format):
         return struct.unpack(format, self.data[offset:offset+length])[0]
 
     def hexdump(self):
         hexdump.hexdump(self._data)
+
 
 class VBR:
     def load(self, raw_data):
         self.raw = raw_data
         self.oem_id = struct.unpack("<8s", raw_data[3:11])[0]
 
-        
     def hexdump(self):
         hexdump.hexdump(self.raw)
 
@@ -47,7 +48,7 @@ class VBR:
 class PartitionEntry:
     def __init__(self):
         self.vbr = VBR()
-        
+
     def load(self, raw_data):
         self.raw = raw_data
         self.boot_indicator = struct.unpack("<B", raw_data[:1])[0]
@@ -82,7 +83,7 @@ class PartitionTable:
             end = start + PT_ENTRY_SIZE
             entry = PartitionEntry()
             entry.load(self.raw[start:end])
-            
+
             if (entry.part_type != 0):
                 self.entries.append(entry)
 
@@ -96,7 +97,7 @@ class MBR(RawStruct):
         self.partition_table = PartitionTable()
 
     def load(self, filename):
-        try:            
+        try:
             with open(filename, 'rb') as f:
                 # Look for MBR signature first
                 self.load_from_source(f, 0, 512)
@@ -111,7 +112,5 @@ class MBR(RawStruct):
 
                 # for entry in self.partition_table.entries:
                 #     entry.hexdump()
-        except IOError, e:
-            print e
         except Exception, e:
-            print e                     
+            print e
