@@ -6,10 +6,14 @@ A Python library for raw access to filesystems.
 Download
 --------
 
-$ git clone git:://github.com/dariusbakunas/rawdisk.git
+	$ git clone git:://github.com/dariusbakunas/rawdisk.git
 
 Documentation and usage
 -----------------------
+
+	from rawdisk import Reader
+	r = Reader()
+	r.load("/dev/disk2")
 
 Installation
 ------------
