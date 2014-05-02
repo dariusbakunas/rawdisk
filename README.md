@@ -10,7 +10,7 @@ Filesystems Supported
 Download
 --------
 
-	$ git clone git:://github.com/dariusbakunas/rawdisk.git
+	$ git clone https://github.com/dariusbakunas/rawdisk.git
 
 Documentation and usage
 -----------------------
