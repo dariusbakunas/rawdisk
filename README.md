@@ -1,7 +1,11 @@
 RawDisk
 =======
 
-A Python library for raw access to filesystems.
+A Python library for raw access to filesystems. Started it for educational purposes.
+
+Filesystems Supported
+---------------------
+	* NTFS
 
 Download
 --------
@@ -11,9 +15,11 @@ Download
 Documentation and usage
 -----------------------
 
+	```python
 	from rawdisk import Reader
 	r = Reader()
 	r.load("/dev/disk2")
+	```
 
 Installation
 ------------
