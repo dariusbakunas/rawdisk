@@ -3,7 +3,7 @@ import hexdump
 import scheme
 import rawdisk.filesystems
 from rawdisk.filesystems.common import detect_partition_format
-from rawdisk.filesystems.ntfs import Partition_NTFS
+from rawdisk.filesystems.ntfs import NTFS_Partition
 
 
 class Reader:
@@ -21,6 +21,7 @@ class Reader:
             mbr = scheme.mbr.MBR()
             mbr.load(filename)
 
+            # Go through table entries and analyse ones that are supported
             for entry in mbr.partition_table.entries:
                 pt_format = detect_partition_format(
                     filename,
@@ -29,7 +30,9 @@ class Reader:
                 )
 
                 if pt_format == rawdisk.filesystems.common.PART_FORMAT_NTFS:
-                    partition = Partition_NTFS(filename, entry.part_offset)
+                    partition = NTFS_Partition()
+                    partition.load(filename, entry.part_offset)
+                    self.partitions.append(partition)
 
         elif (self.scheme == scheme.common.SCHEME_GPT):
             print 'Partitioning scheme: GPT'
