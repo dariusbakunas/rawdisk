@@ -138,6 +138,13 @@ class NTFS_Partition(Partition):
         except IOError, e:
             print e
 
+    def __str__(self):
+        return "Type: NTFS, Offset: 0x%X, Size: %s" % (
+            self.partition_offset,
+            hurry.filesize.size(self.bootsector.bpb.bytes_per_sector * \
+                self.bootsector.bpb.total_sectors)
+        )
+
     @property
     def mft_table_offset(self):
         bytes_per_cluster = self.bootsector.bpb.sectors_per_cluster * \

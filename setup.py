@@ -7,7 +7,7 @@ setup(
     description='Experimental python code to learn different disk formats',
     packages=find_packages(),
     license='LICENSE.txt',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     install_requires=[
         'hexdump >= 2.0',
         'hurry.filesize >= 0.9'
