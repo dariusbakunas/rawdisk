@@ -121,7 +121,6 @@ class NTFS_Partition(Partition):
     def __init__(self):
         Partition.__init__(self)
         self.partition_offset = 0
-        self.root_mft_offset = 0
         self.mft_table = None
         self.bootsector = NTFS_Boot_Sector()
 
@@ -132,17 +131,18 @@ class NTFS_Partition(Partition):
             with open(filename, 'rb') as f:
                 f.seek(self.partition_offset)
                 data = f.read(512)
-                self.bootsector.load(data)                
-                self.root_mft_offset = self.get_root_mft_offset()
-                self.mft_table = MFT_Table(self.root_mft_offset)
+                self.bootsector.load(data)
+                self.mft_table = MFT_Table(self.mft_table_offset)
                 self.mft_table.load(f)
-
 
         except IOError, e:
             print e
 
-    def get_root_mft_offset(self):
+    @property
+    def mft_table_offset(self):
         bytes_per_cluster = self.bootsector.bpb.sectors_per_cluster * \
                 self.bootsector.bpb.bytes_per_sector
 
-        return self.partition_offset + bytes_per_cluster * self.bootsector.bpb.mft_cluster
+        return self.partition_offset + \
+                bytes_per_cluster * \
+                self.bootsector.bpb.mft_cluster
