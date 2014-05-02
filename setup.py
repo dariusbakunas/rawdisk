@@ -9,7 +9,8 @@ setup(
     license='LICENSE.txt',
     long_description=open('README.txt').read(),
     install_requires=[
-        "hexdump >= 2.0",
+        'hexdump >= 2.0',
+        'hurry.filesize >= 0.9'
     ],
     entry_points={
         'console_scripts': [
