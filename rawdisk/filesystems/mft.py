@@ -30,8 +30,12 @@ class MFT_Attribute_Header(RawStruct):
 
 
 class MFT_Attribute(RawStruct):
-    def __init__(self):
-        pass
+    def __init__(self, offset):
+        self.header = MFT_Attribute_Header()
+        self.offset = offset
+    
+    def load(self, data):
+        RawStruct.data.fset(self, data)
 
 
 class MFT_Entry(RawStruct):
@@ -44,7 +48,10 @@ class MFT_Entry(RawStruct):
         RawStruct.data.fset(self, data)
         self.header.load(data)
 
-        # print "Attr offset:", hex(self.header.first_attr_offset)
+        attr_data = self.get_attr_data(self.header.first_attr_offset)
+
+
+        hexdump.hexdump(attr_data)
 
     @property
     def used_size(self):
@@ -53,6 +60,15 @@ class MFT_Entry(RawStruct):
     @property
     def size(self):
         return self.header.allocated_size
+
+    def get_attr_data(self, offset):
+        """Returns all bytes that belong to an attribute
+        Attribute length is in attribute header @ offset 0x4
+
+        offset - must be a valid offset where attribute header begins
+        """
+        length = self.get_uint(offset+4)
+        return self.get_chunk(offset, length)
 
     def __str__(self):
         return "MFT Record no: %d, " \
