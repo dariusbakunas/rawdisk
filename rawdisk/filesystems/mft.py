@@ -86,8 +86,8 @@ class MFT_Table:
 
     def load(self, source):
         self.load_metadata_entries(source, self.offset)
-        entry = self.get_metadata_entry(MFT_ENTRY_ROOT)
-        entry.hexdump()
+        # entry = self.get_metadata_entry(MFT_ENTRY_ROOT)
+        # entry.hexdump()
 
     def get_metadata_entry(self, entry_id):
         return self._metadata_entries[entry_id]
