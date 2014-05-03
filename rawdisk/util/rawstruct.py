@@ -25,7 +25,7 @@ class RawStruct:
         return struct.unpack(format, self.data[offset:offset+length])[0]
 
     def get_ubyte(self, offset):
-        return struct.unpack("<B", self.data[offset:offset+1])[0]
+        return struct.unpack("B", self.data[offset:offset+1])[0]
 
     def get_ushort(self, offset):
         return struct.unpack("<H", self.data[offset:offset+2])[0]
