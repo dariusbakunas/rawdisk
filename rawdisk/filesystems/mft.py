@@ -5,6 +5,19 @@ from rawdisk.util.rawstruct import RawStruct
 MFT_ENTRY_SIZE = 1024
 MFT_ENTRY_HEADER_SIZE = 48
 
+MFT_ENTRY_MFT = 0x0
+MFT_ENTRY_MFTMIRROR = 0x1
+MFT_ENTRY_LOGFILE = 0x2
+MFT_ENTRY_VOLUME = 0x3
+MFT_ENTRY_ATTRDEF = 0x4
+MFT_ENTRY_ROOT = 0x5
+MFT_ENTRY_BITMAP = 0x6
+MFT_ENTRY_BOOT = 0x7
+MFT_ENTRY_BADCLUS = 0x8
+MFT_ENTRY_SECURE = 0x9
+MFT_ENTRY_UPCASE = 0xA
+MFT_ENTRY_EXTEND = 0xB
+
 
 class MFT_Entry_Header(RawStruct):
     def __init__(self, data):
@@ -25,19 +38,17 @@ class MFT_Entry_Header(RawStruct):
 
 
 class MFT_Entry(RawStruct):
-    def __init__(self, offset):
+    def __init__(self, offset, data):
+        RawStruct.data.fset(self, data)
         self.offset = offset
         self.attributes = []
-
-    def load(self, data):
-        RawStruct.data.fset(self, data)
-
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
         self.header = MFT_Entry_Header(header_data)
-        self.header.hexdump()
+        # first_attribute = self.get_attribute(self.header.first_attr_offset)
 
-        first_attribute = self.get_attribute(self.header.first_attr_offset)
-
+    @property
+    def end_offset(self):
+        return self.offset + self.header.allocated_size
 
     @property
     def used_size(self):
@@ -47,68 +58,46 @@ class MFT_Entry(RawStruct):
     def size(self):
         return self.header.allocated_size
 
-
     def get_attribute(self, offset):
         attr_type = self.get_uint(offset)
-        length = self.get_uint(offset + 4)  # Attribute length is in header @ offset 0x4
+        # Attribute length is in header @ offset 0x4
+        length = self.get_uint(offset + 4)
         data = self.get_chunk(offset, length)
         return MFT_Attribute(data)
 
-
     def __str__(self):
         return "MFT Record no: %d, " \
-                "Offset: 0x%x, " \
-                "Size: %d, " \
-                "Used Size: %d, " \
-                "Signature: %s" % (
-            self.header.mft_record_number,
-            self.offset,
-            self.size,
-            self.used_size,
-            self.header.file_signature
-        )
+            "Offset: 0x%x, " \
+            "Size: %d, " \
+            "Used Size: %d, " \
+            "Signature: %s" % (
+                self.header.mft_record_number,
+                self.offset,
+                self.size,
+                self.used_size,
+                self.header.file_signature
+            )
 
 
 class MFT_Table:
     def __init__(self, offset):
         self.offset = offset
-
-        # Metadata MFT entries
-        # The Master File Table
-        self.mft = None
-        # The Master File Table Mirror
-        self.mft_mirror = None
-        # A log file containing a list of transactions 
-        self.log_file = None
-        # Information about the colume
-        self.volume = None
-        # Defines attributes
-        self.attr_def = None
-        # Root folder
-        self.root = None
-        # Cluster bitmap representing the volume
-        self.bitmap = None
-        # Boot sector
-        self.boot = None
-        # Contains bad clusters for a volume
-        self.bad_clust = None
-        # Contains security descriptors for all files
-        # within the volume
-        self.secure = None
-        # Converts lowercase characters to 
-        # Unicode uppercase characters
-        self.upcase = None
-        # Used for various option extensions
-        self.extend = None
-
+        self._metadata_entries = []
 
     def load(self, source):
-        source.seek(self.offset)
-        data = source.read(MFT_ENTRY_SIZE)
-        first_mft_entry = MFT_Entry(self.offset)
-        first_mft_entry.load(data)
-        
-        second_mft_offset = first_mft_entry.offset+first_mft_entry.header.allocated_size
-        source.seek(second_mft_offset)
-        data = source.read(MFT_ENTRY_SIZE)
-        # hexdump.hexdump(data)
+        self.load_metadata_entries(source, self.offset)
+        entry = self.get_metadata_entry(MFT_ENTRY_ROOT)
+        entry.hexdump()
+
+    def get_metadata_entry(self, entry_id):
+        return self._metadata_entries[entry_id]
+
+    def load_metadata_entries(self, source, offset):
+        source.seek(offset)
+
+        for n in range(0, 12):
+            data = source.read(MFT_ENTRY_SIZE)
+            entry = MFT_Entry(offset, data)
+            self._metadata_entries.append(entry)
+            source.seek(entry.end_offset)
+            offset = entry.end_offset
