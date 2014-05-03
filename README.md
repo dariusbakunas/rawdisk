@@ -22,6 +22,7 @@ r.load("/dev/disk2")
 ```
 
 * List partitions:
+
 ```python
 for part in r.partitions:
 	print part
@@ -32,6 +33,7 @@ Type: NTFS, Offset: 0x100000, Size: 14G
 ```
 
 * Hexdump contents of selected system MFT entry
+
 ```python
 from rawdisk.filesystems.ntfs import NTFS_Partition
 from rawdisk.filesystems.mft import MFT_ENTRY_VOLUME
