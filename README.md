@@ -35,13 +35,13 @@ Type: NTFS, Offset: 0x100000, Size: 14G, MFT Table Offset: 0xC0100000
 * Hexdump contents of selected system MFT entry
 
 ```python
-from rawdisk.filesystems.ntfs import NTFS_Partition
-from rawdisk.filesystems.mft import MFT_ENTRY_VOLUME
+from rawdisk.filesystems.ntfs import *
 
 ntfs_partition = NTFS_Partition()
-ntfs_partition.load("/dev/disk2", 0x100000)
+ntfs_partition.mount("/dev/disk2", 0x100000)
 mft_entry = ntfs_partition.mft_table.get_system_entry(MFT_ENTRY_VOLUME)
 mft_entry.hexdump()
+ntfs_partition.unmount()
 ```
 
 ```console
