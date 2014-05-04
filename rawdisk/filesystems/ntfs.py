@@ -43,27 +43,45 @@ class NTFS_Boot_Sector(RawStruct):
 class NTFS_Partition(Partition):
     def __init__(self):
         Partition.__init__(self)
-        self.partition_offset = 0
+        self.offset = 0
+        self.bootsector = None
         self.mft_table = None
+        self.fd = None
 
-
-    def load(self, filename, offset):
-        self.partition_offset = offset
-
+    def mount(self, filename, offset):
         try:
-            with open(filename, 'rb') as f:
-                f.seek(self.partition_offset)
-                data = f.read(512)
-                self.bootsector = NTFS_Boot_Sector(data)
-                self.mft_table = MFT_Table(self.mft_table_offset)
-                self.mft_table.load(f)
-
+            self.offset = offset 
+            self.fd = open(filename, 'rb')
+            self.load_bootsector()
+            self.load_mft_table()
         except IOError, e:
             print e
 
+    def unmount(self):
+        try:
+            if not self.fd.closed:
+                self.fd.close()
+        except IOError, e:
+            print e
+
+    def is_mounted(self):
+        if (self.fd != None and not self.fd.closed):
+            return True
+        else:
+            return False
+
+    def load_bootsector(self):
+        self.fd.seek(self.offset)
+        data = self.fd.read(512)
+        self.bootsector = NTFS_Boot_Sector(data)
+
+    def load_mft_table(self):
+        self.mft_table = MFT_Table(self.mft_table_offset)
+        self.mft_table.load(self.fd)
+
     def __str__(self):
         return "Type: NTFS, Offset: 0x%X, Size: %s, MFT Table Offset: 0x%X" % (
-            self.partition_offset,
+            self.offset,
             hurry.filesize.size(self.size),
             self.mft_table_offset
         )
@@ -75,4 +93,4 @@ class NTFS_Partition(Partition):
 
     @property
     def mft_table_offset(self):
-        return self.partition_offset + self.bootsector.mft_offset
+        return self.offset + self.bootsector.mft_offset
