@@ -9,23 +9,11 @@ BPB_OFFSET = 0x0B
 EXTENDED_BPB_SIZE = 48
 
 
-class NTFS_Boot_Sector(RawStruct):
-    def __init__(self):
-        self.bpb = BPB()
-
-    def load(self, data):
-        RawStruct.data.fset(self, data)
-        self.oem_id = self.get_string(3, 8)
-        self.bpb.load(self.get_chunk(BPB_OFFSET, BPB_SIZE + EXTENDED_BPB_SIZE))
-
-
 class BPB(RawStruct):
     """Bios parameter block
+    Includes extended BPB
     """
-    def __init__(self):
-        pass
-
-    def load(self, data):
+    def __init__(self, data = None):
         RawStruct.data.fset(self, data)
         self.bytes_per_sector = self.get_ushort(0)
         self.sectors_per_cluster = self.get_ubyte(2)
@@ -43,12 +31,21 @@ class BPB(RawStruct):
         self.checksum = self.get_uint(66)
 
 
+class NTFS_Boot_Sector(RawStruct):
+    def __init__(self, data = None):
+        RawStruct.data.fset(self, data)
+        self.oem_id = self.get_string(3, 8)
+        self.bpb = BPB(self.get_chunk(BPB_OFFSET, BPB_SIZE + EXTENDED_BPB_SIZE))
+        self.mft_offset = self.bpb.bytes_per_sector * \
+            self.bpb.sectors_per_cluster * self.bpb.mft_cluster
+
+
 class NTFS_Partition(Partition):
     def __init__(self):
         Partition.__init__(self)
         self.partition_offset = 0
         self.mft_table = None
-        self.bootsector = NTFS_Boot_Sector()
+
 
     def load(self, filename, offset):
         self.partition_offset = offset
@@ -57,7 +54,7 @@ class NTFS_Partition(Partition):
             with open(filename, 'rb') as f:
                 f.seek(self.partition_offset)
                 data = f.read(512)
-                self.bootsector.load(data)
+                self.bootsector = NTFS_Boot_Sector(data)
                 self.mft_table = MFT_Table(self.mft_table_offset)
                 self.mft_table.load(f)
 
@@ -77,9 +74,4 @@ class NTFS_Partition(Partition):
 
     @property
     def mft_table_offset(self):
-        bytes_per_cluster = self.bootsector.bpb.sectors_per_cluster * \
-                self.bootsector.bpb.bytes_per_sector
-
-        return self.partition_offset + \
-                bytes_per_cluster * \
-                self.bootsector.bpb.mft_cluster
+        return self.partition_offset + self.bootsector.mft_offset
