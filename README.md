@@ -29,7 +29,7 @@ for part in r.partitions:
 ```
 
 ```console
-Type: NTFS, Offset: 0x100000, Size: 14G
+Type: NTFS, Offset: 0x100000, Size: 14G, MFT Table Offset: 0xC0100000
 ```
 
 * Hexdump contents of selected system MFT entry
