@@ -40,7 +40,7 @@ from rawdisk.filesystems.mft import MFT_ENTRY_VOLUME
 
 ntfs_partition = NTFS_Partition()
 ntfs_partition.load("/dev/disk2", 0x100000)
-mft_entry = ntfs_partition.mft_table.get_metadata_entry(MFT_ENTRY_VOLUME)
+mft_entry = ntfs_partition.mft_table.get_system_entry(MFT_ENTRY_VOLUME)
 mft_entry.hexdump()
 ```
 

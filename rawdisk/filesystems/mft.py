@@ -5,6 +5,7 @@ from rawdisk.util.rawstruct import RawStruct
 MFT_ENTRY_SIZE = 1024
 MFT_ENTRY_HEADER_SIZE = 48
 
+# NTFS System files
 MFT_ENTRY_MFT = 0x0
 MFT_ENTRY_MFTMIRROR = 0x1
 MFT_ENTRY_LOGFILE = 0x2
@@ -85,14 +86,14 @@ class MFT_Table:
         self._metadata_entries = []
 
     def load(self, source):
-        self.load_metadata_entries(source, self.offset)
+        self.load_system_entries(source, self.offset)
         # entry = self.get_metadata_entry(MFT_ENTRY_ROOT)
         # entry.hexdump()
 
-    def get_metadata_entry(self, entry_id):
+    def get_system_entry(self, entry_id):
         return self._metadata_entries[entry_id]
 
-    def load_metadata_entries(self, source, offset):
+    def load_system_entries(self, source, offset):
         source.seek(offset)
 
         for n in range(0, 12):
