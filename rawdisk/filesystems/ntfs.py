@@ -62,9 +62,10 @@ class NTFS_Partition(Partition):
             print e
 
     def __str__(self):
-        return "Type: NTFS, Offset: 0x%X, Size: %s" % (
+        return "Type: NTFS, Offset: 0x%X, Size: %s, MFT Table Offset: 0x%X" % (
             self.partition_offset,
-            hurry.filesize.size(self.size)
+            hurry.filesize.size(self.size),
+            self.mft_table_offset
         )
 
     @property
