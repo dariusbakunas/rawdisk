@@ -48,11 +48,10 @@ class MftEntry(RawStruct):
 
         self.load_attributes()
 
-        for attr in self.attributes:
-            print hex(attr.header.type)
-        
-        self.attributes[1].hexdump()
-        # first_attribute = self.get_attribute(self.header.first_attr_offset)
+        # print "\nMFT #%d" % self.header.seq_number
+
+        # for attr in self.attributes:
+        #     print attr.__class__.__name__
 
     @property
     def end_offset(self):
@@ -74,7 +73,7 @@ class MftEntry(RawStruct):
         while free_space > 0:
             attr = self.get_attribute(offset)
 
-            if (attr != None):
+            if (attr is not None):
                 self.attributes.append(attr)
                 free_space = free_space - attr.header.length
                 offset = offset + attr.header.length
@@ -87,8 +86,32 @@ class MftEntry(RawStruct):
         length = self.get_uint(offset + 4)
         data = self.get_chunk(offset, length)
 
-        if attr_type != 0 and attr_type!= 0xffffffff:
-            return MftAttr(data)
+        if attr_type == MFT_ATTR_STANDARD_INFORMATION:
+            return MftAttrStandardInformation(data)
+        elif attr_type == MFT_ATTR_ATTRIBUTE_LIST:
+            return MftAttrAttributeList(data)
+        elif attr_type == MFT_ATTR_FILENAME:
+            return MftAttrFilename(data)
+        elif attr_type == MFT_ATTR_OBJECT_ID:
+            return MftAttrObjectId(data)
+        elif attr_type == MFT_ATTR_SECURITY_DESCRIPTOR:
+            return MftAttrSecurityDescriptor(data)
+        elif attr_type == MFT_ATTR_VOLUME_NAME:
+            return MftAttrVolumeName(data)
+        elif attr_type == MFT_ATTR_VOLUME_INFO:
+            return MftAttrVolumeInfo(data)
+        elif attr_type == MFT_ATTR_DATA:
+            return MftAttrData(data)
+        elif attr_type == MFT_ATTR_INDEX_ROOT:
+            return MftAttrIndexRoot(data)
+        elif attr_type == MFT_ATTR_INDEX_ALLOCATION:
+            return MftAttrIndexAllocation(data)
+        elif attr_type == MFT_ATTR_BITMAP:
+            return MftAttrBitmap(data)
+        elif attr_type == MFT_ATTR_REPARSE_POINT:
+            return MftAttrReparsePoint(data)
+        elif attr_type == MFT_ATTR_LOGGED_TOOLSTREAM:
+            return MftAttrLoggedToolstream(data)
         else:
             return None
 
@@ -113,8 +136,6 @@ class MftTable(object):
 
     def load(self, source):
         self.load_system_entries(source, self.offset)
-        # entry = self.get_metadata_entry(MFT_ENTRY_ROOT)
-        # entry.hexdump()
 
     def get_system_entry(self, entry_id):
         return self._metadata_entries[entry_id]
