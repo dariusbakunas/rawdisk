@@ -43,6 +43,6 @@ def detect_partition_format(filename, offset, type_id):
     return PART_FORMAT_UNKNOWN
 
 
-class Partition:
+class Volume(object):
     def __init__(self):
         pass

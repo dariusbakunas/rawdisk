@@ -2,7 +2,7 @@ import struct
 import hexdump
 
 
-class RawStruct:
+class RawStruct(object):
     def __init__(self, data = None):
         self._data = data
 

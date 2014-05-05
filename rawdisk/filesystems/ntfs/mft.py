@@ -20,7 +20,7 @@ MFT_ENTRY_UPCASE = 0xA
 MFT_ENTRY_EXTEND = 0xB
 
 
-class MFT_Entry_Header(RawStruct):
+class MftEntryHeader(RawStruct):
     def __init__(self, data):
         RawStruct.data.fset(self, data)
         self.file_signature = self.get_string(0, 4)
@@ -38,13 +38,13 @@ class MFT_Entry_Header(RawStruct):
         self.mft_record_number = self.get_uint(42)
 
 
-class MFT_Entry(RawStruct):
+class MftEntry(RawStruct):
     def __init__(self, offset, data):
         RawStruct.data.fset(self, data)
         self.offset = offset
         self.attributes = []
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
-        self.header = MFT_Entry_Header(header_data)
+        self.header = MftEntryHeader(header_data)
         # first_attribute = self.get_attribute(self.header.first_attr_offset)
 
     @property
@@ -64,7 +64,7 @@ class MFT_Entry(RawStruct):
         # Attribute length is in header @ offset 0x4
         length = self.get_uint(offset + 4)
         data = self.get_chunk(offset, length)
-        return MFT_Attribute(data)
+        return MftAttribute(data)
 
     def __str__(self):
         return "MFT Record no: %d, " \
@@ -80,7 +80,7 @@ class MFT_Entry(RawStruct):
             )
 
 
-class MFT_Table:
+class MftTable(object):
     def __init__(self, offset):
         self.offset = offset
         self._metadata_entries = []
@@ -98,7 +98,7 @@ class MFT_Table:
 
         for n in range(0, 12):
             data = source.read(MFT_ENTRY_SIZE)
-            entry = MFT_Entry(offset, data)
+            entry = MftEntry(offset, data)
             self._metadata_entries.append(entry)
             source.seek(entry.end_offset)
             offset = entry.end_offset
