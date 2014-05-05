@@ -22,7 +22,7 @@ MFT_ENTRY_EXTEND = 0xB
 
 class MftEntryHeader(RawStruct):
     def __init__(self, data):
-        RawStruct.data.fset(self, data)
+        RawStruct.__init__(self, data)
         self.file_signature = self.get_string(0, 4)
         self.update_seq_array_offset = self.get_ushort(4)
         self.update_seq_array_size = self.get_ushort(6)
@@ -40,7 +40,7 @@ class MftEntryHeader(RawStruct):
 
 class MftEntry(RawStruct):
     def __init__(self, offset, data):
-        RawStruct.data.fset(self, data)
+        RawStruct.__init__(self, data)
         self.offset = offset
         self.attributes = []
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
@@ -66,8 +66,7 @@ class MftEntry(RawStruct):
         return self.header.allocated_size
 
     def load_attributes(self):
-        attr_alloc_space = MFT_ENTRY_SIZE - MFT_ENTRY_HEADER_SIZE
-        free_space = attr_alloc_space
+        free_space = MFT_ENTRY_SIZE - MFT_ENTRY_HEADER_SIZE
         offset = self.header.first_attr_offset
 
         while free_space > 0:

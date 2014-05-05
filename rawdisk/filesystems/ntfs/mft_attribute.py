@@ -20,7 +20,7 @@ MFT_ATTR_LOGGED_TOOLSTREAM = 0x100
 
 class MftAttrHeader(RawStruct):
     def __init__(self, data):
-        RawStruct.data.fset(self, data)
+        RawStruct.__init__(self, data)
         self.type = self.get_uint(0)
         self.length = self.get_uint(4)
         self.non_resident_flag = self.get_ubyte(8)
@@ -32,7 +32,7 @@ class MftAttrHeader(RawStruct):
 
 class MftAttr(RawStruct):
     def __init__(self, data):
-        RawStruct.data.fset(self, data)
+        RawStruct.__init__(self, data)
         self.header = MftAttrHeader(
             self.get_chunk(0, MFT_ATTR_HEADER_SIZE)
         )
