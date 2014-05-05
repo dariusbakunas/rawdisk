@@ -7,6 +7,7 @@ import hexdump
 BPB_SIZE = 25
 BPB_OFFSET = 0x0B
 EXTENDED_BPB_SIZE = 48
+NTFS_BOOTSECTOR_SIZE = 512
 
 
 class Bpb(RawStruct):
@@ -72,7 +73,7 @@ class NtfsVolume(Volume):
 
     def load_bootsector(self):
         self.fd.seek(self.offset)
-        data = self.fd.read(512)
+        data = self.fd.read(NTFS_BOOTSECTOR_SIZE)
         self.bootsector = NtfsBootSector(data)
 
     def load_mft_table(self):
