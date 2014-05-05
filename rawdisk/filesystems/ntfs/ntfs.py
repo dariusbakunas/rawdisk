@@ -76,7 +76,7 @@ class NtfsVolume(Volume):
         self.bootsector = NtfsBootSector(data)
 
     def load_mft_table(self):
-        self.mft_table = MFT_Table(self.mft_table_offset)
+        self.mft_table = MftTable(self.mft_table_offset)
         self.mft_table.load(self.fd)
 
     def __str__(self):
