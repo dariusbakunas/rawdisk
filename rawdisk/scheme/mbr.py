@@ -47,7 +47,7 @@ class PartitionTable(RawStruct):
                 self.entries.append(entry)
 
 
-class MBR(RawStruct):
+class Mbr(RawStruct):
     def __init__(self):
         RawStruct.__init__(self)
         self.partition_table = None

@@ -18,7 +18,7 @@ class Reader:
         self.scheme = scheme.common.detect_scheme(filename)
 
         if (self.scheme == scheme.common.SCHEME_MBR):
-            mbr = scheme.mbr.MBR()
+            mbr = scheme.mbr.Mbr()
             mbr.load(filename)
 
             # Go through table entries and analyse ones that are supported
