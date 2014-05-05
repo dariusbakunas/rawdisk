@@ -64,7 +64,7 @@ class MftEntry(RawStruct):
         # Attribute length is in header @ offset 0x4
         length = self.get_uint(offset + 4)
         data = self.get_chunk(offset, length)
-        return MftAttribute(data)
+        return MftAttr(data)
 
     def __str__(self):
         return "MFT Record no: %d, " \

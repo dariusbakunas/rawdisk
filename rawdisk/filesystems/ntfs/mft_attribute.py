@@ -4,7 +4,7 @@ from rawdisk.util.rawstruct import RawStruct
 MFT_ATTR_HEADER_SIZE = 16
 
 
-class MftAttributeHeader(RawStruct):
+class MftAttrHeader(RawStruct):
     def __init__(self, data):
         RawStruct.data.fset(self, data)
         self.type = self.get_uint(0)
@@ -16,7 +16,7 @@ class MftAttributeHeader(RawStruct):
         self.identifier = self.get_ushort(14)
 
 
-class MftAttribute(RawStruct):
+class MftAttr(RawStruct):
     def __init__(self, data):
         RawStruct.data.fset(self, data)
         self.header = MftAttributeHeader(
