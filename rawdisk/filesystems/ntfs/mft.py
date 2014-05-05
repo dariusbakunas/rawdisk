@@ -45,6 +45,13 @@ class MftEntry(RawStruct):
         self.attributes = []
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
         self.header = MftEntryHeader(header_data)
+
+        self.load_attributes()
+
+        for attr in self.attributes:
+            print hex(attr.header.type)
+        
+        self.attributes[1].hexdump()
         # first_attribute = self.get_attribute(self.header.first_attr_offset)
 
     @property
@@ -59,12 +66,31 @@ class MftEntry(RawStruct):
     def size(self):
         return self.header.allocated_size
 
+    def load_attributes(self):
+        attr_alloc_space = MFT_ENTRY_SIZE - MFT_ENTRY_HEADER_SIZE
+        free_space = attr_alloc_space
+        offset = self.header.first_attr_offset
+
+        while free_space > 0:
+            attr = self.get_attribute(offset)
+
+            if (attr != None):
+                self.attributes.append(attr)
+                free_space = free_space - attr.header.length
+                offset = offset + attr.header.length
+            else:
+                break
+
     def get_attribute(self, offset):
         attr_type = self.get_uint(offset)
         # Attribute length is in header @ offset 0x4
         length = self.get_uint(offset + 4)
         data = self.get_chunk(offset, length)
-        return MftAttr(data)
+
+        if attr_type != 0 and attr_type!= 0xffffffff:
+            return MftAttr(data)
+        else:
+            return None
 
     def __str__(self):
         return "MFT Record no: %d, " \

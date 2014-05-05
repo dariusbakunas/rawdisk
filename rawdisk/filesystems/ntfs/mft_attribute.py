@@ -19,6 +19,11 @@ class MftAttrHeader(RawStruct):
 class MftAttr(RawStruct):
     def __init__(self, data):
         RawStruct.data.fset(self, data)
-        self.header = MftAttributeHeader(
+        self.header = MftAttrHeader(
             self.get_chunk(0, MFT_ATTR_HEADER_SIZE)
         )
+
+# Define all attribute types here
+class MftAttrStandartInformation(MftAttr):
+    def __init__(self, data):
+        
