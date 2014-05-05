@@ -32,6 +32,7 @@ class Reader:
                 if pt_format == rawdisk.filesystems.common.PART_FORMAT_NTFS:
                     partition = NTFS_Partition()
                     partition.mount(filename, entry.part_offset)
+                    partition.unmount()
                     self.partitions.append(partition)
 
         elif (self.scheme == scheme.common.SCHEME_GPT):

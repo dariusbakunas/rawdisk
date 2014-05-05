@@ -80,7 +80,7 @@ class MFT_Entry(RawStruct):
             )
 
 
-class MFT_Table:
+class MFT_Table(object):
     def __init__(self, offset):
         self.offset = offset
         self._metadata_entries = []
