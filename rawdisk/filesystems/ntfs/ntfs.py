@@ -9,7 +9,7 @@ BPB_OFFSET = 0x0B
 EXTENDED_BPB_SIZE = 48
 
 
-class BPB(RawStruct):
+class Bpb(RawStruct):
     """Bios parameter block
     Includes extended BPB
     """
@@ -31,11 +31,11 @@ class BPB(RawStruct):
         self.checksum = self.get_uint(66)
 
 
-class NTFS_Boot_Sector(RawStruct):
+class NtfsBootSector(RawStruct):
     def __init__(self, data = None):
         RawStruct.data.fset(self, data)
         self.oem_id = self.get_string(3, 8)
-        self.bpb = BPB(self.get_chunk(BPB_OFFSET, BPB_SIZE + EXTENDED_BPB_SIZE))
+        self.bpb = Bpb(self.get_chunk(BPB_OFFSET, BPB_SIZE + EXTENDED_BPB_SIZE))
         self.mft_offset = self.bpb.bytes_per_sector * \
             self.bpb.sectors_per_cluster * self.bpb.mft_cluster
 
@@ -73,7 +73,7 @@ class NtfsVolume(Volume):
     def load_bootsector(self):
         self.fd.seek(self.offset)
         data = self.fd.read(512)
-        self.bootsector = NTFS_Boot_Sector(data)
+        self.bootsector = NtfsBootSector(data)
 
     def load_mft_table(self):
         self.mft_table = MFT_Table(self.mft_table_offset)
