@@ -3,7 +3,7 @@ import hexdump
 import scheme
 import rawdisk.filesystems
 from rawdisk.filesystems.common import detect_partition_format
-from rawdisk.filesystems.ntfs import NTFS_Partition
+from rawdisk.filesystems.ntfs import NtfsVolume
 
 
 class Reader:
@@ -30,7 +30,7 @@ class Reader:
                 )
 
                 if pt_format == rawdisk.filesystems.common.PART_FORMAT_NTFS:
-                    partition = NTFS_Partition()
+                    partition = NtfsVolume()
                     partition.mount(filename, entry.part_offset)
                     partition.unmount()
                     self.partitions.append(partition)
