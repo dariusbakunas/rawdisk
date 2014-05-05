@@ -45,13 +45,7 @@ class MftEntry(RawStruct):
         self.attributes = []
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
         self.header = MftEntryHeader(header_data)
-
         self.load_attributes()
-
-        # print "\nMFT #%d" % self.header.seq_number
-
-        # for attr in self.attributes:
-        #     print attr.__class__.__name__
 
     @property
     def end_offset(self):
