@@ -22,7 +22,7 @@ MFT_ENTRY_EXTEND = 0xB
 
 class MftEntryHeader(RawStruct):
     def __init__(self, data):
-        RawStruct.data.fset(self, data)
+        RawStruct.__init__(self, data)
         self.file_signature = self.get_string(0, 4)
         self.update_seq_array_offset = self.get_ushort(4)
         self.update_seq_array_size = self.get_ushort(6)
@@ -40,18 +40,20 @@ class MftEntryHeader(RawStruct):
 
 class MftEntry(RawStruct):
     def __init__(self, offset, data):
-        RawStruct.data.fset(self, data)
+        RawStruct.__init__(self, data)
         self.offset = offset
         self.attributes = []
+
+        # TODO: mft entry header size might be different, doublecheck
+        # read http://ftp.kolibrios.org/users/Asper/docs/NTFS/ntfsdoc.html#concept_attribute_header
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
         self.header = MftEntryHeader(header_data)
 
+        # attr_offset = self.header.first_attr_offset
+        # attr = self.get_attribute(attr_offset)
+        # print "Attr Length: %d" % attr.header.length
+        # attr.hexdump()
         self.load_attributes()
-
-        # print "\nMFT #%d" % self.header.seq_number
-
-        # for attr in self.attributes:
-        #     print attr.__class__.__name__
 
     @property
     def end_offset(self):
@@ -66,8 +68,7 @@ class MftEntry(RawStruct):
         return self.header.allocated_size
 
     def load_attributes(self):
-        attr_alloc_space = MFT_ENTRY_SIZE - MFT_ENTRY_HEADER_SIZE
-        free_space = attr_alloc_space
+        free_space = MFT_ENTRY_SIZE - MFT_ENTRY_HEADER_SIZE
         offset = self.header.first_attr_offset
 
         while free_space > 0:
@@ -144,6 +145,7 @@ class MftTable(object):
         source.seek(offset)
 
         for n in range(0, 12):
+        # for n in range(0, 1):
             data = source.read(MFT_ENTRY_SIZE)
             entry = MftEntry(offset, data)
             self._metadata_entries.append(entry)
