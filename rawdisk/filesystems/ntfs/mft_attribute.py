@@ -36,27 +36,26 @@ class MftAttr(RawStruct):
         non_resident_flag = self.get_ubyte(8)
         name_length = self.get_ubyte(9)
         
+        header_size = 0
+
         if not non_resident_flag: 
             if name_length == 0:
                 #Resident, No Name
-                print "Resident, No Name"
+                header_size = 0x18
             else:
                 #Resident, Has Name
-                print "Resident, Has Name"
+                header_size = 0x18 + 2 * name_length
         elif non_resident_flag:
             if name_length == 0:
                 #Non Resident, No Name
-                print "Non Resident, No Name"
+                header_size = 0x40
             else:
                 #Non Resident, Has Name
-                print "Non Resident, Has Name"
+                header_size = 0x40 + 2 * name_length
 
         self.header = MftAttrHeader(
-            self.get_chunk(0, 16) # Wrong here
+            self.get_chunk(0, header_size)
         )
-
-        # print "Attribute:", self.header.identifier
-        # self.hexdump()
 
 
 # Define all attribute types here
