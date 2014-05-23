@@ -43,8 +43,16 @@ class MftEntry(RawStruct):
         RawStruct.__init__(self, data)
         self.offset = offset
         self.attributes = []
+
+        # TODO: mft entry header size might be different, doublecheck
+        # read http://ftp.kolibrios.org/users/Asper/docs/NTFS/ntfsdoc.html#concept_attribute_header
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
         self.header = MftEntryHeader(header_data)
+
+        # attr_offset = self.header.first_attr_offset
+        # attr = self.get_attribute(attr_offset)
+        # print "Attr Length: %d" % attr.header.length
+        # attr.hexdump()
         self.load_attributes()
 
     @property
@@ -137,6 +145,7 @@ class MftTable(object):
         source.seek(offset)
 
         for n in range(0, 12):
+        # for n in range(0, 1):
             data = source.read(MFT_ENTRY_SIZE)
             entry = MftEntry(offset, data)
             self._metadata_entries.append(entry)

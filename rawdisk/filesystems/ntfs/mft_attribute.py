@@ -1,7 +1,7 @@
 import hexdump
 from rawdisk.util.rawstruct import RawStruct
+from rawdisk.util.filetimes import filetime_to_dt
 
-MFT_ATTR_HEADER_SIZE = 16
 
 MFT_ATTR_STANDARD_INFORMATION = 0x10
 MFT_ATTR_ATTRIBUTE_LIST = 0x20
@@ -29,17 +29,39 @@ class MftAttrHeader(RawStruct):
         self.flags = self.get_ushort(12)  # (Compressed, Encrypted, Sparse)
         self.identifier = self.get_ushort(14)
 
-
 class MftAttr(RawStruct):
     def __init__(self, data):
         RawStruct.__init__(self, data)
+
+        non_resident_flag = self.get_ubyte(8)
+        name_length = self.get_ubyte(9)
+        
+        if not non_resident_flag: 
+            if name_length == 0:
+                #Resident, No Name
+                print "Resident, No Name"
+            else:
+                #Resident, Has Name
+                print "Resident, Has Name"
+        elif non_resident_flag:
+            if name_length == 0:
+                #Non Resident, No Name
+                print "Non Resident, No Name"
+            else:
+                #Non Resident, Has Name
+                print "Non Resident, Has Name"
+
         self.header = MftAttrHeader(
-            self.get_chunk(0, MFT_ATTR_HEADER_SIZE)
+            self.get_chunk(0, 16) # Wrong here
         )
+
+        # print "Attribute:", self.header.identifier
+        # self.hexdump()
 
 
 # Define all attribute types here
 class MftAttrStandardInformation(MftAttr):
+    # 48 to 72 bytes
     def __init__(self, data):
         MftAttr.__init__(self, data)
 
