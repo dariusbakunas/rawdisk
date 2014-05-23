@@ -29,6 +29,7 @@ class MftAttrHeader(RawStruct):
         self.flags = self.get_ushort(12)  # (Compressed, Encrypted, Sparse)
         self.identifier = self.get_ushort(14)
 
+
 class MftAttr(RawStruct):
     def __init__(self, data):
         RawStruct.__init__(self, data)
@@ -36,34 +37,55 @@ class MftAttr(RawStruct):
         non_resident_flag = self.get_ubyte(8)
         name_length = self.get_ubyte(9)
         
+        header_size = 0
+
         if not non_resident_flag: 
             if name_length == 0:
                 #Resident, No Name
-                print "Resident, No Name"
+                header_size = 0x18
             else:
                 #Resident, Has Name
-                print "Resident, Has Name"
+                header_size = 0x18 + 2 * name_length
         elif non_resident_flag:
             if name_length == 0:
                 #Non Resident, No Name
-                print "Non Resident, No Name"
+                header_size = 0x40
             else:
                 #Non Resident, Has Name
-                print "Non Resident, Has Name"
+                header_size = 0x40 + 2 * name_length
 
         self.header = MftAttrHeader(
-            self.get_chunk(0, 16) # Wrong here
+            self.get_chunk(0, header_size)
         )
-
-        # print "Attribute:", self.header.identifier
-        # self.hexdump()
 
 
 # Define all attribute types here
 class MftAttrStandardInformation(MftAttr):
-    # 48 to 72 bytes
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        offset = self.header.size
+        #File Creation
+        self.ctime = self.get_ulonglong(offset)
+        #File Alteration
+        self.atime = self.get_ulonglong(offset + 0x08)
+        #MFT Changed
+        self.mtime = self.get_ulonglong(offset + 0x10) 
+        #File Read
+        self.rtime = self.get_ulonglong(offset + 0x18)
+        #DOS File Permissions
+        self.perm = self.get_uint(offset + 0x20)
+        #Maximum Number of Versions
+        self.versions = self.get_uint(offset + 0x20)
+        #Version Number
+        self.version = self.get_uint(offset + 0x28)
+        self.class_id = self.get_uint(offset + 0x2C)
+
+        #Not all SI headers include 2K fields
+        if (self.size > 0x48):
+            self.owner_id = self.get_uint(offset + 0x30)
+            self.sec_id = self.get_uint(offset + 0x34)
+            self.quata = self.get_ulonglong(offset + 0x38)
+            self.usn = self.get_ulonglong(offset + 0x40)
 
 
 class MftAttrAttributeList(MftAttr):
