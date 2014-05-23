@@ -10,6 +10,10 @@ class RawStruct(object):
     def data(self):
         return self._data
 
+    @property
+    def size(self):
+        return len(self._data)
+
     @data.setter
     def data(self, value):
         self._data = value
