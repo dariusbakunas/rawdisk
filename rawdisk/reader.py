@@ -45,12 +45,20 @@ class Reader:
             gpt.load(filename)
             
             for entry in gpt.partition_entries:
-                pt_format = detect_gpt_partition_format(entry.type_guid)
+                pt_format = detect_gpt_partition_format(
+                    filename,
+                    entry.first_lba * 512,
+                    entry.type_guid)
 
                 if pt_format == rawdisk.filesystems.common.PART_FORMAT_HFS_PLUS:
                     partition = HfsPlusVolume()
 
                     # TODO: Figure out how to calculate block size
+                    partition.mount(filename, entry.first_lba * 512)
+                    partition.unmount()
+                    self.partitions.append(partition)
+                elif pt_format == rawdisk.filesystems.common.PART_FORMAT_NTFS:
+                    partition = NtfsVolume()
                     partition.mount(filename, entry.first_lba * 512)
                     partition.unmount()
                     self.partitions.append(partition)
