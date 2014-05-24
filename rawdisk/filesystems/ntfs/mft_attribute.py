@@ -136,7 +136,37 @@ class MftAttrAttributeList(MftAttr):
 class MftAttrFilename(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        if (not self.header.non_resident_flag):
+            offset = self.header.size
+            self.parent_ref = self.get_ulonglong(offset)
+            self.ctime = self.get_ulonglong(offset + 0x08)
+            self.atime = self.get_ulonglong(offset + 0x10)
+            self.mtime = self.get_ulonglong(offset + 0x18)
+            self.rtime = self.get_ulonglong(offset + 0x20)
+            self.alloc_size = self.get_ulonglong(offset + 0x28)
+            self.real_size = self.get_ulonglong(offset + 0x30)
+            self.flags = self.get_uint(offset + 0x38)
+            # Used by EAs and Reparse ??
+            self.reparse = self.get_uint(offset + 0x3C)
+            self.fname_length = self.get_ubyte(offset + 0x40)
+            self.fnspace = self.get_ubyte(offset + 0x41)
+            self.fname = self.get_chunk(offset + 0x42, 2 * self.fname_length)
 
+    @property
+    def ctime_dt(self):
+        return filetime_to_dt(self.ctime)
+
+    @property
+    def atime_dt(self):
+        return filetime_to_dt(self.atime)
+
+    @property
+    def mtime_dt(self):
+        return filetime_to_dt(self.mtime)
+
+    @property
+    def rtime_dt(self):
+        return filetime_to_dt(self.rtime)
 
 class MftAttrObjectId(MftAttr):
     def __init__(self, data):
