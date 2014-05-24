@@ -5,7 +5,8 @@ A Python library for raw access to filesystems. Started it for educational purpo
 
 Filesystems Supported
 ---------------------
-* NTFS
+* NTFS (GPT/MBR)
+* HFS+ (GPT)
 
 Download
 --------
