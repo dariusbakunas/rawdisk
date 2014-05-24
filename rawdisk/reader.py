@@ -36,7 +36,9 @@ class Reader:
                     self.partitions.append(partition)
 
         elif (self.scheme == scheme.common.SCHEME_GPT):
-            print 'Partitioning scheme: GPT'
+            gpt = scheme.gpt.Gpt()
+            gpt.load(filename)
+            
         elif (self.scheme == scheme.common.SCHEME_UNKNOWN):
             print 'Partitioning scheme is not supported.'
         else:
