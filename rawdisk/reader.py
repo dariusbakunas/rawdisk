@@ -23,6 +23,7 @@ class Reader:
         self.scheme = scheme.common.detect_scheme(filename)
 
         if (self.scheme == scheme.common.SCHEME_MBR):
+            print "Scheme: MBR"
             mbr = scheme.mbr.Mbr()
             mbr.load(filename)
 
@@ -41,6 +42,7 @@ class Reader:
                     self.partitions.append(partition)
 
         elif (self.scheme == scheme.common.SCHEME_GPT):
+            print "Scheme: GPT"
             gpt = scheme.gpt.Gpt()
             gpt.load(filename)
             

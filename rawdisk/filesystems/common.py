@@ -2,6 +2,8 @@ from rawdisk.util.rawstruct import RawStruct
 import hexdump
 import uuid
 
+# Not sure if this is enough
+SIG_DATA_SIZE = 512
 
 PART_FORMAT_UNKNOWN = 0x00
 PART_FORMAT_NTFS = 0x01
@@ -34,7 +36,7 @@ def detect_gpt_partition_format(filename, offset, type_guid):
         try:
             with open(filename, 'rb') as f:
                 f.seek(offset)
-                data = f.read(512)
+                data = f.read(SIG_DATA_SIZE)
                 
                 # TODO: 
                 # According to Microsoft, the basic data partition 
@@ -58,7 +60,7 @@ def detect_mbr_partition_format(filename, offset, type_id):
     try:
         with open(filename, 'rb') as f:
             f.seek(offset)
-            data = f.read(512)  # not sure yet if 512 is enough
+            data = f.read(SIG_DATA_SIZE)
 
             for callback in type_callbacks[type_id]:
                 result = callback(data)
