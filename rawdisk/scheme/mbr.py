@@ -51,7 +51,6 @@ class Mbr(RawStruct):
     def __init__(self):
         RawStruct.__init__(self)
         self.partition_table = None
-        self.partitions = []
 
     def load(self, filename):
         """Reads Master Boot Record

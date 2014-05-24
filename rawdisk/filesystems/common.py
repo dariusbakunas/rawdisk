@@ -25,7 +25,7 @@ type_callbacks = {
 }
 
 
-def detect_partition_format(filename, offset, type_id):
+def detect_mbr_partition_format(filename, offset, type_id):
     data = None
 
     try:
@@ -41,8 +41,3 @@ def detect_partition_format(filename, offset, type_id):
         print e
 
     return PART_FORMAT_UNKNOWN
-
-
-class Volume(object):
-    def __init__(self):
-        pass

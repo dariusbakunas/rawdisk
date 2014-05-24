@@ -1,4 +1,4 @@
-from rawdisk.filesystems.common import Volume
+from rawdisk.filesystems.volume import Volume
 from rawdisk.util.rawstruct import RawStruct
 import hurry.filesize
 from mft import *
@@ -43,7 +43,6 @@ class NtfsBootSector(RawStruct):
 
 class NtfsVolume(Volume):
     def __init__(self):
-        Volume.__init__(self)
         self.offset = 0
         self.bootsector = None
         self.mft_table = None
