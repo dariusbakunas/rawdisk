@@ -82,10 +82,10 @@ class MftAttr(RawStruct):
         )
 
     def __str__(self):
-
         if (not self.header.non_resident_flag):
             return "%s (resident)" % (self.type_str)
         else:
+            # TODO: Not correct, fix
             return """%s (nonresident):
             logical sectors %d - %d (%x - %x)""" % (
                 self.type_str,
