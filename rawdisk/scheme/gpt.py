@@ -44,7 +44,7 @@ class GptPartition(RawStruct):
 
 class Gpt(object):
     def __init__(self):
-        self.partitions = []
+        self.partition_entries = []
 
     def load(self, filename):
         try:
@@ -62,6 +62,6 @@ class Gpt(object):
         self.fd.seek(self.header.part_lba * block_size)
         for p in xrange(0, self.header.num_partitions):
             data = self.fd.read(self.header.part_size)
-            partition = GptPartition(data)
-            if partition.type_guid != uuid.UUID('{00000000-0000-0000-0000-000000000000}'):
-                self.partitions.append(partition)
+            entry = GptPartition(data)
+            if entry.type_guid != uuid.UUID('{00000000-0000-0000-0000-000000000000}'):
+                self.partition_entries.append(entry)
