@@ -35,16 +35,24 @@ class RawStruct(object):
     def get_ubyte(self, offset):
         return struct.unpack("B", self.data[offset:offset+1])[0]
 
-    def get_ushort(self, offset):
+    def get_ushort(self, offset, big_endian = False):
+        if (big_endian):
+            return struct.unpack(">H", self.data[offset:offset+2])[0]    
         return struct.unpack("<H", self.data[offset:offset+2])[0]
 
-    def get_uint(self, offset):
+    def get_uint(self, offset, big_endian = False):
+        if (big_endian):
+            return struct.unpack(">I", self.data[offset:offset+4])[0]
         return struct.unpack("<I", self.data[offset:offset+4])[0]
 
-    def get_ulong(self, offset):
+    def get_ulong(self, offset, big_endian = False):
+        if (big_endian):
+            return struct.unpack(">L", self.data[offset:offset+4])[0]
         return struct.unpack("<L", self.data[offset:offset+4])[0]
 
-    def get_ulonglong(self, offset):
+    def get_ulonglong(self, offset, big_endian = False):
+        if (big_endian):
+            return struct.unpack(">Q", self.data[offset:offset+8])[0]
         return struct.unpack("<Q", self.data[offset:offset+8])[0]
 
     def get_string(self, offset, length):
