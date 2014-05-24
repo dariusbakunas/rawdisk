@@ -1,5 +1,6 @@
 import struct
 import hexdump
+import uuid
 
 
 class RawStruct(object):
@@ -26,8 +27,7 @@ class RawStruct(object):
         return self.data[offset:offset+length]
 
     def get_uuid(self, offset):
-        (a, b) = struct.unpack(">QQ", self.data[offset:offset+16])
-        return (a << 64) | b
+        return uuid.UUID(bytes_le=self.get_string(0x00, 16))
 
     def get_field(self, offset, length, format):
         return struct.unpack(format, self.data[offset:offset+length])[0]
