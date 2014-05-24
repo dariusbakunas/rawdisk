@@ -88,6 +88,26 @@ ntfs_partition.unmount()
 <...>
 ```
 
+```bash
+$ sudo rawdisk -f sample_images/ntfs.vhd
+```
+
+```console
+Scheme: MBR
+Partitions:
+Type: NTFS, Offset: 0x10000, Size: 1020M, MFT Table Offset: 0x15465000
+```
+
+```bash
+$ sudo rawdisk -f /dev/disk1
+```
+
+```console
+Scheme: GPT
+Partitions:
+Type: NTFS, Offset: 0x100000, Size: 14G, MFT Table Offset: 0xC0100000
+```
+
 Installation
 ------------
 
