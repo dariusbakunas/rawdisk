@@ -40,7 +40,7 @@ class MftAttrHeader(RawStruct):
             self.real_size = self.get_ulonglong(0x30)
             self.data_size = self.get_ulonglong(0x38)
             if (self.length_of_name > 0):
-                self.attr_name = self.get_chunk(0x40, 2 * self.length_of_name)
+                self.attr_name = self.get_chunk(0x40, 2 * self.length_of_name).decode('utf-16')
                 # print self.attr_name.decode('utf-16')
         else:
             # Attribute is Resident
@@ -48,7 +48,7 @@ class MftAttrHeader(RawStruct):
             self.attr_offset = self.get_ushort(0x14)
             self.indexed = self.get_ubyte(0x16)
             if (self.length_of_name > 0):
-                self.attr_name = self.get_chunk(0x18, 2 * self.length_of_name)
+                self.attr_name = self.get_chunk(0x18, 2 * self.length_of_name).decode('utf-16')
                 # print self.attr_name.decode('utf-16')
             # The rest byte is 0x00 padding
             # print "Attr Offset: 0x%x" % (self.attr_offset)
