@@ -25,6 +25,10 @@ class RawStruct(object):
     def get_chunk(self, offset, length):
         return self.data[offset:offset+length]
 
+    def get_uuid(self, offset):
+        (a, b) = struct.unpack(">QQ", self.data[offset:offset+16])
+        return (a << 64) | b
+
     def get_field(self, offset, length, format):
         return struct.unpack(format, self.data[offset:offset+length])[0]
 
