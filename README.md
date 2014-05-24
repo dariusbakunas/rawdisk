@@ -88,6 +88,8 @@ ntfs_partition.unmount()
 <...>
 ```
 
+* Console utility (so far just prints general information)
+
 ```bash
 $ sudo rawdisk -f sample_images/ntfs.vhd
 ```
