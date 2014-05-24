@@ -2,7 +2,7 @@ import sys
 import hexdump
 import scheme
 import rawdisk.filesystems
-from rawdisk.filesystems.common import detect_partition_format
+from rawdisk.filesystems.common import detect_mbr_partition_format
 from rawdisk.filesystems.ntfs import NtfsVolume
 
 
@@ -23,7 +23,7 @@ class Reader:
 
             # Go through table entries and analyse ones that are supported
             for entry in mbr.partition_table.entries:
-                pt_format = detect_partition_format(
+                pt_format = detect_mbr_partition_format(
                     filename,
                     entry.part_offset,
                     entry.part_type

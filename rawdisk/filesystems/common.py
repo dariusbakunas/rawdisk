@@ -25,7 +25,7 @@ type_callbacks = {
 }
 
 
-def detect_partition_format(filename, offset, type_id):
+def detect_mbr_partition_format(filename, offset, type_id):
     data = None
 
     try:
