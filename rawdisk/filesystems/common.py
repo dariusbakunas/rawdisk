@@ -26,9 +26,29 @@ type_callbacks = {
     0x7: [is_type_ntfs, is_type_exfat],
 }
 
-def detect_gpt_partition_format(type_guid):
+def detect_gpt_partition_format(filename, offset, type_guid):
     if type_guid == uuid.UUID('{48465300-0000-11AA-AA11-00306543ECAC}'):
         return PART_FORMAT_HFS_PLUS
+    elif type_guid == uuid.UUID('{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}'):
+        # Basic data partition
+        try:
+            with open(filename, 'rb') as f:
+                f.seek(offset)
+                data = f.read(512)
+                
+                # TODO: 
+                # According to Microsoft, the basic data partition 
+                # is the equivalent to partition types 0x06, 0x07, and 0x0B
+                # callbacks = []
+                # callbacks.append(type_callbacks[0x06])
+                # callbacks.append(type_callbacks[0x07])
+                # callbacks.append(type_callbacks[0x0B])
+                for callback in type_callbacks[0x07]:
+                    result = callback(data)
+                    if result != PART_FORMAT_UNKNOWN:
+                        return result
+        except IOError, e:
+            print e
     else:
         return PART_FORMAT_UNKNOWN
 
