@@ -1,10 +1,12 @@
 from rawdisk.util.rawstruct import RawStruct
 import hexdump
+import uuid
 
 
 PART_FORMAT_UNKNOWN = 0x00
 PART_FORMAT_NTFS = 0x01
 PART_FORMAT_EXFAT = 0x02
+PART_FORMAT_HFS_PLUS = 0x03;
 
 
 def is_type_ntfs(data):
@@ -24,6 +26,11 @@ type_callbacks = {
     0x7: [is_type_ntfs, is_type_exfat],
 }
 
+def detect_gpt_partition_format(type_guid):
+    if type_guid == uuid.UUID('{48465300-0000-11AA-AA11-00306543ECAC}'):
+        return PART_FORMAT_HFS_PLUS
+    else:
+        return PART_FORMAT_UNKNOWN
 
 def detect_mbr_partition_format(filename, offset, type_id):
     data = None
