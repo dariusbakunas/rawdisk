@@ -49,6 +49,10 @@ class Reader:
 
                 if pt_format == rawdisk.filesystems.common.PART_FORMAT_HFS_PLUS:
                     partition = HfsPlusVolume()
+
+                    # TODO: Figure out how to calculate block size
+                    partition.mount(filename, entry.first_lba * 512)
+                    partition.unmount()
                     self.partitions.append(partition)
 
         elif (self.scheme == scheme.common.SCHEME_UNKNOWN):
