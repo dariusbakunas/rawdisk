@@ -23,8 +23,8 @@ class MftAttrHeader(RawStruct):
         RawStruct.__init__(self, data)
         self.type = self.get_uint(0)
         self.length = self.get_uint(0x4)
-        self.non_resident_flag = self.get_ubyte(0x08)
-        self.length_of_name = self.get_ubyte(0x09)     # Used only for ADS
+        self.non_resident_flag = self.get_ubyte(0x08) # 0 - resident, 1 - not
+        self.length_of_name = self.get_ubyte(0x09)    # Used only for ADS
         self.offset_to_name = self.get_ushort(0x0A)   # Used only for ADS
         self.flags = self.get_ushort(0x0C)  # (Compressed, Encrypted, Sparse)
         self.identifier = self.get_ushort(0x0E)
@@ -62,20 +62,20 @@ class MftAttr(RawStruct):
         
         header_size = 0
 
-        if not non_resident_flag: 
-            if name_length == 0:
-                #Resident, No Name
-                header_size = 0x18
-            else:
-                #Resident, Has Name
-                header_size = 0x18 + 2 * name_length
-        elif non_resident_flag:
+        if non_resident_flag:
             if name_length == 0:
                 #Non Resident, No Name
                 header_size = 0x40
             else:
                 #Non Resident, Has Name
                 header_size = 0x40 + 2 * name_length
+        else:
+            if name_length == 0:
+                #Resident, No Name
+                header_size = 0x18
+            else:
+                #Resident, Has Name
+                header_size = 0x18 + 2 * name_length
 
         self.header = MftAttrHeader(
             self.get_chunk(0, header_size)
@@ -86,29 +86,46 @@ class MftAttr(RawStruct):
 class MftAttrStandardInformation(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
-        offset = self.header.size
-        #File Creation
-        self.ctime = self.get_ulonglong(offset)
-        #File Alteration
-        self.atime = self.get_ulonglong(offset + 0x08)
-        #MFT Changed
-        self.mtime = self.get_ulonglong(offset + 0x10) 
-        #File Read
-        self.rtime = self.get_ulonglong(offset + 0x18)
-        #DOS File Permissions
-        self.perm = self.get_uint(offset + 0x20)
-        #Maximum Number of Versions
-        self.versions = self.get_uint(offset + 0x20)
-        #Version Number
-        self.version = self.get_uint(offset + 0x28)
-        self.class_id = self.get_uint(offset + 0x2C)
+        if (not self.header.non_resident_flag):
+            offset = self.header.size
+            #File Creation
+            self.ctime = self.get_ulonglong(offset)
+            #File Alteration
+            self.atime = self.get_ulonglong(offset + 0x08)
+            #MFT Changed
+            self.mtime = self.get_ulonglong(offset + 0x10) 
+            #File Read
+            self.rtime = self.get_ulonglong(offset + 0x18)
+            #DOS File Permissions
+            self.perm = self.get_uint(offset + 0x20)
+            #Maximum Number of Versions
+            self.versions = self.get_uint(offset + 0x20)
+            #Version Number
+            self.version = self.get_uint(offset + 0x28)
+            self.class_id = self.get_uint(offset + 0x2C)
 
-        #Not all SI headers include 2K fields
-        if (self.size > 0x48):
-            self.owner_id = self.get_uint(offset + 0x30)
-            self.sec_id = self.get_uint(offset + 0x34)
-            self.quata = self.get_ulonglong(offset + 0x38)
-            self.usn = self.get_ulonglong(offset + 0x40)
+            #Not all SI headers include 2K fields
+            if (self.size > 0x48):
+                self.owner_id = self.get_uint(offset + 0x30)
+                self.sec_id = self.get_uint(offset + 0x34)
+                self.quata = self.get_ulonglong(offset + 0x38)
+                self.usn = self.get_ulonglong(offset + 0x40)
+
+    @property
+    def ctime_dt(self):
+        return filetime_to_dt(self.ctime)
+
+    @property
+    def atime_dt(self):
+        return filetime_to_dt(self.atime)
+
+    @property
+    def mtime_dt(self):
+        return filetime_to_dt(self.mtime)
+
+    @property
+    def rtime_dt(self):
+        return filetime_to_dt(self.rtime)
 
 
 class MftAttrAttributeList(MftAttr):
