@@ -100,6 +100,7 @@ class MftAttr(RawStruct):
 class MftAttrStandardInformation(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$STANDARD_INFORMATION"
         if (not self.header.non_resident_flag):
             offset = self.header.size
             # File Creation
@@ -145,11 +146,13 @@ class MftAttrStandardInformation(MftAttr):
 class MftAttrAttributeList(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$ATTRIBUTE_LIST"
 
 
 class MftAttrFilename(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$FILE_NAME"
         if (not self.header.non_resident_flag):
             offset = self.header.size
             self.parent_ref = self.get_ulonglong(offset)
@@ -186,48 +189,58 @@ class MftAttrFilename(MftAttr):
 class MftAttrObjectId(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$OBJECT_ID"
 
 
 class MftAttrSecurityDescriptor(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$SECURITY_DESCRIPTOR"
 
 
 class MftAttrVolumeName(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$VOLUME_NAME"
 
 
 class MftAttrVolumeInfo(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$VOLUME_INFORMATION"
 
 
 class MftAttrData(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$DATA"
 
 
 class MftAttrIndexRoot(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$INDEX_ROOT"
 
 
 class MftAttrIndexAllocation(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$INDEX_ALLOCATION"
 
 
 class MftAttrBitmap(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$BITMAP"
 
 
 class MftAttrReparsePoint(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$REPARSE_POINT"
 
 
 class MftAttrLoggedToolstream(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        self.type_str = "$LOGGED_UTILITY_STREAM"
