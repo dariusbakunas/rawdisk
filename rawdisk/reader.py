@@ -2,14 +2,19 @@ import sys
 import hexdump
 import scheme
 import rawdisk.filesystems
-from rawdisk.filesystems.common import detect_mbr_partition_format
+from rawdisk.filesystems.common import *
 from rawdisk.filesystems.ntfs import NtfsVolume
+from rawdisk.filesystems.hfs_plus import HfsPlusVolume
 
 
 class Reader:
     def __init__(self):
         self.debug = False
         self.partitions = []
+
+    def list_partitions(self):
+        for part in self.partitions:
+            print part
 
     def load(self, filename):
         self.filename = filename
@@ -39,6 +44,13 @@ class Reader:
             gpt = scheme.gpt.Gpt()
             gpt.load(filename)
             
+            for entry in gpt.partition_entries:
+                pt_format = detect_gpt_partition_format(entry.type_guid)
+
+                if pt_format == rawdisk.filesystems.common.PART_FORMAT_HFS_PLUS:
+                    partition = HfsPlusVolume()
+                    self.partitions.append(partition)
+
         elif (self.scheme == scheme.common.SCHEME_UNKNOWN):
             print 'Partitioning scheme is not supported.'
         else:
