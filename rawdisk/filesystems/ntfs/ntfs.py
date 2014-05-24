@@ -1,4 +1,4 @@
-from rawdisk.filesystems.common import Volume
+from rawdisk.filesystems.volume import Volume
 from rawdisk.util.rawstruct import RawStruct
 import hurry.filesize
 from mft import *

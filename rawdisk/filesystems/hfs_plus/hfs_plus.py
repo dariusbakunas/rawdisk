@@ -1,4 +1,4 @@
-from rawdisk.filesystems.common import Volume
+from rawdisk.filesystems.volume import Volume
 
 class HfsPlusVolume(Volume):
     def __init__(self):

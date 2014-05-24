@@ -1,4 +1,3 @@
-import abc
 from rawdisk.util.rawstruct import RawStruct
 import hexdump
 
@@ -42,12 +41,3 @@ def detect_mbr_partition_format(filename, offset, type_id):
         print e
 
     return PART_FORMAT_UNKNOWN
-
-
-class Volume(object):
-    __metaclass__ = abc.ABCMeta
-
-    @abc.abstractmethod
-    def mount(self, filename, offset):
-        """Retrieve volume information."""
-        return
