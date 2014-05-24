@@ -32,7 +32,7 @@ for part in r.partitions:
 Type: NTFS, Offset: 0x10000, Size: 1020M, MFT Table Offset: 0x15465000
 ```
 
-* Hexdump contents of selected system MFT entry
+* Hexdump contents of selected system MFT entry and then its attributes
 
 ```python
 from rawdisk.filesystems.ntfs import *
@@ -41,6 +41,8 @@ ntfs_vol = NtfsVolume()
 # Use offset from previous output
 ntfs_vol.mount("sample_images/ntfs.vhd", 0x10000)
 mft_entry = ntfs_vol.mft_table.get_system_entry(MFT_ENTRY_MFT)
+
+mft_entry.hexdump()
 
 for attr in mft_entry.attributes:
 	print
