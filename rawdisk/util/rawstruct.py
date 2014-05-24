@@ -27,7 +27,7 @@ class RawStruct(object):
         return self.data[offset:offset+length]
 
     def get_uuid(self, offset):
-        return uuid.UUID(bytes_le=self.get_string(0x00, 16))
+        return uuid.UUID(bytes_le=self.get_string(offset, 16))
 
     def get_field(self, offset, length, format):
         return struct.unpack(format, self.data[offset:offset+length])[0]
