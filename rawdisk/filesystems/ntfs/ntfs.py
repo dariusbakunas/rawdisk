@@ -43,7 +43,6 @@ class NtfsBootSector(RawStruct):
 
 class NtfsVolume(Volume):
     def __init__(self):
-        Volume.__init__(self)
         self.offset = 0
         self.bootsector = None
         self.mft_table = None
