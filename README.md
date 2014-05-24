@@ -40,7 +40,7 @@ from rawdisk.filesystems.ntfs import *
 
 ntfs_vol = NtfsVolume()
 # Use offset from previous output
-ntfs_vol.mount("sample_images/ntfs.vhd", 0x10000)
+ntfs_vol.load("sample_images/ntfs.vhd", 0x10000)
 mft_entry = ntfs_vol.mft_table.get_system_entry(MFT_ENTRY_MFT)
 
 mft_entry.hexdump()
@@ -48,8 +48,7 @@ mft_entry.hexdump()
 for attr in mft_entry.attributes:
 	print
 	attr.hexdump()
-
-ntfs_partition.unmount()
+	
 ```
 
 ```console

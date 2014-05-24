@@ -48,27 +48,15 @@ class NtfsVolume(Volume):
         self.mft_table = None
         self.fd = None
 
-    def mount(self, filename, offset):
+    def load(self, filename, offset):
         try:
             self.offset = offset 
             self.fd = open(filename, 'rb')
             self.load_bootsector()
             self.load_mft_table()
+            self.fd.close()
         except IOError, e:
             print e
-
-    def unmount(self):
-        try:
-            if not self.fd.closed:
-                self.fd.close()
-        except IOError, e:
-            print e
-
-    def is_mounted(self):
-        if (self.fd != None and not self.fd.closed):
-            return True
-        else:
-            return False
 
     def load_bootsector(self):
         self.fd.seek(self.offset)

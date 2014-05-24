@@ -37,8 +37,7 @@ class Reader:
 
                 if pt_format == rawdisk.filesystems.common.PART_FORMAT_NTFS:
                     partition = NtfsVolume()
-                    partition.mount(filename, entry.part_offset)
-                    partition.unmount()
+                    partition.load(filename, entry.part_offset)
                     self.partitions.append(partition)
 
         elif (self.scheme == scheme.common.SCHEME_GPT):
@@ -56,13 +55,11 @@ class Reader:
                     partition = HfsPlusVolume()
 
                     # TODO: Figure out how to calculate block size
-                    partition.mount(filename, entry.first_lba * 512)
-                    partition.unmount()
+                    partition.load(filename, entry.first_lba * 512)
                     self.partitions.append(partition)
                 elif pt_format == rawdisk.filesystems.common.PART_FORMAT_NTFS:
                     partition = NtfsVolume()
-                    partition.mount(filename, entry.first_lba * 512)
-                    partition.unmount()
+                    partition.load(filename, entry.first_lba * 512)
                     self.partitions.append(partition)
 
         elif (self.scheme == scheme.common.SCHEME_UNKNOWN):

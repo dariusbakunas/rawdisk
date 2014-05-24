@@ -18,7 +18,7 @@ class HfsPlusVolume(Volume):
         self.fd = None
         self.vol_header = None
 
-    def mount(self, filename, offset):
+    def load(self, filename, offset):
         try:
             self.offset = offset 
             self.fd = open(filename, 'rb')
@@ -26,21 +26,10 @@ class HfsPlusVolume(Volume):
             self.fd.seek(self.offset + VOLUME_HEADER_OFFSET)
             data = self.fd.read(1024)
             self.vol_header = VolumeHeader(data)
+
+            self.fd.close()
         except IOError, e:
             print e
-
-    def unmount(self):
-        try:
-            if not self.fd.closed:
-                self.fd.close()
-        except IOError, e:
-            print e
-
-    def is_mounted(self):
-        if (self.fd != None and not self.fd.closed):
-            return True
-        else:
-            return False
 
     def __str__(self):
         return "Type: HFS+, Offset: 0x%X" % (
