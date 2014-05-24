@@ -111,6 +111,22 @@ class MftAttrStandardInformation(MftAttr):
                 self.quata = self.get_ulonglong(offset + 0x38)
                 self.usn = self.get_ulonglong(offset + 0x40)
 
+    @property
+    def ctime_dt(self):
+        return filetime_to_dt(self.ctime)
+
+    @property
+    def atime_dt(self):
+        return filetime_to_dt(self.atime)
+
+    @property
+    def mtime_dt(self):
+        return filetime_to_dt(self.mtime)
+
+    @property
+    def rtime_dt(self):
+        return filetime_to_dt(self.rtime)
+
 
 class MftAttrAttributeList(MftAttr):
     def __init__(self, data):
