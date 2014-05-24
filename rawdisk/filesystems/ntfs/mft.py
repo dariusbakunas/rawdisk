@@ -73,9 +73,9 @@ class MftEntry(RawStruct):
 
         while free_space > 0:
             attr = self.get_attribute(offset)
-            print attr
 
             if (attr is not None):
+                # print attr
                 self.attributes.append(attr)
                 free_space = free_space - attr.header.length
                 offset = offset + attr.header.length
