@@ -2,7 +2,6 @@ import sys
 import hexdump
 import scheme
 import rawdisk.filesystems
-from rawdisk.filesystems.common import *
 from rawdisk.filesystems.hfs_plus import HfsPlusVolume
 from rawdisk.filesystems.detector import FilesystemDetectorSingleton
 
