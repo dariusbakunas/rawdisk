@@ -1,0 +1,8 @@
+[Core]
+Name = NtfsPlugin
+Module = ntfs
+
+[Documentation]
+Author = Darius Bakunas
+Version = 0.1
+Description = Detects NTFS filesystem and returns NtfsVolume object
