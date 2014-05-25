@@ -24,9 +24,9 @@ def main():
     if options.filename is None:
         parser.error('Filename not given')
 
-    # r = rawdisk.reader.Reader()
-    # r.load(options.filename)
-    # print "Partitions:"
-    # r.list_partitions()
-
     Manager.load_filesystem_plugins()
+
+    r = rawdisk.reader.Reader()
+    r.load(options.filename)
+    print "Partitions:"
+    r.list_partitions()
