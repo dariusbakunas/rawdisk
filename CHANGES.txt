@@ -1,1 +1,2 @@
 v0.1dev, 2014 April 29 -- Initial release.
+v0.2dev, 2014 May 25 -- Integrated yapsy plugin framework.
