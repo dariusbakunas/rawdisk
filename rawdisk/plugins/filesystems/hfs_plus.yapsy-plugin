@@ -1,0 +1,8 @@
+[Core]
+Name = HfsPlusPlugin
+Module = hfs_plus
+
+[Documentation]
+Author = Darius Bakunas
+Version = 0.1
+Description = Detects HFS+ filesystem and returns HfsPlusVolume object

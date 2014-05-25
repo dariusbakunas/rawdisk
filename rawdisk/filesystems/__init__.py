@@ -1,5 +1,4 @@
-__all__ = ['volume', 'hfs_plus', 'detector']
+__all__ = ['volume', 'detector']
 
 import volume
-import hfs_plus
 import detector
