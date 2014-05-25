@@ -1,6 +1,8 @@
-class IFilesystemPlugin(object):
+from yapsy.IPlugin import IPlugin
+
+class IFilesystemPlugin(IPlugin):
     """Plugins of this class detect filesystem and 
     returns correct volume object"""
-
-    def detect_mbr(filename, offset, type_id): pass
-    def detect_gpt(filename, offset, type_guid): pass
+    def register(self): pass
+    def detect_mbr(self, filename, offset, type_id): pass
+    def detect_gpt(self, filename, offset, type_guid): pass

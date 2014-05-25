@@ -1,3 +1,4 @@
-__all__ = ['categories']
+__all__ = ['categories', 'manager']
 
 import categories
+import manager
