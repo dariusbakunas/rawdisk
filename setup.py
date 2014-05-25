@@ -10,7 +10,8 @@ setup(
     long_description=open('README.md').read(),
     install_requires=[
         'hexdump >= 2.0',
-        'hurry.filesize >= 0.9'
+        'hurry.filesize >= 0.9',
+        'yapsy >= 1.10.323'
     ],
     entry_points={
         'console_scripts': [
