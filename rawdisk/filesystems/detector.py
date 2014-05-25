@@ -18,30 +18,23 @@ class FilesystemDetector(object):
             self.gpt_plugins[fs_guid] = [plugin,]
 
     def detect_mbr(self, filename, offset, fs_id):
-        try:
-            if not fs_id in self.mbr_plugins:
-                return None
-            else:
-                plugins = self.mbr_plugins.get(fs_id)
-                for plugin in plugins:
-                    if plugin.detect(filename, offset):
-                        return plugin.get_volume_object()
-        except IOError, e:
-            print e
-
+        if not fs_id in self.mbr_plugins:
+            return None
+        else:
+            plugins = self.mbr_plugins.get(fs_id)
+            for plugin in plugins:
+                if plugin.detect(filename, offset):
+                    return plugin.get_volume_object()
         return None
 
     def detect_gpt(self, filename, offset, fs_guid):
-        try:
-            if not fs_guid in self.gpt_plugins:
-                return None
-            else:
-                plugins = self.gpt_plugins.get(fs_guid)
-                for plugin in plugins:
-                    if plugin.detect(filename, offset):
-                        return plugin.get_volume_object()
-        except IOError, e:
-            print e
+        if not fs_guid in self.gpt_plugins:
+            return None
+        else:
+            plugins = self.gpt_plugins.get(fs_guid)
+            for plugin in plugins:
+                if plugin.detect(filename, offset):
+                    return plugin.get_volume_object()
 
         return None
 
