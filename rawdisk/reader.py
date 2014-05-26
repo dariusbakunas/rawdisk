@@ -2,11 +2,15 @@ import sys
 import hexdump
 import scheme
 from rawdisk.filesystems.detector import FilesystemDetectorSingleton
+from rawdisk.plugins.manager import Manager
 
 class Reader:
     def __init__(self):
         self.debug = False
         self.partitions = []
+
+        # Load filesystem detection plugins
+        Manager.load_filesystem_plugins()
 
     def list_partitions(self):
         for part in self.partitions:

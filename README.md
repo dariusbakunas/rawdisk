@@ -17,11 +17,8 @@ Documentation and usage
 -----------------------
 
 ```python
-from rawdisk.plugins.manager import Manager
 from rawdisk import Reader
 
-
-Manger.load_filesystem_plugins()
 r = Reader()
 r.load('sample_images/ntfs.vhd')
 ```
