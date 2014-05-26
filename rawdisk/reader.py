@@ -8,6 +8,7 @@ class Reader:
     def __init__(self):
         self.debug = False
         self.partitions = []
+        self.scheme = None
 
         # Load filesystem detection plugins
         Manager.load_filesystem_plugins()
@@ -24,7 +25,6 @@ class Reader:
         detector = FilesystemDetectorSingleton.get()
 
         if (self.scheme == scheme.common.SCHEME_MBR):
-            print "Scheme: MBR"
             mbr = scheme.mbr.Mbr()
             mbr.load(filename)
 
@@ -41,7 +41,6 @@ class Reader:
                     self.partitions.append(volume)
 
         elif (self.scheme == scheme.common.SCHEME_GPT):
-            print "Scheme: GPT"
             gpt = scheme.gpt.Gpt()
             gpt.load(filename)
             

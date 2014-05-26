@@ -38,7 +38,9 @@ Type: NTFS, Offset: 0x10000, Size: 1020M, MFT Table Offset: 0x15465000
 ```python
 ntfs_vol = r.partitions[0]
 
-mft_entry = ntfs_vol.mft_table.get_system_entry(MFT_ENTRY_MFT)
+# $MFT index is 0
+
+mft_entry = ntfs_vol.mft_table.get_system_entry(0)
 
 mft_entry.hexdump()
 
