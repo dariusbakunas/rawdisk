@@ -3,6 +3,7 @@ import os
 import sys
 import rawdisk
 import logging
+import scheme
 
 
 def main():
@@ -25,5 +26,13 @@ def main():
 
     r = rawdisk.reader.Reader()
     r.load(options.filename)
+
+    if (r.scheme == scheme.common.SCHEME_MBR):
+        print "Scheme: MBR"
+    elif (r.scheme == scheme.common.SCHEME_GPT):
+        print "Scheme: GPT"
+    else:
+        print "Scheme: Unknown"
+
     print "Partitions:"
     r.list_partitions()
