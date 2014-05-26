@@ -47,7 +47,6 @@ mft_entry.hexdump()
 for attr in mft_entry.attributes:
 	print
 	attr.hexdump()
-	
 ```
 
 ```console
@@ -84,6 +83,19 @@ for attr in mft_entry.attributes:
 00000060: 54 00 00 00 00 00 00 00                           T.......
 
 <...>
+```
+
+* List mft entry attributes:
+```python
+for attr in mft_entry.attributes:
+	print attr
+```
+
+```console
+Type: $STANDARD_INFORMATION Name: N/A Resident Size: 96
+Type: $FILE_NAME Name: N/A Resident Size: 104
+Type: $DATA Name: N/A Non-Resident Size: 72
+Type: $BITMAP Name: N/A Non-Resident Size: 80
 ```
 
 * Console utility (so far just prints general information)
