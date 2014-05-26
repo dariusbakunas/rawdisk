@@ -1,0 +1,8 @@
+[Core]
+Name = AppleBootPlugin
+Module = apple_boot
+
+[Documentation]
+Author = Darius Bakunas
+Version = 0.1
+Description = Detects Apple_Boot partition and returns AppleBootVolume object
