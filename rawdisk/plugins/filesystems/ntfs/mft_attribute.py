@@ -39,7 +39,7 @@ class MftAttrHeader(RawStruct):
             # Attribute is Non-Resident
             self.start_vcn = self.get_ulonglong(0x10)
             self.last_vcn = self.get_ulonglong(0x18)
-            self.dr_offset = self.get_ushort(0x20)
+            self.mapping_pairs_offset = self.get_ushort(0x20)
             self.comp_unit_size = self.get_ushort(0x22)
             # 4 byte 0x00 padding @ 0x24
             self.alloc_size = self.get_ulonglong(0x28)
@@ -110,30 +110,30 @@ class MftAttrStandardInformation(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
         self.type_str = "$STANDARD_INFORMATION"
-        if (not self.header.non_resident_flag):
-            offset = self.header.size
-            # File Creation
-            self.ctime = self.get_ulonglong(offset)
-            # File Alteration
-            self.atime = self.get_ulonglong(offset + 0x08)
-            # MFT Changed
-            self.mtime = self.get_ulonglong(offset + 0x10)
-            # File Read
-            self.rtime = self.get_ulonglong(offset + 0x18)
-            # DOS File Permissions
-            self.perm = self.get_uint(offset + 0x20)
-            # Maximum Number of Versions
-            self.versions = self.get_uint(offset + 0x20)
-            # Version Number
-            self.version = self.get_uint(offset + 0x28)
-            self.class_id = self.get_uint(offset + 0x2C)
+        # $STANDARD_INFORMATION is always resident
+        offset = self.header.size
+        # File Creation
+        self.ctime = self.get_ulonglong(offset)
+        # File Alteration
+        self.atime = self.get_ulonglong(offset + 0x08)
+        # MFT Changed
+        self.mtime = self.get_ulonglong(offset + 0x10)
+        # File Read
+        self.rtime = self.get_ulonglong(offset + 0x18)
+        # DOS File Permissions
+        self.perm = self.get_uint(offset + 0x20)
+        # Maximum Number of Versions
+        self.versions = self.get_uint(offset + 0x20)
+        # Version Number
+        self.version = self.get_uint(offset + 0x28)
+        self.class_id = self.get_uint(offset + 0x2C)
 
-            # Not all SI headers include 2K fields
-            if (self.size > 0x48):
-                self.owner_id = self.get_uint(offset + 0x30)
-                self.sec_id = self.get_uint(offset + 0x34)
-                self.quata = self.get_ulonglong(offset + 0x38)
-                self.usn = self.get_ulonglong(offset + 0x40)
+        # Not all SI headers include 2K fields
+        if (self.size > 0x48):
+            self.owner_id = self.get_uint(offset + 0x30)
+            self.sec_id = self.get_uint(offset + 0x34)
+            self.quata = self.get_ulonglong(offset + 0x38)
+            self.usn = self.get_ulonglong(offset + 0x40)
 
     @property
     def ctime_dt(self):
@@ -162,21 +162,21 @@ class MftAttrFilename(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
         self.type_str = "$FILE_NAME"
-        if (not self.header.non_resident_flag):
-            offset = self.header.size
-            self.parent_ref = self.get_ulonglong(offset)
-            self.ctime = self.get_ulonglong(offset + 0x08)
-            self.atime = self.get_ulonglong(offset + 0x10)
-            self.mtime = self.get_ulonglong(offset + 0x18)
-            self.rtime = self.get_ulonglong(offset + 0x20)
-            self.alloc_size = self.get_ulonglong(offset + 0x28)
-            self.real_size = self.get_ulonglong(offset + 0x30)
-            self.flags = self.get_uint(offset + 0x38)
-            # Used by EAs and Reparse ??
-            self.reparse = self.get_uint(offset + 0x3C)
-            self.fname_length = self.get_ubyte(offset + 0x40)
-            self.fnspace = self.get_ubyte(offset + 0x41)
-            self.fname = self.get_chunk(offset + 0x42, 2 * self.fname_length)
+        # $Filename is always resident
+        offset = self.header.size
+        self.parent_ref = self.get_ulonglong(offset)
+        self.ctime = self.get_ulonglong(offset + 0x08)
+        self.atime = self.get_ulonglong(offset + 0x10)
+        self.mtime = self.get_ulonglong(offset + 0x18)
+        self.rtime = self.get_ulonglong(offset + 0x20)
+        self.alloc_size = self.get_ulonglong(offset + 0x28)
+        self.real_size = self.get_ulonglong(offset + 0x30)
+        self.flags = self.get_uint(offset + 0x38)
+        # Used by EAs and Reparse ??
+        self.reparse = self.get_uint(offset + 0x3C)
+        self.fname_length = self.get_ubyte(offset + 0x40)
+        self.fnspace = self.get_ubyte(offset + 0x41)
+        self.fname = self.get_chunk(offset + 0x42, 2 * self.fname_length).decode('utf-16')
 
     @property
     def ctime_dt(self):
