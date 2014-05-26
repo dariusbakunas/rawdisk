@@ -1,0 +1,8 @@
+[Core]
+Name = EfiSystemPlugin
+Module = efi_system
+
+[Documentation]
+Author = Darius Bakunas
+Version = 0.1
+Description = Detects EFI System partition and returns EfiSystemVolume object
