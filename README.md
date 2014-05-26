@@ -36,15 +36,6 @@ r.list_partitions()
 Type: NTFS, Offset: 0x10000, Size: 1020M, MFT Table Offset: 0x15465000
 ```
 
-For OSX:
-```console
-Scheme: GPT
-Partitions:
-Type: EFI System, Offset: 0x5000
-Type: HFS+, Offset: 0xC805000
-Type: Apple_Boot, Offset: 0xAE820F5000
-```
-
 * Hexdump contents of selected system MFT entry and then its attributes
 
 ```python
@@ -116,6 +107,18 @@ $ sudo rawdisk -f /dev/disk1
 Scheme: GPT
 Partitions:
 Type: NTFS, Offset: 0x100000, Size: 14G, MFT Table Offset: 0xC0100000
+```
+
+```bash
+$ sudo rawdisk -f /dev/disk0
+```
+
+```console
+Scheme: GPT
+Partitions:
+Type: EFI System, Offset: 0x5000
+Type: HFS+, Offset: 0xC805000
+Type: Apple_Boot, Offset: 0xAE820F5000
 ```
 
 Installation
