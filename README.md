@@ -36,6 +36,15 @@ r.list_partitions()
 Type: NTFS, Offset: 0x10000, Size: 1020M, MFT Table Offset: 0x15465000
 ```
 
+For OSX:
+```console
+Scheme: GPT
+Partitions:
+Type: EFI System, Offset: 0x5000
+Type: HFS+, Offset: 0xC805000
+Type: Apple_Boot, Offset: 0xAE820F5000
+```
+
 * Hexdump contents of selected system MFT entry and then its attributes
 
 ```python
