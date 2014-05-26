@@ -148,6 +148,6 @@ class MftTable(object):
         # for n in range(0, 1):
             data = source.read(MFT_ENTRY_SIZE)
             entry = MftEntry(offset, data)
-            self._metadata_entries.append(entry)
+            self._metadata_entries.insert(entry.header.seq_number, entry)
             source.seek(entry.end_offset)
             offset = entry.end_offset
