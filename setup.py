@@ -12,7 +12,8 @@ setup(
     install_requires=[
         'hexdump >= 2.0',
         'hurry.filesize >= 0.9',
-        'yapsy >= 1.10.323'
+        'yapsy >= 1.10.323',
+        'pyxdg >= 0.25'
     ],
     entry_points={
         'console_scripts': [
