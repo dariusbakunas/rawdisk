@@ -25,16 +25,13 @@ class MftEntry(RawStruct):
         RawStruct.__init__(self, data)
         self.offset = offset
         self.attributes = []
+        self.name_str = ""
+        self.fname_str = ""
 
         # TODO: mft entry header size might be different, doublecheck
         # read http://ftp.kolibrios.org/users/Asper/docs/NTFS/ntfsdoc.html#concept_attribute_header
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
         self.header = MftEntryHeader(header_data)
-
-        # attr_offset = self.header.first_attr_offset
-        # attr = self.get_attribute(attr_offset)
-        # print "Attr Length: %d" % attr.header.length
-        # attr.hexdump()
         self.load_attributes()
 
     @property
@@ -57,6 +54,9 @@ class MftEntry(RawStruct):
             attr = self.get_attribute(offset)
 
             if (attr is not None):
+                if attr.header.type == MFT_ATTR_FILENAME:
+                    self.fname_str = attr.fname
+
                 self.attributes.append(attr)
                 free_space = free_space - attr.header.length
                 offset = offset + attr.header.length
@@ -99,14 +99,14 @@ class MftEntry(RawStruct):
             return None
 
     def __str__(self):
-        return "MFT Record no: %d, " \
-            "Offset: 0x%x, " \
-            "Size: %d, " \
-            "Used Size: %d, " \
-            "Signature: %s" % (
-                self.header.mft_record_number,
-                self.offset,
-                self.size,
-                self.used_size,
-                self.header.file_signature
-            )
+        result = ("File: %d\n"
+        "%s (%s)" % (
+            self.header.seq_number,
+            self.name_str,
+            self.fname_str
+        ))
+
+        for attr in self.attributes:
+            result = result +"\n\t" + str(attr)
+
+        return result
