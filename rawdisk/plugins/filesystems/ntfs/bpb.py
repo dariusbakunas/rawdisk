@@ -6,7 +6,7 @@ class Bpb(RawStruct):
     Includes extended BPB
     """
     def __init__(self, data = None):
-        RawStruct.data.fset(self, data)
+        RawStruct.__init__(self, data)
         self.bytes_per_sector = self.get_ushort(0)
         self.sectors_per_cluster = self.get_ubyte(2)
         self.reserved_sectors = self.get_ushort(3)
