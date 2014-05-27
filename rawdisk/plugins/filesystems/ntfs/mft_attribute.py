@@ -37,8 +37,8 @@ class MftAttrHeader(RawStruct):
 
         if (self.non_resident_flag):
             # Attribute is Non-Resident
-            self.start_vcn = self.get_ulonglong(0x10)
-            self.last_vcn = self.get_ulonglong(0x18)
+            self.lowest_vcn = self.get_ulonglong(0x10)
+            self.highest_vcn = self.get_ulonglong(0x18)
             self.mapping_pairs_offset = self.get_ushort(0x20)
             self.comp_unit_size = self.get_ushort(0x22)
             # 4 byte 0x00 padding @ 0x24
