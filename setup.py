@@ -1,5 +1,31 @@
+# -*- coding: utf-8 -*-
 import os
+import sys
+import imp
 from setuptools import setup, find_packages
+
+# Add the current directory to the module search path.
+sys.path.append('.')
+
+## Constants
+CODE_DIRECTORY = 'rawdisk'
+DOCS_DIRECTORY = 'docs'
+TESTS_DIRECTORY = 'tests'
+
+
+# Import metadata. Normally this would just be:
+#
+#     from $package import metadata
+#
+# However, when we do this, we also import `$package/__init__.py'. If this
+# imports names from some other modules and these modules have third-party
+# dependencies that need installing (which happens after this file is run), the
+# script will crash. What we do instead is to load the metadata module by path
+# instead, effectively side-stepping the dependency problem. Please make sure
+# metadata has no dependencies, otherwise they will need to be added to
+# the setup_requires keyword.
+metadata = imp.load_source(
+    'metadata', os.path.join(CODE_DIRECTORY, 'metadata.py'))
 
 def read(filename):
     """Return the contents of a file.
@@ -13,14 +39,34 @@ def read(filename):
         return f.read()
 
 setup(
-    name='rawdisk',
-    author='D. Bakunas',
-    version='0.2dev',
-    description='Experimental python code to learn different disk formats',
-    packages=find_packages(),
+    name=metadata.package,
+    author=metadata.authors[0],
+    author_email = metadata.emails[0],
+    maintainer=metadata.authors[0],
+    maintainer_email=metadata.emails[0],
+    url=metadata.url,
+    version=metadata.version,
+    description=metadata.description,
+    long_description=read('README.md'),
+    # Find a list of classifiers here:
+    # <http://pypi.python.org/pypi?%3Aaction=list_classifiers>
+    classifiers=[
+        'Development Status :: 1 - Planning',
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Topic :: Documentation',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: System :: Installation/Setup',
+        'Topic :: System :: Software Distribution',
+    ],
+    packages=find_packages(exclude=(TESTS_DIRECTORY)),
     package_data = {'rawdisk.plugins.filesystems' : ['*.yapsy-plugin']},
     license='LICENSE.txt',
-    long_description=read('README.md'),
     install_requires=[
         'hexdump >= 2.0',
         'hurry.filesize >= 0.9',
