@@ -53,9 +53,8 @@ class Mbr(RawStruct):
         self.partition_table = None
 
     def load(self, filename):
-        """Reads Master Boot Record
-
-        Loads partition table entries
+        """Reads master boot record of the filesystem and
+        loads partition table entries
         """
         try:
             with open(filename, 'rb') as f:
