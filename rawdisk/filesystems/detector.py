@@ -1,4 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
 class FilesystemDetector(object):
+    """A class that allows to match filesystem id or guid against available plugins.
+
+    """
     def __init__(self):
         # 2 dimensional array of fs_id : [list of plugins]
         self.mbr_plugins = {}
@@ -6,12 +12,27 @@ class FilesystemDetector(object):
         self.gpt_plugins = {}
     
     def add_mbr_plugin(self, fs_id, plugin):
+        """Used in plugin's registration routine, 
+        to associate it's detection method with given filesystem id
+
+        Args:
+            fs_id: filesystem id that is read from MBR partition entry
+            plugin: plugin that supports this filesystem
+        """
+
         if fs_id in self.mbr_plugins:
             self.mbr_plugins.get(fs_id).append(plugin)
         else:
             self.mbr_plugins[fs_id] = [plugin,]
 
     def add_gpt_plugin(self, fs_guid, plugin):
+        """Used in plugin's registration routine, 
+        to associate it's detection method with given filesystem guid
+
+        Args:
+            fs_guid: filesystem guid that is read from GPT partition entry
+            plugin: plugin that supports this filesystem
+        """
         if fs_guid in self.gpt_plugins:
             self.gpt_plugins.get(fs_guid).append(plugin)
         else:
