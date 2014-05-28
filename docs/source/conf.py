@@ -34,6 +34,7 @@ from rawdisk import metadata
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinxcontrib.napoleon',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.ifconfig',
