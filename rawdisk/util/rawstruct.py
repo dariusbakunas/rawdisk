@@ -1,3 +1,6 @@
+"""Helper class used as a parent class for most filesystem classes.
+"""
+
 import struct
 import hexdump
 import uuid
