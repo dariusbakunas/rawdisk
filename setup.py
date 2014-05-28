@@ -72,7 +72,8 @@ setup(
         'hexdump >= 2.0',
         'hurry.filesize >= 0.9',
         'yapsy >= 1.10.323',
-        'pyxdg >= 0.25'
+        'pyxdg >= 0.25',
+        'sphinxcontrib-napoleon >= 0.2.7'
     ],
     entry_points={
         'console_scripts': [
