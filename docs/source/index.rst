@@ -1,17 +1,13 @@
-.. rawdisk documentation master file, created by
-   sphinx-quickstart on Tue May 27 15:22:28 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to rawdisk's documentation!
+Welcome to rawdisk's Documentation
 ===================================
 
-Contents:
-
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
+   overview
+   install
 
+.. only:: html
 
 Indices and tables
 ==================
