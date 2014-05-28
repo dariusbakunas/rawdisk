@@ -16,3 +16,4 @@ emails = ['bakunas@gmail.com',]
 license = 'MIT'
 copyright = '2014 ' + authors_string
 url = 'https://github.com/dariusbakunas/rawdisk'
+keywords = ['filesystems','disk']

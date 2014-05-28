@@ -48,6 +48,7 @@ setup(
     version=metadata.version,
     description=metadata.description,
     long_description=read('README.md'),
+    keywords = metadata.keywords,
     # Find a list of classifiers here:
     # <http://pypi.python.org/pypi?%3Aaction=list_classifiers>
     classifiers=[
