@@ -1,10 +1,4 @@
-filesystems package
-===================
-
-Submodules
-----------
-
-filesystems.detector module
+Filesystem Detection Module
 ---------------------------
 
 .. automodule:: filesystems.detector
@@ -12,19 +6,10 @@ filesystems.detector module
     :undoc-members:
     :show-inheritance:
 
-filesystems.volume module
+Volume Module
 -------------------------
 
 .. automodule:: filesystems.volume
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: filesystems
     :members:
     :undoc-members:
     :show-inheritance:
