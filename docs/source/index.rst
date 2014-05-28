@@ -2,7 +2,7 @@ Welcome to rawdisk's Documentation
 ===================================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    overview
    install
