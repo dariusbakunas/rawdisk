@@ -1,11 +1,4 @@
-"""Base classes for filesystem plugins and
-detector module, that allows to match filesystem with
-correct plugin.
-
-.. moduleauthor:: Darius Bakunas <bakunas@gmail.com>
-
-"""
-
+# -*- coding: utf-8 -*-
 __all__ = ['volume', 'detector']
 
 import volume
