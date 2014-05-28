@@ -6,6 +6,7 @@ Welcome to rawdisk's Documentation
 
    overview
    install
+   usage
 
 .. only:: html
 
