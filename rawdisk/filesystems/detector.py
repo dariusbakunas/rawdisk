@@ -22,6 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+"""This module is mostly used by plugins to register filesystem detection routines
+that are internaly used by rawdisk.reader.Reader to match filesystems"""
 
 class FilesystemDetector(object):
     """A class that allows to match filesystem id or guid against available plugins.
@@ -61,6 +63,18 @@ class FilesystemDetector(object):
             self.gpt_plugins[fs_guid] = [plugin,]
 
     def detect_mbr(self, filename, offset, fs_id):
+        """Used by rawdisk.reader.Reader to match mbr partitions agains
+        filesystem plugins.
+
+        Args:
+            filename: device or file that it will read in order to detect the filesystem
+            fs_id: filesystem id to match (ex. 0x07)
+            offset: offset for the filesystem that is being matched
+
+        Returns:
+            Volume object supplied by matched plugin.
+            If there is no match, None is returned
+        """
         if not fs_id in self.mbr_plugins:
             return None
         else:
@@ -71,6 +85,18 @@ class FilesystemDetector(object):
         return None
 
     def detect_gpt(self, filename, offset, fs_guid):
+        """Used by rawdisk.reader.Reader to match gpt partitions agains
+        filesystem plugins.
+
+        Args:
+            filename: device or file that it will read in order to detect the filesystem
+            fs_id: filesystem guid to match (ex. {EBD0A0A2-B9E5-4433-87C0-68B6B72699C7})
+            offset: offset for the filesystem that is being matched
+
+        Returns:
+            Volume object supplied by matched plugin.
+            If there is no match, None is returned
+        """
         if not fs_guid in self.gpt_plugins:
             return None
         else:
@@ -82,7 +108,9 @@ class FilesystemDetector(object):
         return None
 
 class FilesystemDetectorSingleton(object):
-    """Singleton implementation for 
+    """Singleton implementation for FilesystemDetector
+    """
+
     __instance = None
 
     def __init__(self):
@@ -91,6 +119,12 @@ class FilesystemDetectorSingleton(object):
 
     @classmethod
     def get(self):
+        """Returns singleton version of FilesystemDetector,
+        so that all plugins could use the same instance for registration
+
+        Returns:
+            Singleton FilesystemDetector object
+        """
         if self.__instance is None:
             self.__instance = FilesystemDetector()
         
