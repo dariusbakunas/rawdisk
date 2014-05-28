@@ -39,6 +39,7 @@ def read(filename):
         return f.read()
 
 setup(
+    include_package_data = True,
     name=metadata.package,
     author=metadata.authors[0],
     author_email = metadata.emails[0],
@@ -66,7 +67,6 @@ setup(
         'Topic :: System :: Software Distribution',
     ],
     packages=find_packages(exclude=(TESTS_DIRECTORY)),
-    package_data = {'rawdisk.plugins.filesystems' : ['*.yapsy-plugin']},
     license='LICENSE.txt',
     install_requires=[
         'hexdump >= 2.0',
