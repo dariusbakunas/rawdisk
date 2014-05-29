@@ -52,7 +52,7 @@ def detect_scheme(filename):
         SCHEME_MBR, SCHEME_GPT or SCHEME_UNKNOWN
 
     Raises:
-        IOError: The file doesn't exist or cannot be open for reading
+        IOError: The file doesn't exist or cannot be opened for reading
 
     >>> from rawdisk.scheme.common import *
     >>> scheme = detect_scheme('/dev/disk1')
