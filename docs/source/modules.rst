@@ -5,4 +5,5 @@ filesystems
    :maxdepth: 4
 
    filesystems
+   scheme
    util

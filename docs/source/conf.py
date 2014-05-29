@@ -41,6 +41,10 @@ extensions = [
     'sphinx.ext.viewcode'
 ]
 
+# Napoleon settings
+napoleon_google_docstring = True
+napoleon_include_special_with_doc = True
+
 # Show todos
 todo_include_todos = True
 
