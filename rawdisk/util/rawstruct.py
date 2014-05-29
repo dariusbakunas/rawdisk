@@ -32,7 +32,7 @@ class RawStruct(object):
     """Helper class used as a parent class for most filesystem structures.
 
     Args:
-        data (str): byte array read form file or device
+        data (str): byte array to initialize structure with
     """
     def __init__(self, data = None):
         self._data = data
