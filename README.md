@@ -1,1 +1,1 @@
-Documentation for `rawdisk <http://rawdisk.readthedocs.org/en/latest/>`_.
+Documentation for [rawdisk](http://rawdisk.readthedocs.org/en/latest/).
