@@ -7,14 +7,16 @@ Plugins
 .. toctree::
     plugins.filesystems
 
-Utility Classes
----------------
+Plugin Categories
+-------------------------
 
 .. automodule:: plugins.categories
     :members:
     :undoc-members:
     :show-inheritance:
 
+Plugin Manager
+----------------------
 
 .. automodule:: plugins.manager
     :members:
