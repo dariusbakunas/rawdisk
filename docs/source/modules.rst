@@ -7,3 +7,4 @@ filesystems
    filesystems
    scheme
    util
+   plugins
