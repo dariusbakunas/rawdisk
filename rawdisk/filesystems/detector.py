@@ -2,7 +2,7 @@
 
 # The MIT License (MIT)
 
-# Copyright (c) 2004 Darius Bakunas
+# Copyright (c) 2014 Darius Bakunas
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,8 @@ that are internaly used by rawdisk.reader.Reader to match filesystems"""
 class FilesystemDetector(object):
     """A class that allows to match filesystem id or guid against available plugins.
 
+    Warning:
+        Do not use this class directly, use :class:`FilesystemDetectorSingleton` instead
     """
     def __init__(self):
         # 2 dimensional array of fs_id : [list of plugins]
