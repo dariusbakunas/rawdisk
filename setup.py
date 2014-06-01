@@ -69,11 +69,16 @@ setup(
     packages=find_packages(exclude=(TESTS_DIRECTORY)),
     license='LICENSE.txt',
     install_requires=[
-        'hexdump >= 2.0',
-        'hurry.filesize >= 0.9',
-        'yapsy >= 1.10.323',
-        'pyxdg >= 0.25',
-        'sphinxcontrib-napoleon >= 0.2.7'
+        'hexdump == 2.0',
+        'hurry.filesize == 0.9',
+        'yapsy == 1.10.323',
+        'pyxdg == 0.25',
+        'sphinxcontrib-napoleon == 0.2.7'
+    ],
+    tests_require=[
+        'pytest==2.5.2',
+        'mock==1.0.1',
+        'flake8==2.1.0',
     ],
     entry_points={
         'console_scripts': [
