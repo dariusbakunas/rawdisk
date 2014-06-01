@@ -8,3 +8,4 @@ filesystems
    scheme
    util
    plugins
+   reader

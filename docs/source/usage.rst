@@ -5,7 +5,7 @@ Basic Usage
 Loading data file
 =================
 
-In order to start filesystem analysis, you need to create :class:`rawdisk.reader.Reader` instance::
+In order to start filesystem analysis, you need to create :class:`~reader.Reader` instance::
 
 	from rawdisk import Reader
 
