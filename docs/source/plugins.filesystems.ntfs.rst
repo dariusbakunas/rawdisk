@@ -25,15 +25,32 @@ MFT
     :undoc-members:
     :show-inheritance:
 
+MFT Attribute Header
+++++++++++++++++++++
+
+.. automodule:: plugins.filesystems.ntfs.mft_attr_header
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+MFT Attributes
+++++++++++++++
+
 .. automodule:: plugins.filesystems.ntfs.mft_attribute
     :members:
     :undoc-members:
     :show-inheritance:
 
+MFT Entry
++++++++++
+
 .. automodule:: plugins.filesystems.ntfs.mft_entry
     :members:
     :undoc-members:
     :show-inheritance:
+
+MFT Entry Header
+++++++++++++++++
 
 .. automodule:: plugins.filesystems.ntfs.mft_entry_header
     :members:
@@ -52,3 +69,8 @@ NTFS
     :members:
     :undoc-members:
     :show-inheritance:
+
+References
+----------
+
+    * http://grayscale-research.org/new/pdfs/NTFS%20forensics.pdf

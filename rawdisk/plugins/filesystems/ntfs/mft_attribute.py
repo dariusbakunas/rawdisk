@@ -48,43 +48,13 @@ ATTR_IS_ENCRYPTED = 0x4000
 ATTR_IS_SPARSE = 0x8000
 
 
-class MftAttrHeader(RawStruct):
-    def __init__(self, data):
-        RawStruct.__init__(self, data)
-        self.type = self.get_uint(0)
-        self.length = self.get_uint(0x4)
-        self.non_resident_flag = self.get_ubyte(0x08)   # 0 - resident, 1 - not
-        self.length_of_name = self.get_ubyte(0x09)      # Used only for ADS
-        self.offset_to_name = self.get_ushort(0x0A)     # Used only for ADS
-        self.flags = self.get_ushort(0x0C)  # (Compressed, Encrypted, Sparse)
-        self.identifier = self.get_ushort(0x0E)
-
-        if (self.non_resident_flag):
-            # Attribute is Non-Resident
-            self.lowest_vcn = self.get_ulonglong(0x10)
-            self.highest_vcn = self.get_ulonglong(0x18)
-            self.mapping_pairs_offset = self.get_ushort(0x20)
-            self.comp_unit_size = self.get_ushort(0x22)
-            # 4 byte 0x00 padding @ 0x24
-            self.alloc_size = self.get_ulonglong(0x28)
-            self.real_size = self.get_ulonglong(0x30)
-            self.data_size = self.get_ulonglong(0x38)
-            if (self.length_of_name > 0):
-                self.attr_name = self.get_chunk(0x40, 2 * self.length_of_name).decode('utf-16')
-                # print self.attr_name.decode('utf-16')
-        else:
-            # Attribute is Resident
-            self.attr_length = self.get_uint(0x10)
-            self.attr_offset = self.get_ushort(0x14)
-            self.indexed = self.get_ubyte(0x16)
-            if (self.length_of_name > 0):
-                self.attr_name = self.get_chunk(0x18, 2 * self.length_of_name).decode('utf-16')
-                # print self.attr_name.decode('utf-16')
-            # The rest byte is 0x00 padding
-            # print "Attr Offset: 0x%x" % (self.attr_offset)
-
-
 class MftAttr(RawStruct):
+    """Base class for all MFT attributes.
+
+    Attributes:
+        type_str (string): String representation of attribute's type eg. $SYSTEM_INFORMATION.
+        header (MftAttrHeader): Initialized :class:`MftAttrHeader <plugins.filesystems.ntfs.mft_attr_header.MftAttrHeader>` object.
+    """
     def __init__(self, data):
         RawStruct.__init__(self, data)
         self.type_str = "$UNKNOWN"
@@ -131,10 +101,26 @@ class MftAttr(RawStruct):
 
 # Define all attribute types here
 class MftAttrStandardInformation(MftAttr):
+    """$STANDARD_INFORMATION attribute
+
+    Attributes:
+        ctime (ulonglong): File creation date in Microsoft FILETIME format.
+        atime (ulonglong): Last file modification date.
+        mtime (ulonglong): Last file MFT entry modification date.
+        rtime (ulonglong): Last file access date.
+        perm (uint): DOS file permissions.
+        versions (uint): Maximum number of versions.
+        class_id (uint): Class Id.
+
+    Note:
+        This attribute is always resident.
+
+    See Also:
+        http://ftp.kolibrios.org/users/Asper/docs/NTFS/ntfsdoc.html#attribute_standard_information
+    """
     def __init__(self, data):
         MftAttr.__init__(self, data)
         self.type_str = "$STANDARD_INFORMATION"
-        # $STANDARD_INFORMATION is always resident
         offset = self.header.size
         # File Creation
         self.ctime = self.get_ulonglong(offset)
@@ -161,18 +147,34 @@ class MftAttrStandardInformation(MftAttr):
 
     @property
     def ctime_dt(self):
+        """
+        Returns:
+            datetime: File creation date in Python's datetime format.
+        """
         return filetime_to_dt(self.ctime)
 
     @property
     def atime_dt(self):
+        """
+        Returns:
+            datetime: File modification date in Python's datetime format.
+        """
         return filetime_to_dt(self.atime)
 
     @property
     def mtime_dt(self):
+        """
+        Returns:
+            datetime: MFT entry modification date in Python's datetime format.
+        """
         return filetime_to_dt(self.mtime)
 
     @property
     def rtime_dt(self):
+        """
+        Returns:
+            datetime: Last file access date in Python's datetime format.
+        """
         return filetime_to_dt(self.rtime)
 
 
