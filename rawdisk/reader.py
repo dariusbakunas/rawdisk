@@ -5,6 +5,13 @@ from rawdisk.filesystems.detector import FilesystemDetectorSingleton
 from rawdisk.plugins.manager import Manager
 
 class Reader:
+    """Main class used to start filesystem analysis.
+
+    Attributes:
+        partitions (list): List of detected filesystems (intialized :class:`Volume <filesystems.volume.Volume>` objects)
+        scheme (enum): One of :attr:`SCHEME_MBR <scheme.common.SCHEME_MBR>` or \
+        :attr:`SCHEME_GPT <scheme.common.SCHEME_GPT>`.
+    """
     def __init__(self):
         self.debug = False
         self.partitions = []
@@ -14,10 +21,20 @@ class Reader:
         Manager.load_filesystem_plugins()
 
     def list_partitions(self):
+        """Print a list of detected partitions."""
+
         for part in self.partitions:
             print part
 
     def load(self, filename):
+        """Starts filesystem analysis. Detects supported filesystems and loads :attr:`partitions` array.
+
+        Args:
+            filename - Path to file or device for reading.
+
+        Raises:
+            IOError - File/device does not exist or is not readable.
+        """
         self.filename = filename
 
         # Detect partitioning scheme
@@ -58,5 +75,4 @@ class Reader:
         elif (self.scheme == scheme.common.SCHEME_UNKNOWN):
             print 'Partitioning scheme is not supported.'
         else:
-            print 'Error occured.'
-            sys.exit()
+            print 'Partitioning scheme could not be determined.'
