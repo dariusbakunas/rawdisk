@@ -41,8 +41,8 @@ class Manager(object):
 
     @staticmethod
     def load_filesystem_plugins():
-        import logging
-        logging.basicConfig(level=logging.DEBUG)
+        # import logging
+        # logging.basicConfig(level=logging.DEBUG)
 
         """Looks for *.yapsy-plugin files and loads them. It calls 'register' \
         method for each plugin, which in turn registers with \
