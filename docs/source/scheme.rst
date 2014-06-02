@@ -1,7 +1,7 @@
 Scheme.Common Module
 --------------------
 
-.. automodule:: scheme.common
+.. automodule:: rawdisk.scheme.common
     :members:
     :undoc-members:
     :show-inheritance:
@@ -9,7 +9,7 @@ Scheme.Common Module
 Gpt Module
 -----------------
 
-.. automodule:: scheme.gpt
+.. automodule:: rawdisk.scheme.gpt
     :members:
     :undoc-members:
     :show-inheritance:
@@ -17,7 +17,7 @@ Gpt Module
 Mbr Module
 -----------------
 
-.. automodule:: scheme.mbr
+.. automodule:: rawdisk.scheme.mbr
     :members:
     :undoc-members:
     :show-inheritance:

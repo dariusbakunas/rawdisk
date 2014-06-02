@@ -4,7 +4,7 @@ NTFS Plugin
 Bootsector
 ----------
 
-.. automodule:: plugins.filesystems.ntfs.bootsector
+.. automodule:: rawdisk.plugins.filesystems.ntfs.bootsector
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ Bootsector
 BPB
 ---
 
-.. automodule:: plugins.filesystems.ntfs.bpb
+.. automodule:: rawdisk.plugins.filesystems.ntfs.bpb
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ BPB
 MFT
 ---
 
-.. automodule:: plugins.filesystems.ntfs.mft
+.. automodule:: rawdisk.plugins.filesystems.ntfs.mft
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ MFT
 MFT Attribute Header
 ++++++++++++++++++++
 
-.. automodule:: plugins.filesystems.ntfs.mft_attr_header
+.. automodule:: rawdisk.plugins.filesystems.ntfs.mft_attr_header
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ MFT Attribute Header
 MFT Attributes
 ++++++++++++++
 
-.. automodule:: plugins.filesystems.ntfs.mft_attribute
+.. automodule:: rawdisk.plugins.filesystems.ntfs.mft_attribute
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ MFT Attributes
 MFT Entry
 +++++++++
 
-.. automodule:: plugins.filesystems.ntfs.mft_entry
+.. automodule:: rawdisk.plugins.filesystems.ntfs.mft_entry
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,7 +52,7 @@ MFT Entry
 MFT Entry Header
 ++++++++++++++++
 
-.. automodule:: plugins.filesystems.ntfs.mft_entry_header
+.. automodule:: rawdisk.plugins.filesystems.ntfs.mft_entry_header
     :members:
     :undoc-members:
     :show-inheritance:
@@ -60,12 +60,12 @@ MFT Entry Header
 NTFS
 ----
 
-.. automodule:: plugins.filesystems.ntfs.ntfs
+.. automodule:: rawdisk.plugins.filesystems.ntfs.ntfs
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: plugins.filesystems.ntfs.ntfs_volume
+.. automodule:: rawdisk.plugins.filesystems.ntfs.ntfs_volume
     :members:
     :undoc-members:
     :show-inheritance:
