@@ -9,7 +9,7 @@ import subprocess
 sys.path.append('.')
 
 from setup import (
-    setup_dict, _lint, DOCS_DIRECTORY
+    setup_dict, _lint, _test, DOCS_DIRECTORY
 )
 
 # from setup import (
@@ -47,6 +47,11 @@ class cwd(object):
         os.chdir(self.oldcwd)
 
 # Tasks
+
+@task
+def test():
+    """Run the unit tests."""
+    raise SystemExit(_test())
 
 @task
 def lint():
