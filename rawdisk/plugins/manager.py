@@ -31,6 +31,7 @@ from xdg.BaseDirectory import xdg_data_dirs
 
 APP_NAME = "rawdisk"
 
+
 class Manager(object):
     """This class is responsible for loading filesystem plugins.
 
@@ -43,8 +44,9 @@ class Manager(object):
         # import logging
         # logging.basicConfig(level=logging.DEBUG)
 
-        """Looks for *.yapsy-plugin files and loads them. It calls 'register' method \
-        for each plugin, which in turn registers with :class:`FilesystemDetector <filesystems.detector.FilesystemDetector>`.
+        """Looks for *.yapsy-plugin files and loads them. It calls 'register' \
+        method for each plugin, which in turn registers with \
+        :class:`FilesystemDetector <filesystems.detector.FilesystemDetector>`.
 
         Note:
             Plugin search locations:
@@ -60,12 +62,14 @@ class Manager(object):
         # Load the plugins from the plugin directory.
         manager = PluginManagerSingleton.get()
 
-        places = [os.path.join(os.path.dirname(rawdisk.__file__), "plugins/filesystems"),]
-        [places.append(os.path.join(path, APP_NAME, "plugins/filesystems")) for path in xdg_data_dirs]
+        places = [os.path.join(
+            os.path.dirname(rawdisk.__file__), "plugins/filesystems"), ]
+        [places.append(os.path.join(path, APP_NAME, "plugins/filesystems"))
+            for path in xdg_data_dirs]
 
         manager.setPluginPlaces(places)
         manager.setCategoriesFilter({
-            "Filesystem" : IFilesystemPlugin,
+            "Filesystem": IFilesystemPlugin,
         })
 
         # Load plugins
