@@ -46,8 +46,7 @@ class MftTable(object):
         """Get system entry by index
 
         Returns:
-            MftEntry: initialized :class:`MftEntry \
-            <plugins.filesystems.ntfs.mft_entry.MftEntry>`
+            MftEntry: initialized :class:`~.mft_entry.MftEntry`.
         """
         return self._metadata_entries[entry_id]
 

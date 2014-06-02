@@ -37,10 +37,9 @@ class NtfsVolume(Volume):
         offset (uint): offset to the partition from the start of the disk \
         in bytes
         fd (fd): file descriptor that is used to load volume information
-        bootsector (BootSector): initialized :class:`BootSector \
-        <plugins.filesystems.ntfs.bootsector.BootSector>` object
-        mft_table (MftTable): initialized :class:`MftTable \
-        <plugins.filesystems.ntfs.mft.MftTable>` object
+        bootsector (BootSector): initialized \
+        :class:`~.bootsector.BootSector` object.
+        mft_table (MftTable): initialized :class:`~.mft.MftTable` object
 
     See More:
         http://en.wikipedia.org/wiki/NTFS

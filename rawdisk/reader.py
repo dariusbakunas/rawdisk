@@ -8,9 +8,10 @@ class Reader:
 
     Attributes:
         partitions (list): List of detected filesystems \
-        (intialized :class:`Volume <filesystems.volume.Volume>` objects)
-        scheme (enum): One of :attr:`SCHEME_MBR <scheme.common.SCHEME_MBR>` \
-        or :attr:`SCHEME_GPT <scheme.common.SCHEME_GPT>`.
+        (intialized :class:`Volume <rawdisk.filesystems.volume.Volume>` objects)
+        scheme (enum): One of \
+        :attr:`SCHEME_MBR <rawdisk.scheme.common.SCHEME_MBR>` \
+        or :attr:`SCHEME_GPT <rawdisk.scheme.common.SCHEME_GPT>`.
     """
     def __init__(self):
         self.debug = False

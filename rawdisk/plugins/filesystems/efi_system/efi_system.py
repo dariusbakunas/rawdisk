@@ -32,9 +32,9 @@ class EfiSystemPlugin(categories.IFilesystemPlugin):
     """Filesystem plugin for EFI System partition.
     """
     def register(self):
-        """Registers this plugin with :class:`FilesystemDetector \
-        <filesystems.detector.FilesystemDetector>` as gpt plugin, \
-        with type guid *{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}*
+        """Registers this plugin with \
+        :class:`~rawdisk.filesystems.detector.FilesystemDetector` \
+        as gpt plugin, with type guid *{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}*
         """
         detector = FilesystemDetectorSingleton.get()
         detector.add_gpt_plugin(
@@ -49,7 +49,6 @@ class EfiSystemPlugin(categories.IFilesystemPlugin):
         return True
 
     def get_volume_object(self):
-        """Returns :class:`EfiSystemVolume \
-        <plugins.filesystems.efi_system.efi_system_volume.EfiSystemVolume>` \
+        """Returns :class:`~.efi_system_volume.EfiSystemVolume`
         object."""
         return volume.EfiSystemVolume()

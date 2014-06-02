@@ -32,9 +32,9 @@ class HfsPlusPlugin(categories.IFilesystemPlugin):
     """Filesystem plugin for HFS+ partition.
     """
     def register(self):
-        """Registers this plugin with :class:`FilesystemDetector \
-        <filesystems.detector.FilesystemDetector>` as gpt plugin, \
-        with type guid *{48465300-0000-11AA-AA11-00306543ECAC}*
+        """Registers this plugin with \
+        :class:`~rawdisk.filesystems.detector.FilesystemDetector` \
+        as gpt plugin, with type guid *{48465300-0000-11AA-AA11-00306543ECAC}*
         """
         detector = FilesystemDetectorSingleton.get()
         detector.add_gpt_plugin(
@@ -49,7 +49,5 @@ class HfsPlusPlugin(categories.IFilesystemPlugin):
         return True
 
     def get_volume_object(self):
-        """Returns :class:`HfsPlusVolume \
-        <plugins.filesystems.hfs_plus.hfs_plus_volume.HfsPlusVolume>` \
-        object."""
+        """Returns :class:`~.hfs_plus_volume.HfsPlusVolume` object."""
         return HfsPlusVolume()

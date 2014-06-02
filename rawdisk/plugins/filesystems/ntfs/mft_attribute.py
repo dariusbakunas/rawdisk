@@ -54,8 +54,8 @@ class MftAttr(RawStruct):
     Attributes:
         type_str (string): String representation of attribute's type eg. \
         $SYSTEM_INFORMATION.
-        header (MftAttrHeader): Initialized :class:`MftAttrHeader \
-        <plugins.filesystems.ntfs.mft_attr_header.MftAttrHeader>` object.
+        header (MftAttrHeader): Initialized \
+        :class:`~.mft_attr_header.MftAttrHeader` object.
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)

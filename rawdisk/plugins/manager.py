@@ -46,7 +46,8 @@ class Manager(object):
 
         """Looks for *.yapsy-plugin files and loads them. It calls 'register' \
         method for each plugin, which in turn registers with \
-        :class:`FilesystemDetector <filesystems.detector.FilesystemDetector>`.
+        :class:`FilesystemDetector \
+        <rawdisk.filesystems.detector.FilesystemDetector>`.
 
         Note:
             Plugin search locations:
