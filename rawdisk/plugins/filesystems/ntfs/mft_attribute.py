@@ -83,6 +83,37 @@ class MftAttr(RawStruct):
             self.get_chunk(0, header_size)
         )
 
+    @staticmethod
+    def factory(attr_type, data):
+        """Returns Initialized attribute object based on attr_type \
+        (eg. :class:`MftAttrStandardInformation`)
+
+        Args:
+            attr_type (uint): Attribute type number (eg. 0x10 - $STANDARD_INFORMATION)
+            data (byte array): Data to initialize attribute object with.
+        """
+
+        constructors = {
+            MFT_ATTR_STANDARD_INFORMATION: MftAttrStandardInformation,
+            MFT_ATTR_ATTRIBUTE_LIST: MftAttrAttributeList,
+            MFT_ATTR_FILENAME: MftAttrFilename,
+            MFT_ATTR_OBJECT_ID: MftAttrObjectId,
+            MFT_ATTR_SECURITY_DESCRIPTOR: MftAttrSecurityDescriptor,
+            MFT_ATTR_VOLUME_NAME: MftAttrVolumeName,
+            MFT_ATTR_VOLUME_INFO: MftAttrVolumeInfo,
+            MFT_ATTR_DATA: MftAttrData,
+            MFT_ATTR_INDEX_ROOT: MftAttrIndexRoot,
+            MFT_ATTR_INDEX_ALLOCATION: MftAttrIndexAllocation,
+            MFT_ATTR_BITMAP: MftAttrBitmap,
+            MFT_ATTR_REPARSE_POINT: MftAttrReparsePoint,
+            MFT_ATTR_LOGGED_TOOLSTREAM: MftAttrLoggedToolstream,
+        }
+
+        if attr_type not in constructors:
+            return None
+        
+        return constructors[attr_type](data)
+
     def __str__(self):
         name = "N/A"
         resident = "Resident"
