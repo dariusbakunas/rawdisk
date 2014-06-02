@@ -25,6 +25,7 @@
 import hexdump
 from rawdisk.util.rawstruct import RawStruct
 from rawdisk.util.filetimes import filetime_to_dt
+from mft_attr_header import MftAttrHeader
 
 
 MFT_ATTR_STANDARD_INFORMATION = 0x10
