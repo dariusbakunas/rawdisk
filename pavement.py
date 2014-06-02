@@ -9,7 +9,9 @@ import subprocess
 sys.path.append('.')
 
 from setup import (
-    setup_dict, _lint, _test, DOCS_DIRECTORY
+    setup_dict, _lint, _test, DOCS_DIRECTORY, 
+    CODE_DIRECTORY, TESTS_DIRECTORY, PYTEST_FLAGS, print_success_message,
+    print_failure_message
 )
 
 # from setup import (
@@ -60,6 +62,22 @@ def lint():
     ('Perform PEP8 style check, run PyFlakes, and run McCabe complexity '
      'metrics on the code.')
     raise SystemExit(_lint())
+
+@task
+def coverage():
+    """Run tests and show test coverage report."""
+    try:
+        import pytest_cov  # NOQA
+    except ImportError:
+        print_failure_message(
+            'Install the pytest coverage plugin to use this task, '
+            "i.e., `pip install pytest-cov'.")
+        raise SystemExit(1)
+    import pytest
+    pytest.main(PYTEST_FLAGS + [
+        '--cov', CODE_DIRECTORY,
+        '--cov-report', 'term-missing',
+        TESTS_DIRECTORY])
 
 def _doc_make(*make_args):
     """Run make in sphinx' docs directory.
