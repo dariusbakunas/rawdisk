@@ -13,9 +13,9 @@ from setup import (
 )
 
 # from setup import (
-#     setup_dict, get_project_files, print_success_message,
+#     get_project_files, print_success_message,
 #     print_failure_message, _lint, _test, _test_all,
-#     CODE_DIRECTORY, DOCS_DIRECTORY, TESTS_DIRECTORY, PYTEST_FLAGS)
+#     CODE_DIRECTORY, TESTS_DIRECTORY, PYTEST_FLAGS)
 
 from paver.easy import options, task, needs, consume_args
 from paver.setuputils import install_distutils_tasks
@@ -28,11 +28,12 @@ install_distutils_tasks()
 
 class cwd(object):
     """Class used for temporarily changing directories. Can be though of
-    as a `pushd /my/dir' then a `popd' at the end.
+    as a 'pushd /my/dir' then a 'popd' at the end.
     """
     def __init__(self, newcwd):
-        """:param newcwd: directory to make the cwd
-        :type newcwd: :class:`str`
+        """
+        Args:
+            newcwd (str): directory to make the cwd
         """
         self.newcwd = newcwd
 
@@ -66,6 +67,25 @@ def _doc_make(*make_args):
     with cwd(DOCS_DIRECTORY):
         retcode = subprocess.call(make_cmd)
     return retcode
+
+@task
+@needs('doc_html')
+def doc_open():
+    """Build the HTML docs and open them in a web browser."""
+    doc_index = os.path.join(DOCS_DIRECTORY, 'build', 'html', 'index.html')
+    if sys.platform == 'darwin':
+        # Mac OS X
+        subprocess.check_call(['open', doc_index])
+    elif sys.platform == 'win32':
+        # Windows
+        subprocess.check_call(['start', doc_index], shell=True)
+    elif sys.platform == 'linux2':
+        # All freedesktop-compatible desktops
+        subprocess.check_call(['xdg-open', doc_index])
+    else:
+        print_failure_message(
+            "Unsupported platform. Please open `{0}' manually.".format(
+                doc_index))
 
 @task
 def doc_html():
