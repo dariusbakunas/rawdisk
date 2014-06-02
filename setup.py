@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+
 import os
 import sys
 import imp
 import subprocess
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 
 ## Python 2.6 subprocess.check_output compatibility. Thanks Greg Hewgill!
 if 'check_output' not in dir(subprocess):
@@ -24,7 +27,7 @@ sys.path.append('.')
 CODE_DIRECTORY = 'rawdisk'
 DOCS_DIRECTORY = 'docs'
 TESTS_DIRECTORY = 'tests'
-
+PYTEST_FLAGS = ['--doctest-modules']
 
 # Import metadata. Normally this would just be:
 #
@@ -95,6 +98,33 @@ def get_project_files():
 
     return project_files
 
+
+def print_success_message(message):
+    """Print a message indicating success in green color to STDOUT.
+
+    :param message: the message to print
+    :type message: :class:`str`
+    """
+    try:
+        import colorama
+        print(colorama.Fore.GREEN + message + colorama.Fore.RESET)
+    except ImportError:
+        print(message)
+
+
+def print_failure_message(message):
+    """Print a message indicating failure in red color to STDERR.
+
+    :param message: the message to print
+    :type message: :class:`str`
+    """
+    try:
+        import colorama
+        print(colorama.Fore.RED + message + colorama.Fore.RESET, file=sys.stderr)
+    except ImportError:
+        print(message, file=sys.stderr)
+
+
 def read(filename):
     """Return the contents of a file.
 
@@ -105,6 +135,58 @@ def read(filename):
     """
     with open(os.path.join(os.path.dirname(__file__), filename)) as f:
         return f.read()
+
+def _lint():
+    """Run lint and return an exit code."""
+    # Flake8 doesn't have an easy way to run checks using a Python function, so
+    # just fork off another process to do it.
+
+    # Python 3 compat:
+    # - The result of subprocess call outputs are byte strings, meaning we need
+    #   to pass a byte string to endswith.
+    project_python_files = [filename for filename in get_project_files()
+                            if filename.endswith(b'.py')]
+    retcode = subprocess.call(
+        ['flake8', '--max-complexity=10'] + project_python_files)
+    if retcode == 0:
+        print_success_message('No style errors')
+    return retcode
+
+def _test():
+    """Run the unit tests.
+
+    :return: exit code
+    """
+    # Make sure to import pytest in this function. For the reason, see here:
+    # <http://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands>  # NOPEP8
+    import pytest
+    # This runs the unit tests.
+    # It also runs doctest, but only on the modules in TESTS_DIRECTORY.
+    return pytest.main(PYTEST_FLAGS + [TESTS_DIRECTORY])
+
+def _test_all():
+    """Run lint and tests.
+
+    :return: exit code
+    """
+    return _lint() + _test()
+
+# The following code is to allow tests to be run with `python setup.py test'.
+# The main reason to make this possible is to allow tests to be run as part of
+# Setuptools' automatic run of 2to3 on the source code. The recommended way to
+# run tests is still `paver test_all'.
+# See <http://pythonhosted.org/setuptools/python3.html>
+# Code based on <http://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands>  # NOPEP8
+class TestAllCommand(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        # These are fake, and just set to appease distutils and setuptools.
+        self.test_suite = True
+        self.test_args = []
+
+    def run_tests(self):
+        raise SystemExit(_test_all())
+
 
 setup_dict = dict(
     include_package_data = True,

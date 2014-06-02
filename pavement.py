@@ -9,7 +9,7 @@ import subprocess
 sys.path.append('.')
 
 from setup import (
-    setup_dict, DOCS_DIRECTORY
+    setup_dict, _lint, DOCS_DIRECTORY
 )
 
 # from setup import (
@@ -47,6 +47,14 @@ class cwd(object):
         os.chdir(self.oldcwd)
 
 # Tasks
+
+@task
+def lint():
+    # This refuses to format properly when running `paver help' unless
+    # this ugliness is used.
+    ('Perform PEP8 style check, run PyFlakes, and run McCabe complexity '
+     'metrics on the code.')
+    raise SystemExit(_lint())
 
 def _doc_make(*make_args):
     """Run make in sphinx' docs directory.
