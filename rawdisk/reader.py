@@ -8,7 +8,8 @@ class Reader:
 
     Attributes:
         partitions (list): List of detected filesystems \
-        (intialized :class:`Volume <rawdisk.filesystems.volume.Volume>` objects)
+        (intialized :class:`Volume <rawdisk.filesystems.volume.Volume>` \
+            objects)
         scheme (enum): One of \
         :attr:`SCHEME_MBR <rawdisk.scheme.common.SCHEME_MBR>` \
         or :attr:`SCHEME_GPT <rawdisk.scheme.common.SCHEME_GPT>`.
