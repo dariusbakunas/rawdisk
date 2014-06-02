@@ -33,7 +33,7 @@ class RawStruct(object):
     Args:
         data (str): byte array to initialize structure with
     """
-    def __init__(self, data = None):
+    def __init__(self, data=None):
         self._data = data
 
     @property
@@ -105,7 +105,7 @@ class RawStruct(object):
         """
         return struct.unpack("B", self.data[offset:offset+1])[0]
 
-    def get_ushort(self, offset, big_endian = False):
+    def get_ushort(self, offset, big_endian=False):
         """Returns unsigned short (2 bytes)
 
         Args:
@@ -113,10 +113,10 @@ class RawStruct(object):
             big_endian (bool): source is big_endian, defaults to little endian
         """
         if (big_endian):
-            return struct.unpack(">H", self.data[offset:offset+2])[0]    
+            return struct.unpack(">H", self.data[offset:offset+2])[0]
         return struct.unpack("<H", self.data[offset:offset+2])[0]
 
-    def get_uint(self, offset, big_endian = False):
+    def get_uint(self, offset, big_endian=False):
         """Returns unsigned int (4 bytes)
 
         Args:
@@ -127,7 +127,7 @@ class RawStruct(object):
             return struct.unpack(">I", self.data[offset:offset+4])[0]
         return struct.unpack("<I", self.data[offset:offset+4])[0]
 
-    def get_ulong(self, offset, big_endian = False):
+    def get_ulong(self, offset, big_endian=False):
         """Returns unsigned long (4 bytes)
 
         Args:
@@ -138,7 +138,7 @@ class RawStruct(object):
             return struct.unpack(">L", self.data[offset:offset+4])[0]
         return struct.unpack("<L", self.data[offset:offset+4])[0]
 
-    def get_ulonglong(self, offset, big_endian = False):
+    def get_ulonglong(self, offset, big_endian=False):
         """Returns unsigned long long (8 bytes)
 
         Args:
@@ -163,9 +163,12 @@ class RawStruct(object):
     def hexdump(self):
         """Prints structure's data in hex format.
 
-        >>> 00000000: 46 49 4C 45 30 00 03 00  EA 22 20 00 00 00 00 00  FILE0...." .....
-        >>> 00000010: 01 00 01 00 38 00 01 00  A0 01 00 00 00 04 00 00  ....8...........
-        >>> 00000020: 00 00 00 00 00 00 00 00  06 00 00 00 00 00 00 00  ................
+        >>> 00000000: 46 49 4C 45 30 00 03 00  EA 22 20 00 00 00 00 00  \
+        FILE0...." .....
+        >>> 00000010: 01 00 01 00 38 00 01 00  A0 01 00 00 00 04 00 00  \
+        ....8...........
+        >>> 00000020: 00 00 00 00 00 00 00 00  06 00 00 00 00 00 00 00  \
+        ................
 
         See More:
             https://bitbucket.org/techtonik/hexdump/

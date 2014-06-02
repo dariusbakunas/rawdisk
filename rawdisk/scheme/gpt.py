@@ -23,8 +23,6 @@
 # THE SOFTWARE.
 
 import uuid
-import hexdump
-import rawdisk.filesystems
 import struct
 from rawdisk.util.rawstruct import RawStruct
 
@@ -32,11 +30,13 @@ GPT_HEADER_OFFSET = 0x200
 GPT_SIG_SIZE = 8
 GPT_SIGNATURE = 'EFI PART'
 
+
 class GptHeader(RawStruct):
     """Represents GUID partition table header (LBA1).
 
     Args:
-        data (str): byte array to initialize structure with. Must be valid gpt header.
+        data (str): byte array to initialize structure with. \
+        Must be valid gpt header.
 
     Attributes:
         signature (str): "EFI PART", 45h 46h 49h 20h 50h 41h 52h 54h
@@ -82,6 +82,7 @@ class GptHeader(RawStruct):
         self.part_array_crc32 = self.get_uint(0x58)
         # Rest of bytes @ 0x5C must be zeroes (420 for 512 sectors)
 
+
 class GptPartition(RawStruct):
     """Represents GPT partition entry.
 
@@ -108,11 +109,13 @@ class GptPartition(RawStruct):
         self.attr_flags = self.get_ulonglong(0x30)
         self.name = self.get_chunk(0x38, 72).decode('utf-16')
 
+
 class Gpt(object):
     """Represents GPT partition table.
 
     Attributes:
-        partition_entries (list): List of initialized :class:`GptPartition` objects 
+        partition_entries (list): List of initialized \
+        :class:`GptPartition` objects.
         header (GptHeader): Initialized :class:`GptHeader` object
     """
     def __init__(self):
@@ -135,16 +138,18 @@ class Gpt(object):
             self.header = GptHeader(f.read(header_size))
             self._load_partition_entries()
 
-    def _load_partition_entries(self, block_size = 512):
+    def _load_partition_entries(self, block_size=512):
         """Loads the list of :class:GptPartition partition entries
 
         Args:
             block_size (uint): Block size of the volume, default: 512
         """
-        
+
         self.fd.seek(self.header.part_lba * block_size)
         for p in xrange(0, self.header.num_partitions):
             data = self.fd.read(self.header.part_size)
             entry = GptPartition(data)
-            if entry.type_guid != uuid.UUID('{00000000-0000-0000-0000-000000000000}'):
+            if entry.type_guid != uuid.UUID(
+                '{00000000-0000-0000-0000-000000000000}'
+            ):
                 self.partition_entries.append(entry)

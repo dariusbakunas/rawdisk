@@ -1,6 +1,6 @@
 [Core]
 Name = NtfsPlugin
-Module = ntfs
+Module = ntfs/ntfs.py
 
 [Documentation]
 Author = Darius Bakunas

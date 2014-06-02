@@ -8,7 +8,7 @@ import subprocess
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
-## Python 2.6 subprocess.check_output compatibility. Thanks Greg Hewgill!
+# Python 2.6 subprocess.check_output compatibility. Thanks Greg Hewgill!
 if 'check_output' not in dir(subprocess):
     def check_output(cmd_args, *args, **kwargs):
         proc = subprocess.Popen(
@@ -23,7 +23,7 @@ if 'check_output' not in dir(subprocess):
 # Add the current directory to the module search path.
 sys.path.append('.')
 
-## Constants
+# Constants
 CODE_DIRECTORY = 'rawdisk'
 DOCS_DIRECTORY = 'docs'
 TESTS_DIRECTORY = 'tests'
@@ -44,6 +44,8 @@ metadata = imp.load_source(
     'metadata', os.path.join(CODE_DIRECTORY, 'metadata.py'))
 
 # Helper functions
+
+
 def git_ls_files(*cmd_args):
     """Run ``git ls-files`` in the top-level project directory. Arguments go
     directly to execution call.
@@ -54,6 +56,7 @@ def git_ls_files(*cmd_args):
     cmd = ['git', 'ls-files']
     cmd.extend(cmd_args)
     return set(subprocess.check_output(cmd).splitlines())
+
 
 def get_git_project_files():
     """Retrieve a list of all non-ignored files, including untracked files,
@@ -73,8 +76,10 @@ def get_git_project_files():
     # provide a well-defined order to tools like flake8, etc.
     return sorted(cached_and_untracked_files - uncommitted_deleted_files)
 
+
 def is_git_project():
     return os.path.isdir('.git')
+
 
 def get_project_files():
     """Retrieve a list of project files, ignoring hidden files.
@@ -120,7 +125,9 @@ def print_failure_message(message):
     """
     try:
         import colorama
-        print(colorama.Fore.RED + message + colorama.Fore.RESET, file=sys.stderr)
+        print(
+            colorama.Fore.RED + message + colorama.Fore.RESET, file=sys.stderr
+        )
     except ImportError:
         print(message, file=sys.stderr)
 
@@ -135,6 +142,7 @@ def read(filename):
     """
     with open(os.path.join(os.path.dirname(__file__), filename)) as f:
         return f.read()
+
 
 def _lint():
     """Run lint and return an exit code."""
@@ -152,6 +160,7 @@ def _lint():
         print_success_message('No style errors')
     return retcode
 
+
 def _test():
     """Run the unit tests.
 
@@ -163,6 +172,7 @@ def _test():
     # This runs the unit tests.
     # It also runs doctest, but only on the modules in TESTS_DIRECTORY.
     return pytest.main(PYTEST_FLAGS + [TESTS_DIRECTORY])
+
 
 def _test_all():
     """Run lint and tests.
@@ -177,6 +187,8 @@ def _test_all():
 # run tests is still `paver test_all'.
 # See <http://pythonhosted.org/setuptools/python3.html>
 # Code based on <http://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands>  # NOPEP8
+
+
 class TestAllCommand(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
@@ -189,17 +201,17 @@ class TestAllCommand(TestCommand):
 
 
 setup_dict = dict(
-    include_package_data = True,
+    include_package_data=True,
     name=metadata.package,
     author=metadata.authors[0],
-    author_email = metadata.emails[0],
+    author_email=metadata.emails[0],
     maintainer=metadata.authors[0],
     maintainer_email=metadata.emails[0],
     url=metadata.url,
     version=metadata.version,
     description=metadata.description,
     long_description=read('README.md'),
-    keywords = metadata.keywords,
+    keywords=metadata.keywords,
     # Find a list of classifiers here:
     # <http://pypi.python.org/pypi?%3Aaction=list_classifiers>
     classifiers=[
@@ -233,9 +245,10 @@ setup_dict = dict(
     entry_points={
         'console_scripts': [
             'rawdisk = rawdisk.main:main',
-        ]        
+        ]
     }
 )
+
 
 def main():
     setup(**setup_dict)

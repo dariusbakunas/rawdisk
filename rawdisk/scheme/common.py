@@ -33,8 +33,6 @@ Attributes:
 import mbr
 import gpt
 import struct
-import hexdump
-import sys
 
 SCHEME_UNKNOWN = 0x1
 SCHEME_MBR = 0x2
@@ -45,7 +43,8 @@ def detect_scheme(filename):
     """Detects partitioning scheme of the source
 
     Args:
-        filename (str): path to file or device for detection of partitioning scheme
+        filename (str): path to file or device for detection of \
+        partitioning scheme.
 
     Returns:
         SCHEME_MBR, SCHEME_GPT or SCHEME_UNKNOWN

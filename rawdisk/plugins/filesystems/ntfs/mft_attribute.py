@@ -22,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import hexdump
 from rawdisk.util.rawstruct import RawStruct
 from rawdisk.util.filetimes import filetime_to_dt
 from mft_attr_header import MftAttrHeader
@@ -53,8 +52,10 @@ class MftAttr(RawStruct):
     """Base class for all MFT attributes.
 
     Attributes:
-        type_str (string): String representation of attribute's type eg. $SYSTEM_INFORMATION.
-        header (MftAttrHeader): Initialized :class:`MftAttrHeader <plugins.filesystems.ntfs.mft_attr_header.MftAttrHeader>` object.
+        type_str (string): String representation of attribute's type eg. \
+        $SYSTEM_INFORMATION.
+        header (MftAttrHeader): Initialized :class:`MftAttrHeader \
+        <plugins.filesystems.ntfs.mft_attr_header.MftAttrHeader>` object.
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)
@@ -82,6 +83,38 @@ class MftAttr(RawStruct):
             self.get_chunk(0, header_size)
         )
 
+    @staticmethod
+    def factory(attr_type, data):
+        """Returns Initialized attribute object based on attr_type \
+        (eg. :class:`MftAttrStandardInformation`)
+
+        Args:
+            attr_type (uint): Attribute type number (eg. 0x10 - \
+                $STANDARD_INFORMATION)
+            data (byte array): Data to initialize attribute object with.
+        """
+
+        constructors = {
+            MFT_ATTR_STANDARD_INFORMATION: MftAttrStandardInformation,
+            MFT_ATTR_ATTRIBUTE_LIST: MftAttrAttributeList,
+            MFT_ATTR_FILENAME: MftAttrFilename,
+            MFT_ATTR_OBJECT_ID: MftAttrObjectId,
+            MFT_ATTR_SECURITY_DESCRIPTOR: MftAttrSecurityDescriptor,
+            MFT_ATTR_VOLUME_NAME: MftAttrVolumeName,
+            MFT_ATTR_VOLUME_INFO: MftAttrVolumeInfo,
+            MFT_ATTR_DATA: MftAttrData,
+            MFT_ATTR_INDEX_ROOT: MftAttrIndexRoot,
+            MFT_ATTR_INDEX_ALLOCATION: MftAttrIndexAllocation,
+            MFT_ATTR_BITMAP: MftAttrBitmap,
+            MFT_ATTR_REPARSE_POINT: MftAttrReparsePoint,
+            MFT_ATTR_LOGGED_TOOLSTREAM: MftAttrLoggedToolstream,
+        }
+
+        if attr_type not in constructors:
+            return None
+
+        return constructors[attr_type](data)
+
     def __str__(self):
         name = "N/A"
         resident = "Resident"
@@ -93,11 +126,11 @@ class MftAttr(RawStruct):
             resident = "Non-Resident"
 
         return "Type: %s Name: %s %s Size: %d" % (
-                self.type_str,
-                name,
-                resident,
-                self.header.length
-            )
+            self.type_str,
+            name,
+            resident,
+            self.header.length
+        )
 
 
 # Define all attribute types here
@@ -203,7 +236,8 @@ class MftAttrFilename(MftAttr):
         self.reparse = self.get_uint(offset + 0x3C)
         self.fname_length = self.get_ubyte(offset + 0x40)
         self.fnspace = self.get_ubyte(offset + 0x41)
-        self.fname = self.get_chunk(offset + 0x42, 2 * self.fname_length).decode('utf-16')
+        self.fname = self.get_chunk(offset + 0x42, 2 *
+                                    self.fname_length).decode('utf-16')
 
     @property
     def ctime_dt(self):

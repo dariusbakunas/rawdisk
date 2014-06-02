@@ -24,16 +24,16 @@
 
 import rawdisk.plugins.categories as categories
 import uuid
-from rawdisk.util.rawstruct import RawStruct
 from rawdisk.filesystems.detector import FilesystemDetectorSingleton
-from hfs_plus_volume import *
+from rawdisk.plugins.filesystems.hfs_plus.hfs_plus_volume import HfsPlusVolume
 
 
 class HfsPlusPlugin(categories.IFilesystemPlugin):
     """Filesystem plugin for HFS+ partition.
     """
     def register(self):
-        """Registers this plugin with :class:`FilesystemDetector <filesystems.detector.FilesystemDetector>` as gpt plugin, \
+        """Registers this plugin with :class:`FilesystemDetector \
+        <filesystems.detector.FilesystemDetector>` as gpt plugin, \
         with type guid *{48465300-0000-11AA-AA11-00306543ECAC}*
         """
         detector = FilesystemDetectorSingleton.get()
@@ -42,12 +42,14 @@ class HfsPlusPlugin(categories.IFilesystemPlugin):
             self
         )
 
-    def detect(self, filename, offset): 
-        """Always returns True, since there is only one partition with this type GUID,
-        no need to do further verification.
+    def detect(self, filename, offset):
+        """Always returns True, since there is only one partition with \
+        this type GUID, no need to do further verification.
         """
         return True
 
     def get_volume_object(self):
-        """Returns :class:`HfsPlusVolume <plugins.filesystems.hfs_plus.hfs_plus_volume.HfsPlusVolume>` object."""
+        """Returns :class:`HfsPlusVolume \
+        <plugins.filesystems.hfs_plus.hfs_plus_volume.HfsPlusVolume>` \
+        object."""
         return HfsPlusVolume()

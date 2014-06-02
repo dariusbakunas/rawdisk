@@ -22,9 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from mft_attribute import *
-from mft_entry_header import *
-from mft_attr_header import *
+from mft_attribute import MFT_ATTR_FILENAME, MftAttr
+from mft_entry_header import MftEntryHeader
 from rawdisk.util.rawstruct import RawStruct
 
 MFT_ENTRY_SIZE = 1024
@@ -49,10 +48,13 @@ class MftEntry(RawStruct):
     """Represents MFT table entry.
 
     Attributes:
-        offset (uint): MFT entry offset starting from the beginning of disk in bytes.
+        offset (uint): MFT entry offset starting from the beginning of \
+        disk in bytes.
         attributes (list): List of initialized mft attribute objects \
-        (eg. :class:`MftAttrStandardInformation <plugins.filesystems.ntfs.mft_attribute.MftAttrStandardInformation>`).
-        header (MftEntryHeader): Initialized :class:`MftEntryHeader <plugins.filesystems.ntfs.mft_entry_header.MftEntryHeader>`.
+        (eg. :class:`MftAttrStandardInformation \
+        <plugins.filesystems.ntfs.mft_attribute.MftAttrStandardInformation>`).
+        header (MftEntryHeader): Initialized :class:`MftEntryHeader \
+        <plugins.filesystems.ntfs.mft_entry_header.MftEntryHeader>`.
     """
     def __init__(self, offset, data):
         RawStruct.__init__(self, data)
@@ -69,7 +71,8 @@ class MftEntry(RawStruct):
     def end_offset(self):
         """
         Returns:
-            uint: end offset of the MFT entry, beginning form the start of the disk in bytes."""
+            uint: end offset of the MFT entry, beginning form the start \
+            of the disk in bytes."""
         return self.offset + self.header.allocated_size
 
     @property
@@ -98,55 +101,32 @@ class MftEntry(RawStruct):
                 break
 
     def get_attribute(self, offset):
-        """Determines attribute type at the offset and returns initialized attribute object.
+        """Determines attribute type at the offset and returns \
+        initialized attribute object.
 
         Returns:
-            MftAttr: One of the attribute objects (eg. :class:`MftAttrFilename <plugins.filesystems.ntfs.mft_attribute.MftAttrFilename>`).
-            None: If atttribute type does not mach any one of the supported attribute types.
+            MftAttr: One of the attribute objects \
+            (eg. :class:`MftAttrFilename \
+                <plugins.filesystems.ntfs.mft_attribute.MftAttrFilename>`).
+            None: If atttribute type does not mach any one of the supported \
+            attribute types.
         """
         attr_type = self.get_uint(offset)
         # Attribute length is in header @ offset 0x4
         length = self.get_uint(offset + 0x04)
         data = self.get_chunk(offset, length)
 
-        if attr_type == MFT_ATTR_STANDARD_INFORMATION:
-            return MftAttrStandardInformation(data)
-        elif attr_type == MFT_ATTR_ATTRIBUTE_LIST:
-            return MftAttrAttributeList(data)
-        elif attr_type == MFT_ATTR_FILENAME:
-            return MftAttrFilename(data)
-        elif attr_type == MFT_ATTR_OBJECT_ID:
-            return MftAttrObjectId(data)
-        elif attr_type == MFT_ATTR_SECURITY_DESCRIPTOR:
-            return MftAttrSecurityDescriptor(data)
-        elif attr_type == MFT_ATTR_VOLUME_NAME:
-            return MftAttrVolumeName(data)
-        elif attr_type == MFT_ATTR_VOLUME_INFO:
-            return MftAttrVolumeInfo(data)
-        elif attr_type == MFT_ATTR_DATA:
-            return MftAttrData(data)
-        elif attr_type == MFT_ATTR_INDEX_ROOT:
-            return MftAttrIndexRoot(data)
-        elif attr_type == MFT_ATTR_INDEX_ALLOCATION:
-            return MftAttrIndexAllocation(data)
-        elif attr_type == MFT_ATTR_BITMAP:
-            return MftAttrBitmap(data)
-        elif attr_type == MFT_ATTR_REPARSE_POINT:
-            return MftAttrReparsePoint(data)
-        elif attr_type == MFT_ATTR_LOGGED_TOOLSTREAM:
-            return MftAttrLoggedToolstream(data)
-        else:
-            return None
+        return MftAttr.factory(attr_type, data)
 
     def __str__(self):
-        result = ("File: %d\n"
-        "%s (%s)" % (
-            self.header.seq_number,
-            self.name_str,
-            self.fname_str
-        ))
+        result = (
+            "File: %d\n%s (%s)" % (
+                self.header.seq_number,
+                self.name_str,
+                self.fname_str
+            ))
 
         for attr in self.attributes:
-            result = result +"\n\t" + str(attr)
+            result = result + "\n\t" + str(attr)
 
         return result

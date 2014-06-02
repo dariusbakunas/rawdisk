@@ -37,7 +37,8 @@ class Volume(object):
         """Load volume information.
 
         Args:
-            filename: filename or device that it will read volume information from
-            offset: volume offset
+            filename: Filename or device that it will read volume.
+            information from.
+            offset: Volume offset.
         """
         return

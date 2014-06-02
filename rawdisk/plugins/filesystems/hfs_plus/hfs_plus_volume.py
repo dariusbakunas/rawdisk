@@ -22,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import hurry.filesize
 from rawdisk.filesystems.volume import Volume
 from rawdisk.util.rawstruct import RawStruct
 
@@ -33,19 +32,19 @@ class VolumeHeader(RawStruct):
     """Represents HFS+ volume header
 
     Attributes:
-        signature (2 byte string): The volume signature, which must be kHFSPlusSigWord ('H+') \
-        for an HFS Plus volume
-        version (ushort): The version of the volume format, which is currently 4 \
-        (kHFSPlusVersion) for HFS Plus volumes
+        signature (2 byte string): The volume signature, \
+        which must be kHFSPlusSigWord ('H+') for an HFS Plus volume.
+        version (ushort): The version of the volume format, \
+        which is currently 4 (kHFSPlusVersion) for HFS Plus volumes.
         attributes (uint): HFS+ volume attributes
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)
-        self.signature = self.get_string(0x00,2)
+        self.signature = self.get_string(0x00, 2)
         # HFS+ everything is stored in big-endian
         self.version = self.get_ushort(0x02, True)
         self.attributes = self.get_uint(0x04, True)
-        
+
 
 class HfsPlusVolume(Volume):
     """Structure for HFS+ volume.
@@ -64,7 +63,7 @@ class HfsPlusVolume(Volume):
     def load(self, filename, offset):
         """Loads HFS+ volume information"""
         try:
-            self.offset = offset 
+            self.offset = offset
             self.fd = open(filename, 'rb')
             # 1024 - temporary, need to find out actual volume header size
             self.fd.seek(self.offset + VOLUME_HEADER_OFFSET)

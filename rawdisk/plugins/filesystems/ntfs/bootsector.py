@@ -22,27 +22,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from bpb import *
+from bpb import Bpb
 from rawdisk.util.rawstruct import RawStruct
 
 BPB_SIZE = 25
 BPB_OFFSET = 0x0B
 EXTENDED_BPB_SIZE = 48
 
+
 class BootSector(RawStruct):
     """Represents NTFS Bootsector
 
     Attributes:
         oem_id (8 byte string): NTFS filesystem signature 'NTFS    '
-        bpb (Bpb): Initialized :class:`Bpb <plugins.filesystems.ntfs.bpb.Bpb>` object
-        mft_offset (int): Offset to MFT table from the start of NTFS volume in bytes
+        bpb (Bpb): Initialized :class:\
+        `Bpb <plugins.filesystems.ntfs.bpb.Bpb>` object
+        mft_offset (int): Offset to MFT table from the start of \
+        NTFS volume in bytes
 
     See More:
         http://ntfs.com/ntfs-partition-boot-sector.htm
     """
-    def __init__(self, data = None):
+    def __init__(self, data=None):
         RawStruct.__init__(self, data)
         self.oem_id = self.get_string(3, 8)
-        self.bpb = Bpb(self.get_chunk(BPB_OFFSET, BPB_SIZE + EXTENDED_BPB_SIZE))
+        self.bpb = Bpb(self.get_chunk(
+            BPB_OFFSET, BPB_SIZE + EXTENDED_BPB_SIZE))
         self.mft_offset = self.bpb.bytes_per_sector * \
             self.bpb.sectors_per_cluster * self.bpb.mft_cluster

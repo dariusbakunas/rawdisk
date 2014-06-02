@@ -22,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import rawdisk.filesystems
 from rawdisk.util.rawstruct import RawStruct
 
 
@@ -43,7 +42,8 @@ class PartitionEntry(RawStruct):
         data (str): byte array to initialize structure with.
 
     Attributes:
-        boot_indicator (ubyte): Boot indicator bit flag: 0 = no, 0x80 = bootable (or "active")
+        boot_indicator (ubyte): Boot indicator bit flag: 0 = no, 0x80 = \
+        bootable (or "active")
         starting_head (ubyte): Starting head for the partition
         starting_sector (6 bits): Starting sector for the partition
         starting_cylinder (10 bits): Starting cylinder for the partition
@@ -51,15 +51,16 @@ class PartitionEntry(RawStruct):
         ending_head (ubyte): Ending head of the partition
         ending_sector (6 bits): Ending sector
         ending_cylinder (10 bits): Ending cylinder
-        relative_sector (uint): The offset from the beginning of the disk to the beginning \
-        of the volume, counting by sectors.
+        relative_sector (uint): The offset from the beginning of the disk to \
+        the beginning of the volume, counting by sectors.
         total_sectors (uint): The total number of sectors in the volume.
-        part_offset (uint): The offset from the beginning of the disk to the beginning \
-        of the volume, counting by bytes.
+        part_offset (uint): The offset from the beginning of the disk \
+        to the beginning of the volume, counting by bytes.
 
     See Also:
         | MBR Table (http://technet.microsoft.com/en-us/library/cc976786.aspx)
-        | MBR Partition Types (http://en.wikipedia.org/wiki/Partition_type#List_of_partition_IDs)
+        | MBR Partition Types \
+        (http://en.wikipedia.org/wiki/Partition_type#List_of_partition_IDs)
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)
@@ -107,7 +108,8 @@ class Mbr(RawStruct):
     """Represents the Master Boot Record of the filesystem.
 
     Attributes:
-        partition_table (PartitionTable): Initialized :class:`PartitionTable` object
+        partition_table (PartitionTable): Initialized \
+        :class:`PartitionTable` object
     """
     def __init__(self):
         RawStruct.__init__(self)

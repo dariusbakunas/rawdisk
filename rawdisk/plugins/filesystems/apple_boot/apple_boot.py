@@ -24,16 +24,16 @@
 
 import rawdisk.plugins.categories as categories
 import uuid
-from rawdisk.util.rawstruct import RawStruct
 from rawdisk.filesystems.detector import FilesystemDetectorSingleton
-from apple_boot_volume import *
+import rawdisk.plugins.filesystems.apple_boot.apple_boot_volume as volume
 
 
 class AppleBootPlugin(categories.IFilesystemPlugin):
     """Filesystem plugin for Apple_Boot partition.
     """
     def register(self):
-        """Registers this plugin with :class:`FilesystemDetector <filesystems.detector.FilesystemDetector>` as gpt plugin, \
+        """Registers this plugin with :class:`FilesystemDetector \
+        <filesystems.detector.FilesystemDetector>` as gpt plugin, \
         with type guid *{426f6f74-0000-11aa-aa11-00306543ecac}*
         """
         detector = FilesystemDetectorSingleton.get()
@@ -43,11 +43,13 @@ class AppleBootPlugin(categories.IFilesystemPlugin):
         )
 
     def detect(self, filename, offset):
-        """Always returns True, since there is only one partition with this type GUID,
-        no need to do further verification.
+        """Always returns True, since there is only one partition \
+        with this type GUID, no need to do further verification.
         """
         return True
 
     def get_volume_object(self):
-        """Returns :class:`AppleBootVolume <plugins.filesystems.apple_boot.apple_boot_volume.AppleBootVolume>` object."""
-        return AppleBootVolume()
+        """Returns :class:`AppleBootVolume \
+        <plugins.filesystems.apple_boot.apple_boot_volume.AppleBootVolume>` \
+        object."""
+        return volume.AppleBootVolume()
