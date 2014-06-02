@@ -23,7 +23,7 @@ Last line looks through available filesystem plugins in *rawdisk/plugins/filesys
 Analysing selected partition
 ============================
 
-r.partitions is a list that contains matched volume objects. For example to get NTFS volume object (:class:`NtfsVolume <plugins.filesystems.ntfs.ntfs_volume.NtfsVolume>`)from the listing above::
+r.partitions is a list that contains matched volume objects. For example to get NTFS volume object (:class:`NtfsVolume <rawdisk.plugins.filesystems.ntfs.ntfs_volume.NtfsVolume>`)from the listing above::
 
 	ntfs_vol = r.partitions[0]
 
