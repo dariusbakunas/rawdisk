@@ -59,7 +59,8 @@ class PartitionEntry(RawStruct):
 
     See Also:
         | MBR Table (http://technet.microsoft.com/en-us/library/cc976786.aspx)
-        | MBR Partition Types (http://en.wikipedia.org/wiki/Partition_type#List_of_partition_IDs)
+        | MBR Partition Types \
+        (http://en.wikipedia.org/wiki/Partition_type#List_of_partition_IDs)
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)

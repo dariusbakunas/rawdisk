@@ -25,7 +25,7 @@
 import rawdisk.plugins.categories as categories
 import uuid
 from rawdisk.filesystems.detector import FilesystemDetectorSingleton
-from apple_boot_volume import AppleBootVolume
+import rawdisk.plugins.filesystems.apple_boot.apple_boot_volume as volume
 
 
 class AppleBootPlugin(categories.IFilesystemPlugin):
@@ -52,4 +52,4 @@ class AppleBootPlugin(categories.IFilesystemPlugin):
         """Returns :class:`AppleBootVolume \
         <plugins.filesystems.apple_boot.apple_boot_volume.AppleBootVolume>` \
         object."""
-        return AppleBootVolume()
+        return volume.AppleBootVolume()

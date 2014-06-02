@@ -24,7 +24,7 @@
 
 import uuid
 import rawdisk.plugins.categories as categories
-from ntfs_volume import NtfsVolume
+from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume
 from rawdisk.util.rawstruct import RawStruct
 from rawdisk.filesystems.detector import FilesystemDetectorSingleton
 

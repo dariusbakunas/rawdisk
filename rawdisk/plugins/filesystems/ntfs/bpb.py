@@ -49,7 +49,8 @@ class Bpb(RawStruct):
     See More:
         | http://en.wikipedia.org/wiki/BIOS_parameter_block
         | http://ntfs.com/ntfs-partition-boot-sector.htm
-        | http://homepage.ntlworld.com/jonathan.deboynepollard/FGA/bios-parameter-block.html
+        | http://homepage.ntlworld.com\
+/jonathan.deboynepollard/FGA/bios-parameter-block.html
     """
     def __init__(self, data=None):
         RawStruct.__init__(self, data)

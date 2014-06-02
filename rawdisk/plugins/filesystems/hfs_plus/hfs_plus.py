@@ -25,7 +25,7 @@
 import rawdisk.plugins.categories as categories
 import uuid
 from rawdisk.filesystems.detector import FilesystemDetectorSingleton
-from hfs_plus_volume import HfsPlusVolume
+from rawdisk.plugins.filesystems.hfs_plus.hfs_plus_volume import HfsPlusVolume
 
 
 class HfsPlusPlugin(categories.IFilesystemPlugin):

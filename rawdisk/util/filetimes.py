@@ -24,7 +24,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """Tools to convert between Python datetime instances and Microsoft times.
 
-Source: http://reliablybroken.com/b/2011/09/free-software-ftw-updated-filetimes-py/
+Source: http://reliablybroken.com\
+/b/2011/09/free-software-ftw-updated-filetimes-py/
 """
 from datetime import datetime, timedelta, tzinfo
 from calendar import timegm

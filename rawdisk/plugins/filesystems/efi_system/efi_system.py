@@ -25,7 +25,7 @@
 import rawdisk.plugins.categories as categories
 import uuid
 from rawdisk.filesystems.detector import FilesystemDetectorSingleton
-from efi_system_volume import EfiSystemVolume
+import rawdisk.plugins.filesystems.efi_system.efi_system_volume as volume
 
 
 class EfiSystemPlugin(categories.IFilesystemPlugin):
@@ -52,4 +52,4 @@ class EfiSystemPlugin(categories.IFilesystemPlugin):
         """Returns :class:`EfiSystemVolume \
         <plugins.filesystems.efi_system.efi_system_volume.EfiSystemVolume>` \
         object."""
-        return EfiSystemVolume()
+        return volume.EfiSystemVolume()

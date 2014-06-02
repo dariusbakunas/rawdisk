@@ -69,7 +69,8 @@ class MftAttrHeader(RawStruct):
 
 
     See More:
-        | http://ftp.kolibrios.org/users/Asper/docs/NTFS/ntfsdoc.html#concept_attribute_header
+        | http://ftp.kolibrios.org\
+/users/Asper/docs/NTFS/ntfsdoc.html#concept_attribute_header
         | http://msdn.microsoft.com/en-us/library/bb470039(v=vs.85).aspx
     """
     def __init__(self, data):
