@@ -22,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import hexdump
 from rawdisk.util.rawstruct import RawStruct
 from rawdisk.util.filetimes import filetime_to_dt
 from mft_attr_header import MftAttrHeader
@@ -53,8 +52,10 @@ class MftAttr(RawStruct):
     """Base class for all MFT attributes.
 
     Attributes:
-        type_str (string): String representation of attribute's type eg. $SYSTEM_INFORMATION.
-        header (MftAttrHeader): Initialized :class:`MftAttrHeader <plugins.filesystems.ntfs.mft_attr_header.MftAttrHeader>` object.
+        type_str (string): String representation of attribute's type eg. \
+        $SYSTEM_INFORMATION.
+        header (MftAttrHeader): Initialized :class:`MftAttrHeader \
+        <plugins.filesystems.ntfs.mft_attr_header.MftAttrHeader>` object.
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)
@@ -93,11 +94,11 @@ class MftAttr(RawStruct):
             resident = "Non-Resident"
 
         return "Type: %s Name: %s %s Size: %d" % (
-                self.type_str,
-                name,
-                resident,
-                self.header.length
-            )
+            self.type_str,
+            name,
+            resident,
+            self.header.length
+        )
 
 
 # Define all attribute types here

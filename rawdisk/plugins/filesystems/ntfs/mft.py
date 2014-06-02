@@ -22,9 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import hexdump
-from mft_entry import *
-from rawdisk.util.rawstruct import RawStruct
+from mft_entry import MftEntry, MFT_ENTRY_SIZE
 
 
 class MftTable(object):
@@ -48,7 +46,8 @@ class MftTable(object):
         """Get system entry by index
 
         Returns:
-            MftEntry: initialized :class:`MftEntry <plugins.filesystems.ntfs.mft_entry.MftEntry>`
+            MftEntry: initialized :class:`MftEntry \
+            <plugins.filesystems.ntfs.mft_entry.MftEntry>`
         """
         return self._metadata_entries[entry_id]
 
@@ -58,38 +57,28 @@ class MftTable(object):
         for n in range(0, 12):
             data = source.read(MFT_ENTRY_SIZE)
             entry = MftEntry(offset, data)
-            entry.name_str = self._get_system_entry_name(n)
+            entry.name_str = self._sys_entry_name(n)
             self._metadata_entries.append(entry)
             source.seek(entry.end_offset)
             offset = entry.end_offset
 
-    def _get_system_entry_name(self, index):
-        if index == 0:
-            return "Master File Table"
-        elif index == 1:
-            return "Master File Table Mirror"
-        elif index == 2:
-            return "Log File"
-        elif index == 3:
-            return "Volume File"
-        elif index == 4:
-            return "Attribute Definition Table"
-        elif index == 5:
-            return "Root Directory"
-        elif index == 6:
-            return "Volume Bitmap"
-        elif index == 7:
-            return "Boot Sector"
-        elif index == 8:
-            return "Bad Cluster List"
-        elif index == 9:
-            return "Security"
-        elif index == 10:
-            return "Upcase Table"
-        elif index == 11:
-            return "Extend Table"
-        else:
-            return "(unknown/unnamed)"
+    def _sys_entry_name(self, index):
+        names = {
+            0: "Master File Table",
+            1: "Master File Table Mirror",
+            2: "Log File",
+            3: "Volume File",
+            4: "Attribute Definition Table",
+            5: "Root Directory",
+            6: "Volume Bitmap",
+            7: "Boot Sector",
+            8: "Bad Cluster List",
+            9: "Security",
+            10: "Upcase Table",
+            11: "Extend Table",
+        }
+
+        return names.get(index, "(unknown/unnamed)")
 
     def __str__(self):
         result = ""

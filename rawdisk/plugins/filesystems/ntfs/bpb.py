@@ -27,35 +27,37 @@ from rawdisk.util.rawstruct import RawStruct
 
 class Bpb(RawStruct):
     """Bios parameter block.
-    
+
     Attributes:
-        bytes_per_sector (ushort): sector size with which the physical disc medium has \
-        been low-level formatted in bytes
-        sectors_per_cluster (ubyte): number of sectors in an allocation unit
-        reserved_sectors (ushort): number of sectors in the area at the start of the volume that \
-        is reserved for operating system boot code
-        media_descriptor (ubyte): describes type of device used eg. floppy, harddisk (not used anymore?)
-        total_sectors (ulonglong): total number of sectors in the volume
+        bytes_per_sector (ushort): Sector size with which the physical \
+        disc medium has been low-level formatted in bytes.
+        sectors_per_cluster (ubyte): Number of sectors in an allocation unit.
+        reserved_sectors (ushort): Number of sectors in the area at the start \
+        of the volume that is reserved for operating system boot code.
+        media_descriptor (ubyte): Describes type of device used eg. floppy,
+        harddisk (not used anymore?).
+        total_sectors (ulonglong): Total number of sectors in the volume.
         mft_cluster (ulonglong): MFT table first cluster number \
-        (*mft offset = volume offset + bytes_per_sector * sectors_per_cluster * mft_cluster*)
-        mft_mirror_cluster (ulonglong): Mirror MFT table cluster number
-        clusters_per_mft (uint): MFT record size
-        clusters_per_index (uint): Index block size
-        volume_serial (ulonglong): Volume serial number
-        checksum (uint): BPB checksum
+        (*mft offset = volume offset + bytes_per_sector * \
+            sectors_per_cluster * mft_cluster*).
+        mft_mirror_cluster (ulonglong): Mirror MFT table cluster number.
+        clusters_per_mft (uint): MFT record size.
+        clusters_per_index (uint): Index block size.
+        volume_serial (ulonglong): Volume serial number.
+        checksum (uint): BPB checksum.
 
     See More:
         | http://en.wikipedia.org/wiki/BIOS_parameter_block
         | http://ntfs.com/ntfs-partition-boot-sector.htm
-        | http://homepage.ntlworld.com./jonathan.deboynepollard/FGA/bios-parameter-block.html
+        | http://homepage.ntlworld.com/jonathan.deboynepollard/FGA/bios-parameter-block.html
     """
-    def __init__(self, data = None):
+    def __init__(self, data=None):
         RawStruct.__init__(self, data)
         self.bytes_per_sector = self.get_ushort(0)
         self.sectors_per_cluster = self.get_ubyte(2)
         self.reserved_sectors = self.get_ushort(3)
         self.media_descriptor = self.get_ubyte(10)
-        
+
         self.sectors_per_track = self.get_ushort(13)
         self.number_of_heads = self.get_ushort(15)
         self.hidden_sectors = self.get_uint(17)
