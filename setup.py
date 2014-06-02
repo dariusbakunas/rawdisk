@@ -38,7 +38,7 @@ def read(filename):
     with open(os.path.join(os.path.dirname(__file__), filename)) as f:
         return f.read()
 
-setup(
+setup_dict = dict(
     include_package_data = True,
     name=metadata.package,
     author=metadata.authors[0],
@@ -86,3 +86,9 @@ setup(
         ]        
     }
 )
+
+def main():
+    setup(**setup_dict)
+
+if __name__ == '__main__':
+    main()
