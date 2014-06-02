@@ -23,8 +23,8 @@
 # THE SOFTWARE.
 
 import hurry.filesize
-from mft import *
-from bootsector import *
+from mft import MftTable
+from bootsector import BootSector
 from rawdisk.filesystems.volume import Volume
 
 NTFS_BOOTSECTOR_SIZE = 512
@@ -34,10 +34,13 @@ class NtfsVolume(Volume):
     """Represents NTFS volume.
 
     Attributes:
-        offset (uint): offset to the partition from the start of the disk in bytes
+        offset (uint): offset to the partition from the start of the disk \
+        in bytes
         fd (fd): file descriptor that is used to load volume information
-        bootsector (BootSector): initialized :class:`BootSector <plugins.filesystems.ntfs.bootsector.BootSector>` object
-        mft_table (MftTable): initialized :class:`MftTable <plugins.filesystems.ntfs.mft.MftTable>` object
+        bootsector (BootSector): initialized :class:`BootSector \
+        <plugins.filesystems.ntfs.bootsector.BootSector>` object
+        mft_table (MftTable): initialized :class:`MftTable \
+        <plugins.filesystems.ntfs.mft.MftTable>` object
 
     See More:
         http://en.wikipedia.org/wiki/NTFS
@@ -52,13 +55,15 @@ class NtfsVolume(Volume):
         """Loads NTFS volume information
 
         Args:
-            filename (str): path to file/device to read the volume information from
-            offset (uint): valid NTFS partition offset from the beginning of the file/device
+            filename (str): Path to file/device to read the volume \
+            information from.
+            offset (uint): Valid NTFS partition offset from the beginning \
+            of the file/device.
 
         Raises:
             IOError: If source file/device does not exist or is not readable
         """
-        self.offset = offset 
+        self.offset = offset
         self.fd = open(filename, 'rb')
         self._load_bootsector()
         self._load_mft_table()
