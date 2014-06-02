@@ -1,7 +1,7 @@
 reader Module
 ---------------------
 
-.. automodule:: reader
+.. automodule:: rawdisk.reader
     :members:
     :undoc-members:
     :show-inheritance:

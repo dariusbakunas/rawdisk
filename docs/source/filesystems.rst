@@ -1,7 +1,7 @@
 Filesystem Detection Module
 ---------------------------
 
-.. automodule:: filesystems.detector
+.. automodule:: rawdisk.filesystems.detector
     :members:
     :undoc-members:
     :show-inheritance:
@@ -9,7 +9,7 @@ Filesystem Detection Module
 Volume Module
 -------------------------
 
-.. automodule:: filesystems.volume
+.. automodule:: rawdisk.filesystems.volume
     :members:
     :undoc-members:
     :show-inheritance:

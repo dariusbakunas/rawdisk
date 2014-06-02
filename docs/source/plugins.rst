@@ -10,7 +10,7 @@ Plugins
 Plugin Categories
 -------------------------
 
-.. automodule:: plugins.categories
+.. automodule:: rawdisk.plugins.categories
     :members:
     :undoc-members:
     :show-inheritance:
@@ -18,7 +18,7 @@ Plugin Categories
 Plugin Manager
 ----------------------
 
-.. automodule:: plugins.manager
+.. automodule:: rawdisk.plugins.manager
     :members:
     :undoc-members:
     :show-inheritance:

@@ -37,7 +37,7 @@ class NtfsPlugin(categories.IFilesystemPlugin):
     """
     def register(self):
         """Registers this plugin with :class:`FilesystemDetector \
-        <filesystems.detector.FilesystemDetector>` as gpt plugin, \
+        <rawdisk.filesystems.detector.FilesystemDetector>` as gpt plugin, \
         with type guid *{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}* and \
         as mbr plugin with type id 0x07
         """
@@ -70,6 +70,5 @@ class NtfsPlugin(categories.IFilesystemPlugin):
         return None
 
     def get_volume_object(self):
-        """Returns :class:`NtfsVolume \
-        <plugins.filesystems.ntfs.ntfs_volume.NtfsVolume>` object."""
+        """Returns :class:`~.ntfs_volume.NtfsVolume` object."""
         return NtfsVolume()

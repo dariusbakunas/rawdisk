@@ -51,10 +51,9 @@ class MftEntry(RawStruct):
         offset (uint): MFT entry offset starting from the beginning of \
         disk in bytes.
         attributes (list): List of initialized mft attribute objects \
-        (eg. :class:`MftAttrStandardInformation \
-        <plugins.filesystems.ntfs.mft_attribute.MftAttrStandardInformation>`).
-        header (MftEntryHeader): Initialized :class:`MftEntryHeader \
-        <plugins.filesystems.ntfs.mft_entry_header.MftEntryHeader>`.
+        (eg. :class:`~.mft_attribute.MftAttrStandardInformation`).
+        header (MftEntryHeader): Initialized \
+        :class:`~.mft_entry_header.MftEntryHeader`.
     """
     def __init__(self, offset, data):
         RawStruct.__init__(self, data)
@@ -106,8 +105,7 @@ class MftEntry(RawStruct):
 
         Returns:
             MftAttr: One of the attribute objects \
-            (eg. :class:`MftAttrFilename \
-                <plugins.filesystems.ntfs.mft_attribute.MftAttrFilename>`).
+            (eg. :class:`~.mft_attribute.MftAttrFilename`).
             None: If atttribute type does not mach any one of the supported \
             attribute types.
         """

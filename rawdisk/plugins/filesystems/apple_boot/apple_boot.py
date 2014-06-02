@@ -32,9 +32,9 @@ class AppleBootPlugin(categories.IFilesystemPlugin):
     """Filesystem plugin for Apple_Boot partition.
     """
     def register(self):
-        """Registers this plugin with :class:`FilesystemDetector \
-        <filesystems.detector.FilesystemDetector>` as gpt plugin, \
-        with type guid *{426f6f74-0000-11aa-aa11-00306543ecac}*
+        """Registers this plugin with \
+        :class:`~rawdisk.filesystems.detector.FilesystemDetector` \
+        as gpt plugin, with type guid *{426f6f74-0000-11aa-aa11-00306543ecac}*
         """
         detector = FilesystemDetectorSingleton.get()
         detector.add_gpt_plugin(
@@ -49,7 +49,6 @@ class AppleBootPlugin(categories.IFilesystemPlugin):
         return True
 
     def get_volume_object(self):
-        """Returns :class:`AppleBootVolume \
-        <plugins.filesystems.apple_boot.apple_boot_volume.AppleBootVolume>` \
+        """Returns :class:`~.apple_boot_volume.AppleBootVolume` \
         object."""
         return volume.AppleBootVolume()

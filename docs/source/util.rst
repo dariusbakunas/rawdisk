@@ -1,7 +1,7 @@
 Filetimes Module
 ---------------------
 
-.. automodule:: util.filetimes
+.. automodule:: rawdisk.util.filetimes
     :members:
     :undoc-members:
     :show-inheritance:
@@ -9,7 +9,7 @@ Filetimes Module
 Rawstruct Module
 ---------------------
 
-.. automodule:: util.rawstruct
+.. automodule:: rawdisk.util.rawstruct
     :members:
     :undoc-members:
     :show-inheritance:

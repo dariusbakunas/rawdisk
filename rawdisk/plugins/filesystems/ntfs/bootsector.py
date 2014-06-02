@@ -35,8 +35,7 @@ class BootSector(RawStruct):
 
     Attributes:
         oem_id (8 byte string): NTFS filesystem signature 'NTFS    '
-        bpb (Bpb): Initialized :class:\
-        `Bpb <plugins.filesystems.ntfs.bpb.Bpb>` object
+        bpb (Bpb): Initialized :class:`~.bpb.Bpb` object.
         mft_offset (int): Offset to MFT table from the start of \
         NTFS volume in bytes
 

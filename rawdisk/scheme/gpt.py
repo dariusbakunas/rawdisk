@@ -139,7 +139,7 @@ class Gpt(object):
             self._load_partition_entries()
 
     def _load_partition_entries(self, block_size=512):
-        """Loads the list of :class:GptPartition partition entries
+        """Loads the list of :class:`GptPartition` partition entries
 
         Args:
             block_size (uint): Block size of the volume, default: 512
