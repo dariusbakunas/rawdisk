@@ -54,3 +54,5 @@ sample_images/
 # Sphinx documentation
 docs/_build/
 .pypirc
+
+include/python2.7
