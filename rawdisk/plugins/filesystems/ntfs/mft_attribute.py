@@ -89,7 +89,8 @@ class MftAttr(RawStruct):
         (eg. :class:`MftAttrStandardInformation`)
 
         Args:
-            attr_type (uint): Attribute type number (eg. 0x10 - $STANDARD_INFORMATION)
+            attr_type (uint): Attribute type number (eg. 0x10 - \
+                $STANDARD_INFORMATION)
             data (byte array): Data to initialize attribute object with.
         """
 
@@ -111,7 +112,7 @@ class MftAttr(RawStruct):
 
         if attr_type not in constructors:
             return None
-        
+
         return constructors[attr_type](data)
 
     def __str__(self):
@@ -235,7 +236,8 @@ class MftAttrFilename(MftAttr):
         self.reparse = self.get_uint(offset + 0x3C)
         self.fname_length = self.get_ubyte(offset + 0x40)
         self.fnspace = self.get_ubyte(offset + 0x41)
-        self.fname = self.get_chunk(offset + 0x42, 2 * self.fname_length).decode('utf-16')
+        self.fname = self.get_chunk(offset + 0x42, 2 *
+                                    self.fname_length).decode('utf-16')
 
     @property
     def ctime_dt(self):
