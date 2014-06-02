@@ -9,7 +9,7 @@ import subprocess
 sys.path.append('.')
 
 from setup import (
-    setup_dict, _lint, _test, DOCS_DIRECTORY, 
+    setup_dict, _lint, _test, _test_all, DOCS_DIRECTORY, 
     CODE_DIRECTORY, TESTS_DIRECTORY, PYTEST_FLAGS, print_success_message,
     print_failure_message
 )
@@ -49,11 +49,33 @@ class cwd(object):
         os.chdir(self.oldcwd)
 
 # Tasks
+def print_passed():
+    # generated on http://patorjk.com/software/taag/#p=display&f=Small&t=PASSED
+    print_success_message(r''' __        __   __   ___  __  
+|__)  /\  /__` /__` |__  |  \ 
+|    /~~\ .__/ .__/ |___ |__/ ''')
+
+
+def print_failed():
+    # generated on http://patorjk.com/software/taag/#p=display&f=Small&t=FAILED
+    print_failure_message(r''' ___              ___  __  
+|__   /\  | |    |__  |  \ 
+|    /~~\ | |___ |___ |__/ ''')
 
 @task
 def test():
     """Run the unit tests."""
     raise SystemExit(_test())
+
+@task
+def test_all():
+    """Perform a style check and run all unit tests."""
+    retcode = _test_all()
+    if retcode == 0:
+        print_passed()
+    else:
+        print_failed()
+    raise SystemExit(retcode)
 
 @task
 def lint():
