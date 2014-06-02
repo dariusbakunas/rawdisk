@@ -24,16 +24,16 @@
 
 import rawdisk.plugins.categories as categories
 import uuid
-from rawdisk.util.rawstruct import RawStruct
 from rawdisk.filesystems.detector import FilesystemDetectorSingleton
-from efi_system_volume import *
+from efi_system_volume import EfiSystemVolume
 
 
 class EfiSystemPlugin(categories.IFilesystemPlugin):
     """Filesystem plugin for EFI System partition.
     """
     def register(self):
-        """Registers this plugin with :class:`FilesystemDetector <filesystems.detector.FilesystemDetector>` as gpt plugin, \
+        """Registers this plugin with :class:`FilesystemDetector \
+        <filesystems.detector.FilesystemDetector>` as gpt plugin, \
         with type guid *{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}*
         """
         detector = FilesystemDetectorSingleton.get()
@@ -42,12 +42,14 @@ class EfiSystemPlugin(categories.IFilesystemPlugin):
             self
         )
 
-    def detect(self, filename, offset): 
+    def detect(self, filename, offset):
         """Always returns True, since there is only one partition with this type GUID,
         no need to do further verification.
         """
         return True
 
     def get_volume_object(self):
-        """Returns :class:`EfiSystemVolume <plugins.filesystems.efi_system.efi_system_volume.EfiSystemVolume>` object."""
+        """Returns :class:`EfiSystemVolume \
+        <plugins.filesystems.efi_system.efi_system_volume.EfiSystemVolume>` \
+        object."""
         return EfiSystemVolume()

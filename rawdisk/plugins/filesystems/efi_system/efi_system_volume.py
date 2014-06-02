@@ -22,9 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import hurry.filesize
 from rawdisk.filesystems.volume import Volume
-from rawdisk.util.rawstruct import RawStruct
 
 
 class EfiSystemVolume(Volume):
@@ -34,9 +32,10 @@ class EfiSystemVolume(Volume):
         self.fd = None
 
     def load(self, filename, offset):
-        """Will eventually load information for Apple_Boot volume. Not yet implemented"""
+        """Will eventually load information for Apple_Boot volume. \
+        Not yet implemented"""
         try:
-            self.offset = offset 
+            self.offset = offset
             # self.fd = open(filename, 'rb')
             # self.fd.close()
         except IOError, e:
