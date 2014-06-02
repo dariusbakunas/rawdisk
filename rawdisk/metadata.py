@@ -8,7 +8,7 @@ Information describing the project.
 package = 'rawdisk'
 project = "Rawdisk Library"
 project_no_spaces = project.replace(' ', '')
-version = 'v0.1-alpha'
+version = 'v0.1-alpha.1'
 description = 'Experimental python code to learn different disk formats'
 authors = ['Darius Bakunas',]
 authors_string = ', '.join(authors)
