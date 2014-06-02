@@ -7,7 +7,7 @@ Loading data file
 
 In order to start filesystem analysis, you need to create :class:`~reader.Reader` instance::
 
-	from rawdisk import Reader
+	from rawdisk.reader import Reader
 
 	r = Reader()
 	r.load('sample_images/ntfs.vhd')
