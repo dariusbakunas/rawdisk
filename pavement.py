@@ -2,14 +2,13 @@
 
 import os
 import sys
-import time
 import subprocess
 
 # Import parameters from the setup file.
 sys.path.append('.')
 
 from setup import (
-    setup_dict, _lint, _test, _test_all, DOCS_DIRECTORY, 
+    setup_dict, _lint, _test, _test_all, DOCS_DIRECTORY,
     CODE_DIRECTORY, TESTS_DIRECTORY, PYTEST_FLAGS, print_success_message,
     print_failure_message
 )
@@ -19,14 +18,15 @@ from setup import (
 #     print_failure_message, _lint, _test, _test_all,
 #     CODE_DIRECTORY, TESTS_DIRECTORY, PYTEST_FLAGS)
 
-from paver.easy import options, task, needs, consume_args
+from paver.easy import options, task, needs
 from paver.setuputils import install_distutils_tasks
 
 options(setup=setup_dict)
 
 install_distutils_tasks()
 
-# Helper functions 
+# Helper functions
+
 
 class cwd(object):
     """Class used for temporarily changing directories. Can be though of
@@ -49,23 +49,27 @@ class cwd(object):
         os.chdir(self.oldcwd)
 
 # Tasks
+
+
 def print_passed():
     # generated on http://patorjk.com/software/taag/#p=display&f=Small&t=PASSED
-    print_success_message(r''' __        __   __   ___  __  
-|__)  /\  /__` /__` |__  |  \ 
+    print_success_message(r''' __        __   __   ___  __
+|__)  /\  /__` /__` |__  |  \
 |    /~~\ .__/ .__/ |___ |__/ ''')
 
 
 def print_failed():
     # generated on http://patorjk.com/software/taag/#p=display&f=Small&t=FAILED
-    print_failure_message(r''' ___              ___  __  
-|__   /\  | |    |__  |  \ 
+    print_failure_message(r''' ___              ___  __
+|__   /\  | |    |__  |  \
 |    /~~\ | |___ |___ |__/ ''')
+
 
 @task
 def test():
     """Run the unit tests."""
     raise SystemExit(_test())
+
 
 @task
 def test_all():
@@ -77,6 +81,7 @@ def test_all():
         print_failed()
     raise SystemExit(retcode)
 
+
 @task
 def lint():
     # This refuses to format properly when running `paver help' unless
@@ -84,6 +89,7 @@ def lint():
     ('Perform PEP8 style check, run PyFlakes, and run McCabe complexity '
      'metrics on the code.')
     raise SystemExit(_lint())
+
 
 @task
 def coverage():
@@ -100,6 +106,7 @@ def coverage():
         '--cov', CODE_DIRECTORY,
         '--cov-report', 'term-missing',
         TESTS_DIRECTORY])
+
 
 def _doc_make(*make_args):
     """Run make in sphinx' docs directory.
@@ -121,6 +128,7 @@ def _doc_make(*make_args):
         retcode = subprocess.call(make_cmd)
     return retcode
 
+
 @task
 @needs('doc_html')
 def doc_open():
@@ -140,6 +148,7 @@ def doc_open():
             "Unsupported platform. Please open `{0}' manually.".format(
                 doc_index))
 
+
 @task
 def doc_html():
     """Build the HTML docs."""
@@ -147,6 +156,7 @@ def doc_html():
 
     if retcode:
         raise SystemExit(retcode)
+
 
 @task
 def doc_clean():
