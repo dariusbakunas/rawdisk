@@ -200,6 +200,7 @@ setup_dict = dict(
     ],
     tests_require=[
         'nose>=1.0',
+        'bitstring==3.1.3',
         'flake8==2.1.0',
     ],
     test_suite = 'nose.collector',
