@@ -31,31 +31,44 @@ class RawStruct(object):
     """Helper class used as a parent class for most filesystem structures.
 
     Args:
-        data (str): byte array to initialize structure with
+        data (str): Byte array to initialize structure with.
+        filename (str): A file to read the data from.
+        offset (int): Offset into data or file (if specified).
+        length (int): Number of bytes to read.
     """
-    def __init__(self, data=None):
-        self._data = data
+    def __init__(self, data=None, offset=None, length=None, filename=None):
+        if offset is None:
+            offset = 0
+
+        if data is not None:
+            if length is None:
+                self._data = data[offset:]
+            else:
+                self._data = data[offset:offset+length]
+        elif filename is not None:
+            with open(filename, 'rb') as f:
+                f.seek(offset)
+                self._data = f.read(length)
 
     @property
     def data(self):
         """
-        Getter/Setter for byte array of the structure
-
-        Note:
-            Setter might be removed in the future (use __init__ instead)
+        Returns:
+            str: Byte array of the structure.
         """
         return self._data
 
     @property
     def size(self):
-        """Size of structure's byte array."""
+        """
+        Returns:
+            int: Size of structure's byte array.
+        """
         return len(self._data)
 
-    @data.setter
-    def data(self, value):
-        self._data = value
-
-    def load_from_source(self, source, offset, length):
+    def load_from_source(
+        self, fd=None, offset=None, length=None
+    ):
         """Loads byte array for the structure from the file or device
 
         Args:
@@ -63,16 +76,21 @@ class RawStruct(object):
             offset (int): data offset
             length (int): number of bytes to read
         """
-        source.seek(offset)
-        self._data = source.read(length)
+
+        if offset is None:
+            offset = 0
+
+        if (fd is not None):
+            fd.seek(offset)
+            self._data = fd.read(length)
 
     def get_chunk(self, offset, length):
-        """Returns custom length byte array of the structure
-
+        """
         Args:
             offset (int): byte array start [x:]
             length (int): number of bytes to return [:x]
-
+        Returns:
+            str: Custom length byte array of the structure.
         """
         return self.data[offset:offset+length]
 
