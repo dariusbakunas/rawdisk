@@ -195,6 +195,7 @@ setup_dict = dict(
         'hurry.filesize == 0.9',
         'yapsy == 1.10.323',
         'pyxdg == 0.25',
+        'bitstring==3.1.3',
         'sphinxcontrib-napoleon == 0.2.7'
     ],
     tests_require=[
