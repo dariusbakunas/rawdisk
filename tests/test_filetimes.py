@@ -1,8 +1,3 @@
-import sys
-import os
-
-sys.path.insert(0, os.path.abspath('../'))
-
 import unittest
 from rawdisk.util.filetimes import dt_to_filetime, filetime_to_dt
 from datetime import datetime
