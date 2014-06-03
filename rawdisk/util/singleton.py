@@ -1,12 +1,10 @@
-class Singleton(object):
+class Singleton(type):
+    _instances = {}
+    def __init__(cls, *args, **kwargs):
+        setattr(cls, "_drop", lambda self: cls._instances.clear())
+        super(Singleton, cls).__init__(*args, **kwargs)
 
-    __instance__ = None
-
-    def __new__(cls, *a, **kw):
-        if Singleton.__instance__ is None:
-            Singleton.__instance__ = object.__new__(cls, *a, **kw)
-            cls._Singleton__instance = Singleton.__instance__
-        return Singleton.__instance__
-
-    def _drop_it(self):
-        Singleton.__instance__ = None
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
