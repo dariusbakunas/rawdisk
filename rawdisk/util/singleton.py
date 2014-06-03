@@ -1,8 +1,5 @@
 class Singleton(type):
     _instances = {}
-    def __init__(cls, *args, **kwargs):
-        setattr(cls, "_drop", lambda self: cls._instances.clear())
-        super(Singleton, cls).__init__(*args, **kwargs)
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
