@@ -6,7 +6,6 @@ import sys
 import imp
 import subprocess
 from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
 
 # Python 2.6 subprocess.check_output compatibility. Thanks Greg Hewgill!
 if 'check_output' not in dir(subprocess):
@@ -27,7 +26,7 @@ sys.path.append('.')
 CODE_DIRECTORY = 'rawdisk'
 DOCS_DIRECTORY = 'docs'
 TESTS_DIRECTORY = 'tests'
-PYTEST_FLAGS = ['--doctest-modules']
+
 
 # Import metadata. Normally this would just be:
 #
@@ -161,45 +160,6 @@ def _lint():
     return retcode
 
 
-def _test():
-    """Run the unit tests.
-
-    :return: exit code
-    """
-    # Make sure to import pytest in this function. For the reason, see here:
-    # <http://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands>  # NOPEP8
-    import pytest
-    # This runs the unit tests.
-    # It also runs doctest, but only on the modules in TESTS_DIRECTORY.
-    return pytest.main(PYTEST_FLAGS + [TESTS_DIRECTORY])
-
-
-def _test_all():
-    """Run lint and tests.
-
-    :return: exit code
-    """
-    return _lint() + _test()
-
-# The following code is to allow tests to be run with `python setup.py test'.
-# The main reason to make this possible is to allow tests to be run as part of
-# Setuptools' automatic run of 2to3 on the source code. The recommended way to
-# run tests is still `paver test_all'.
-# See <http://pythonhosted.org/setuptools/python3.html>
-# Code based on <http://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands>  # NOPEP8
-
-
-class TestAllCommand(TestCommand):
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        # These are fake, and just set to appease distutils and setuptools.
-        self.test_suite = True
-        self.test_args = []
-
-    def run_tests(self):
-        raise SystemExit(_test_all())
-
-
 setup_dict = dict(
     include_package_data=True,
     name=metadata.package,
@@ -238,10 +198,10 @@ setup_dict = dict(
         'sphinxcontrib-napoleon == 0.2.7'
     ],
     tests_require=[
-        'pytest==2.5.2',
-        'mock==1.0.1',
+        'nose>=1.0',
         'flake8==2.1.0',
     ],
+    test_suite = 'nose.collector',
     entry_points={
         'console_scripts': [
             'rawdisk = rawdisk.main:main',
