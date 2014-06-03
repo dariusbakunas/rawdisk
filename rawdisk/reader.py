@@ -1,5 +1,5 @@
 import scheme
-from rawdisk.filesystems.detector import FilesystemDetectorSingleton
+from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.plugins.manager import Manager
 
 
@@ -42,7 +42,7 @@ class Reader:
 
         # Detect partitioning scheme
         self.scheme = scheme.common.detect_scheme(filename)
-        detector = FilesystemDetectorSingleton.get()
+        detector = FilesystemDetector()
 
         if (self.scheme == scheme.common.SCHEME_MBR):
             mbr = scheme.mbr.Mbr()

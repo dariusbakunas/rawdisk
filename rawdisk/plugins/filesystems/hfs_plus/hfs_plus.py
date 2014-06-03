@@ -24,7 +24,7 @@
 
 import rawdisk.plugins.categories as categories
 import uuid
-from rawdisk.filesystems.detector import FilesystemDetectorSingleton
+from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.plugins.filesystems.hfs_plus.hfs_plus_volume import HfsPlusVolume
 
 
@@ -36,7 +36,7 @@ class HfsPlusPlugin(categories.IFilesystemPlugin):
         :class:`~rawdisk.filesystems.detector.FilesystemDetector` \
         as gpt plugin, with type guid *{48465300-0000-11AA-AA11-00306543ECAC}*
         """
-        detector = FilesystemDetectorSingleton.get()
+        detector = FilesystemDetector()
         detector.add_gpt_plugin(
             uuid.UUID('{48465300-0000-11AA-AA11-00306543ECAC}'),
             self

@@ -24,7 +24,7 @@
 
 import rawdisk.plugins.categories as categories
 import uuid
-from rawdisk.filesystems.detector import FilesystemDetectorSingleton
+from rawdisk.filesystems.detector import FilesystemDetector
 import rawdisk.plugins.filesystems.efi_system.efi_system_volume as volume
 
 
@@ -36,7 +36,7 @@ class EfiSystemPlugin(categories.IFilesystemPlugin):
         :class:`~rawdisk.filesystems.detector.FilesystemDetector` \
         as gpt plugin, with type guid *{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}*
         """
-        detector = FilesystemDetectorSingleton.get()
+        detector = FilesystemDetector()
         detector.add_gpt_plugin(
             uuid.UUID('{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}'),
             self
