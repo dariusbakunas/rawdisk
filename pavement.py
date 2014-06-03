@@ -24,6 +24,8 @@ options(setup=setup_dict)
 
 install_distutils_tasks()
 
+NOSE_ARGS = ["-v"]
+
 # Helper functions
 
 
@@ -56,6 +58,14 @@ def lint():
     ('Perform PEP8 style check, run PyFlakes, and run McCabe complexity '
      'metrics on the code.')
     raise SystemExit(_lint())
+
+
+@task
+def test():
+    import nose
+    nose.run_exit(
+        argv=["nosetests"] + NOSE_ARGS
+    )
 
 
 def _doc_make(*make_args):
