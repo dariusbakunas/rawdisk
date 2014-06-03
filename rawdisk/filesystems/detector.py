@@ -31,7 +31,7 @@ from rawdisk.util.singleton import Singleton
 
 class FilesystemDetector(object):
     __metaclass__ = Singleton
-    
+
     """A class that allows to match filesystem id or guid against available
     plugins.
 
@@ -44,6 +44,10 @@ class FilesystemDetector(object):
         self.mbr_plugins = {}
         # 2 dimensional array of fs_guid : [list of plugins]
         self.gpt_plugins = {}
+
+    def _clear_plugins(self):
+        self.mbr_plugins.clear()
+        self.gpt_plugins.clear()
 
     def add_mbr_plugin(self, fs_id, plugin):
         """Used in plugin's registration routine,
