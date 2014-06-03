@@ -26,8 +26,12 @@
 detection routines that are internaly used by rawdisk.reader.Reader
 to match filesystems"""
 
+from rawdisk.util.singleton import Singleton
+
 
 class FilesystemDetector(object):
+    __metaclass__ = Singleton
+
     """A class that allows to match filesystem id or guid against available
     plugins.
 
@@ -40,6 +44,10 @@ class FilesystemDetector(object):
         self.mbr_plugins = {}
         # 2 dimensional array of fs_guid : [list of plugins]
         self.gpt_plugins = {}
+
+    def _clear_plugins(self):
+        self.mbr_plugins.clear()
+        self.gpt_plugins.clear()
 
     def add_mbr_plugin(self, fs_id, plugin):
         """Used in plugin's registration routine,
@@ -114,27 +122,3 @@ class FilesystemDetector(object):
                     return plugin.get_volume_object()
 
         return None
-
-
-class FilesystemDetectorSingleton(object):
-    """Singleton implementation for FilesystemDetector
-    """
-
-    __instance = None
-
-    def __init__(self):
-        if self.__instance is not None:
-            raise Exception("Singleton can't be created twice !")
-
-    @classmethod
-    def get(self):
-        """Returns singleton version of FilesystemDetector,
-        so that all plugins could use the same instance for registration
-
-        Returns:
-            Singleton FilesystemDetector object
-        """
-        if self.__instance is None:
-            self.__instance = FilesystemDetector()
-
-        return self.__instance

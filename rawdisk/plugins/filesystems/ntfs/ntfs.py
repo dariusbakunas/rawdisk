@@ -24,9 +24,9 @@
 
 import uuid
 import rawdisk.plugins.categories as categories
+from bitstring import ConstBitStream
 from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume
-from rawdisk.util.rawstruct import RawStruct
-from rawdisk.filesystems.detector import FilesystemDetectorSingleton
+from rawdisk.filesystems.detector import FilesystemDetector
 
 SIG_DATA_SIZE = 11
 OEM_ID_OFFSET = 0x03
@@ -41,7 +41,7 @@ class NtfsPlugin(categories.IFilesystemPlugin):
         with type guid *{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}* and \
         as mbr plugin with type id 0x07
         """
-        detector = FilesystemDetectorSingleton.get()
+        detector = FilesystemDetector()
         detector.add_mbr_plugin(0x07, self)
         detector.add_gpt_plugin(
             uuid.UUID('{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}'),
@@ -55,19 +55,18 @@ class NtfsPlugin(categories.IFilesystemPlugin):
             bool: True if filesystem signature at offset 0x03 \
             matches 'NTFS    ', False otherwise.
         """
-        try:
-            with open(filename, 'rb') as f:
-                f.seek(offset)
-                data = f.read(SIG_DATA_SIZE)
-                rs = RawStruct(data)
-                oem_id = rs.get_string(OEM_ID_OFFSET, 8)
 
-                if (oem_id == "NTFS    "):
-                    return True
-        except IOError, e:
-            print e
+        s = ConstBitStream(
+            filename=filename,
+            offset=(offset + OEM_ID_OFFSET) * 8,
+            length=SIG_DATA_SIZE * 8)
 
-        return None
+        oem_id = s.read("bytes:8")
+
+        if (oem_id == "NTFS    "):
+            return True
+
+        return False
 
     def get_volume_object(self):
         """Returns :class:`~.ntfs_volume.NtfsVolume` object."""
