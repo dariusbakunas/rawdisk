@@ -8,8 +8,7 @@ import subprocess
 sys.path.append('.')
 
 from setup import (
-    setup_dict, _lint, _test, _test_all, DOCS_DIRECTORY,
-    CODE_DIRECTORY, TESTS_DIRECTORY, PYTEST_FLAGS, print_success_message,
+    setup_dict, _lint, DOCS_DIRECTORY,
     print_failure_message
 )
 
@@ -24,6 +23,8 @@ from paver.setuputils import install_distutils_tasks
 options(setup=setup_dict)
 
 install_distutils_tasks()
+
+NOSE_ARGS = ["-v"]
 
 # Helper functions
 
@@ -48,40 +49,8 @@ class cwd(object):
         # This acts like a `finally' clause: it will always be executed.
         os.chdir(self.oldcwd)
 
+
 # Tasks
-
-
-def print_passed():
-    # generated on http://patorjk.com/software/taag/#p=display&f=Small&t=PASSED
-    print_success_message(r''' __        __   __   ___  __
-|__)  /\  /__` /__` |__  |  \
-|    /~~\ .__/ .__/ |___ |__/ ''')
-
-
-def print_failed():
-    # generated on http://patorjk.com/software/taag/#p=display&f=Small&t=FAILED
-    print_failure_message(r''' ___              ___  __
-|__   /\  | |    |__  |  \
-|    /~~\ | |___ |___ |__/ ''')
-
-
-@task
-def test():
-    """Run the unit tests."""
-    raise SystemExit(_test())
-
-
-@task
-def test_all():
-    """Perform a style check and run all unit tests."""
-    retcode = _test_all()
-    if retcode == 0:
-        print_passed()
-    else:
-        print_failed()
-    raise SystemExit(retcode)
-
-
 @task
 def lint():
     # This refuses to format properly when running `paver help' unless
@@ -92,20 +61,11 @@ def lint():
 
 
 @task
-def coverage():
-    """Run tests and show test coverage report."""
-    try:
-        import pytest_cov  # NOQA
-    except ImportError:
-        print_failure_message(
-            'Install the pytest coverage plugin to use this task, '
-            "i.e., `pip install pytest-cov'.")
-        raise SystemExit(1)
-    import pytest
-    pytest.main(PYTEST_FLAGS + [
-        '--cov', CODE_DIRECTORY,
-        '--cov-report', 'term-missing',
-        TESTS_DIRECTORY])
+def test():
+    import nose
+    nose.run_exit(
+        argv=["nosetests"] + NOSE_ARGS
+    )
 
 
 def _doc_make(*make_args):
