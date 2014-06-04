@@ -115,7 +115,7 @@ class RawStruct(object):
         """
         return struct.unpack(format, self.data[offset:offset+length])[0]
 
-    def get_ubyte(self, offset):
+    def get_uchar(self, offset):
         """Returns unsigned char (1 byte)
 
         Args:

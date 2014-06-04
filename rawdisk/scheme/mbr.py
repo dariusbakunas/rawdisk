@@ -64,19 +64,19 @@ class PartitionEntry(RawStruct):
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)
-        self.boot_indicator = self.get_ubyte(0)
-        self.starting_head = self.get_ubyte(1)
-        tmp = self.get_ubyte(2)
+        self.boot_indicator = self.get_uchar(0)
+        self.starting_head = self.get_uchar(1)
+        tmp = self.get_uchar(2)
         self.starting_sector = tmp & 0x3F   # Only bits 0-5 are used
         self.starting_cylinder = ((tmp & 0xC0) << 2) + \
-            self.get_ubyte(3)
-        self.part_type = self.get_ubyte(4)
-        self.ending_head = self.get_ubyte(5)
+            self.get_uchar(3)
+        self.part_type = self.get_uchar(4)
+        self.ending_head = self.get_uchar(5)
 
-        tmp = self.get_ubyte(6)
+        tmp = self.get_uchar(6)
         self.ending_sector = tmp & 0x3F
         self.ending_cylinder = ((tmp & 0xC0) << 2) + \
-            self.get_ubyte(7)
+            self.get_uchar(7)
         self.relative_sector = self.get_uint(8)
         self.total_sectors = self.get_uint(12)
         self.part_offset = SECTOR_SIZE*self.relative_sector
