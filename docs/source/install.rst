@@ -11,4 +11,4 @@ Enter the directory and type::
 
 If you have Python setuptools set up on your system, you should be able to fetch rawdisk from PyPI and install it using::
 
-	easy_install rawdisk
+	pip install rawdisk --pre
