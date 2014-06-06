@@ -123,6 +123,15 @@ class RawStruct(object):
         """
         return struct.unpack("B", self.data[offset:offset+1])[0]
 
+    def get_ushort_le(self, offset):
+        """Returns unsigned short (2 bytes),
+        assuming source is little-endien.
+
+        Args:
+            offset (int): unsigned short offset in byte array.
+        """
+        return struct.unpack("<H", self.data[offset:offset+2])[0]
+
     def get_ushort(self, offset, big_endian=False):
         """Returns unsigned short (2 bytes)
 
