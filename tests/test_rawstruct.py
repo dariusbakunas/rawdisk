@@ -1,12 +1,14 @@
 import unittest
 import mock
 import struct
+import uuid
 from rawdisk.util.rawstruct import RawStruct
 
 
 class TestRawStruct(unittest.TestCase):
     def setUp(self):
         self.sample_data = b'\xa1\xb1\xc1\xd1\xe1\xf1'
+        self.sample_uuid_data = b'\x12\x34\x56\x78'*4
 
     def test_init_from_data(self):
         r = RawStruct(data=self.sample_data)
@@ -63,3 +65,15 @@ class TestRawStruct(unittest.TestCase):
         self.assertEqual(
             r.get_ushort_be(offset),
             struct.unpack(">H", self.sample_data[offset:offset+2])[0])
+
+    def test_get_uuid_le(self):
+        r = RawStruct(data = self.sample_uuid_data)
+        self.assertEqual(
+            r.get_uuid_le(0),
+            uuid.UUID(bytes_le=self.sample_uuid_data))
+
+    def test_get_uuid_be(self):
+        r = RawStruct(data = self.sample_uuid_data)
+        self.assertEqual(
+            r.get_uuid_be(0),
+            uuid.UUID(bytes=self.sample_uuid_data))
