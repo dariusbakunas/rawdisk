@@ -58,7 +58,7 @@ class TestRawStruct(unittest.TestCase):
             struct.unpack("<H", self.sample_data[offset:offset+2])[0])
 
     def test_get_ushort_be(self):
-        offset = 0
+        offset = 2
         r = RawStruct(data = self.sample_data)
         self.assertEqual(
             r.get_ushort_be(offset),
