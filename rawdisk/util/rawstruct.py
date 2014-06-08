@@ -94,13 +94,21 @@ class RawStruct(object):
         """
         return self.data[offset:offset+length]
 
-    def get_uuid(self, offset):
+    def get_uuid_le(self, offset):
         """Returns Python uuid object initialized with bytes at specified offset
 
         Args:
-            offset (int): offset to 16-byte array
+            offset (int): offset to 16-byte little-endian array
         """
         return uuid.UUID(bytes_le=self.get_string(offset, 16))
+
+    def get_uuid_be(self, offset):
+        """Returns Python uuid object initialized with bytes at specified offset
+
+        Args:
+            offset (int): offset to 16-byte big-endian array
+        """
+        return uuid.UUID(bytes=self.get_string(offset, 16))
 
     def get_field(self, offset, length, format):
         """Returns unpacked Python struct array.
@@ -125,7 +133,7 @@ class RawStruct(object):
 
     def get_ushort_le(self, offset):
         """Returns unsigned short (2 bytes),
-        assuming source is little-endien.
+        assuming source is little-endian.
 
         Args:
             offset (int): unsigned short offset in byte array.
@@ -134,7 +142,7 @@ class RawStruct(object):
 
     def get_ushort_be(self, offset):
         """Returns unsigned short (2 bytes),
-        assuming source is big-endien.
+        assuming source is big-endian.
 
         Args:
             offset (int): unsigned short offset in byte array.
