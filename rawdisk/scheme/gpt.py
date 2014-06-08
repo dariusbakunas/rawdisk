@@ -70,13 +70,13 @@ class GptHeader(RawStruct):
         self.header_size = self.get_uint_le(0x0C)
         self.crc32 = self.get_uint_le(0x10)
         # 4 bytes @0x14 reserved, must be 0
-        self.current_lba = self.get_ulonglong(0x18)
-        self.backup_lba = self.get_ulonglong(0x20)
-        self.first_usable_lba = self.get_ulonglong(0x28)
-        self.last_usable_lba = self.get_ulonglong(0x30)
+        self.current_lba = self.get_ulonglong_le(0x18)
+        self.backup_lba = self.get_ulonglong_le(0x20)
+        self.first_usable_lba = self.get_ulonglong_le(0x28)
+        self.last_usable_lba = self.get_ulonglong_le(0x30)
         # Not sure if this is correct
         self.disk_guid = self.get_uuid_le(0x38)
-        self.part_lba = self.get_ulonglong(0x48)
+        self.part_lba = self.get_ulonglong_le(0x48)
         self.num_partitions = self.get_uint_le(0x50)
         self.part_size = self.get_uint_le(0x54)
         self.part_array_crc32 = self.get_uint_le(0x58)
@@ -104,9 +104,9 @@ class GptPartition(RawStruct):
         RawStruct.__init__(self, data)
         self.type_guid = self.get_uuid_le(0x00)
         self.part_guid = self.get_uuid_le(0x10)
-        self.first_lba = self.get_ulonglong(0x20)
-        self.last_lba = self.get_ulonglong(0x28)
-        self.attr_flags = self.get_ulonglong(0x30)
+        self.first_lba = self.get_ulonglong_le(0x20)
+        self.last_lba = self.get_ulonglong_le(0x28)
+        self.attr_flags = self.get_ulonglong_le(0x30)
         self.name = self.get_chunk(0x38, 72).decode('utf-16')
 
 

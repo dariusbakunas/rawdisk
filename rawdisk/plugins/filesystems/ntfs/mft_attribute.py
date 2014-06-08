@@ -157,13 +157,13 @@ class MftAttrStandardInformation(MftAttr):
         self.type_str = "$STANDARD_INFORMATION"
         offset = self.header.size
         # File Creation
-        self.ctime = self.get_ulonglong(offset)
+        self.ctime = self.get_ulonglong_le(offset)
         # File Alteration
-        self.atime = self.get_ulonglong(offset + 0x08)
+        self.atime = self.get_ulonglong_le(offset + 0x08)
         # MFT Changed
-        self.mtime = self.get_ulonglong(offset + 0x10)
+        self.mtime = self.get_ulonglong_le(offset + 0x10)
         # File Read
-        self.rtime = self.get_ulonglong(offset + 0x18)
+        self.rtime = self.get_ulonglong_le(offset + 0x18)
         # DOS File Permissions
         self.perm = self.get_uint_le(offset + 0x20)
         # Maximum Number of Versions
@@ -176,8 +176,8 @@ class MftAttrStandardInformation(MftAttr):
         if (self.size > 0x48):
             self.owner_id = self.get_uint_le(offset + 0x30)
             self.sec_id = self.get_uint_le(offset + 0x34)
-            self.quata = self.get_ulonglong(offset + 0x38)
-            self.usn = self.get_ulonglong(offset + 0x40)
+            self.quata = self.get_ulonglong_le(offset + 0x38)
+            self.usn = self.get_ulonglong_le(offset + 0x40)
 
     @property
     def ctime_dt(self):
@@ -224,13 +224,13 @@ class MftAttrFilename(MftAttr):
         self.type_str = "$FILE_NAME"
         # $Filename is always resident
         offset = self.header.size
-        self.parent_ref = self.get_ulonglong(offset)
-        self.ctime = self.get_ulonglong(offset + 0x08)
-        self.atime = self.get_ulonglong(offset + 0x10)
-        self.mtime = self.get_ulonglong(offset + 0x18)
-        self.rtime = self.get_ulonglong(offset + 0x20)
-        self.alloc_size = self.get_ulonglong(offset + 0x28)
-        self.real_size = self.get_ulonglong(offset + 0x30)
+        self.parent_ref = self.get_ulonglong_le(offset)
+        self.ctime = self.get_ulonglong_le(offset + 0x08)
+        self.atime = self.get_ulonglong_le(offset + 0x10)
+        self.mtime = self.get_ulonglong_le(offset + 0x18)
+        self.rtime = self.get_ulonglong_le(offset + 0x20)
+        self.alloc_size = self.get_ulonglong_le(offset + 0x28)
+        self.real_size = self.get_ulonglong_le(offset + 0x30)
         self.flags = self.get_uint_le(offset + 0x38)
         # Used by EAs and Reparse ??
         self.reparse = self.get_uint_le(offset + 0x3C)

@@ -181,16 +181,21 @@ class RawStruct(object):
         """
         return struct.unpack(">L", self.data[offset:offset+4])[0]
 
-    def get_ulonglong(self, offset, big_endian=False):
+    def get_ulonglong_le(self, offset):
         """Returns unsigned long long (8 bytes)
 
         Args:
-            offset (int): unsigned long long offset in byte array
-            big_endian (bool): source is big_endian, defaults to little endian
+            offset (int): unsigned long long offset in little-endian byte array
         """
-        if (big_endian):
-            return struct.unpack(">Q", self.data[offset:offset+8])[0]
         return struct.unpack("<Q", self.data[offset:offset+8])[0]
+
+    def get_ulonglong_be(self, offset):
+        """Returns unsigned long long (8 bytes)
+
+        Args:
+            offset (int): unsigned long long offset in big-endian byte array
+        """
+        return struct.unpack(">Q", self.data[offset:offset+8])[0]
 
     def get_string(self, offset, length):
         """Returns string (length bytes)

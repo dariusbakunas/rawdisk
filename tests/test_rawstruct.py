@@ -7,7 +7,7 @@ from rawdisk.util.rawstruct import RawStruct
 
 class TestRawStruct(unittest.TestCase):
     def setUp(self):
-        self.sample_data = b'\xa1\xb1\xc1\xd1\xe1\xf1'
+        self.sample_data = b'\xa1\xb1\xc1\xd1\xe1\xf1\xb1\xa1\xc1'
         self.sample_uuid_data = b'\x12\x34\x56\x78'*4
 
     def test_init_from_data(self):
@@ -91,8 +91,22 @@ class TestRawStruct(unittest.TestCase):
         offset = 0
         r = RawStruct(data = self.sample_data)
         self.assertEqual(
-            r.get_uint_be(offset),
+            r.get_ulong_be(offset),
             struct.unpack(">L", self.sample_data[offset:offset+4])[0])
+
+    def test_get_ulonglong_le(self):
+        offset = 0
+        r = RawStruct(data = self.sample_data)
+        self.assertEqual(
+            r.get_ulonglong_le(offset),
+            struct.unpack("<Q", self.sample_data[offset:offset+8])[0])
+
+    def test_get_ulonglong_be(self):
+        offset = 0
+        r = RawStruct(data = self.sample_data)
+        self.assertEqual(
+            r.get_ulonglong_be(offset),
+            struct.unpack(">Q", self.sample_data[offset:offset+8])[0])
 
     def test_get_uuid_le(self):
         r = RawStruct(data = self.sample_uuid_data)

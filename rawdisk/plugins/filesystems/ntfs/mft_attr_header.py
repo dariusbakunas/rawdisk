@@ -85,14 +85,14 @@ class MftAttrHeader(RawStruct):
 
         if (self.non_resident_flag):
             # Attribute is Non-Resident
-            self.lowest_vcn = self.get_ulonglong(0x10)
-            self.highest_vcn = self.get_ulonglong(0x18)
+            self.lowest_vcn = self.get_ulonglong_le(0x10)
+            self.highest_vcn = self.get_ulonglong_le(0x18)
             self.mapping_pairs_offset = self.get_ushort_le(0x20)
             self.comp_unit_size = self.get_ushort_le(0x22)
             # 4 byte 0x00 padding @ 0x24
-            self.alloc_size = self.get_ulonglong(0x28)
-            self.real_size = self.get_ulonglong(0x30)
-            self.data_size = self.get_ulonglong(0x38)
+            self.alloc_size = self.get_ulonglong_le(0x28)
+            self.real_size = self.get_ulonglong_le(0x30)
+            self.data_size = self.get_ulonglong_le(0x38)
 
             if (self.length_of_name > 0):
                 self.attr_name = self.get_chunk(
