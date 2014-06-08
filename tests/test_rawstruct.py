@@ -80,6 +80,20 @@ class TestRawStruct(unittest.TestCase):
             r.get_uint_be(offset),
             struct.unpack(">I", self.sample_data[offset:offset+4])[0])
 
+    def test_get_ulong_le(self):
+        offset = 0
+        r = RawStruct(data = self.sample_data)
+        self.assertEqual(
+            r.get_ulong_le(offset),
+            struct.unpack("<L", self.sample_data[offset:offset+4])[0])
+
+    def test_get_ulong_be(self):
+        offset = 0
+        r = RawStruct(data = self.sample_data)
+        self.assertEqual(
+            r.get_uint_be(offset),
+            struct.unpack(">L", self.sample_data[offset:offset+4])[0])
+
     def test_get_uuid_le(self):
         r = RawStruct(data = self.sample_uuid_data)
         self.assertEqual(
