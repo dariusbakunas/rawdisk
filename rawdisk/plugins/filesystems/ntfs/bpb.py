@@ -61,12 +61,12 @@ class Bpb(RawStruct):
 
         self.sectors_per_track = self.get_ushort_le(13)
         self.number_of_heads = self.get_ushort_le(15)
-        self.hidden_sectors = self.get_uint(17)
+        self.hidden_sectors = self.get_uint_le(17)
 
         self.total_sectors = self.get_ulonglong(29)
         self.mft_cluster = self.get_ulonglong(37)
         self.mft_mirror_cluster = self.get_ulonglong(45)
-        self.clusters_per_mft = self.get_uint(53)
+        self.clusters_per_mft = self.get_uint_le(53)
         self.clusters_per_index = self.get_uchar(57)
         self.volume_serial = self.get_ulonglong(58)
-        self.checksum = self.get_uint(66)
+        self.checksum = self.get_uint_le(66)

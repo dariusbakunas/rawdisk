@@ -66,9 +66,9 @@ class GptHeader(RawStruct):
         if (self.signature != GPT_SIGNATURE):
             raise Exception("Invalid GPT signature")
 
-        self.revision = self.get_uint(0x08)
-        self.header_size = self.get_uint(0x0C)
-        self.crc32 = self.get_uint(0x10)
+        self.revision = self.get_uint_le(0x08)
+        self.header_size = self.get_uint_le(0x0C)
+        self.crc32 = self.get_uint_le(0x10)
         # 4 bytes @0x14 reserved, must be 0
         self.current_lba = self.get_ulonglong(0x18)
         self.backup_lba = self.get_ulonglong(0x20)
@@ -77,9 +77,9 @@ class GptHeader(RawStruct):
         # Not sure if this is correct
         self.disk_guid = self.get_uuid_le(0x38)
         self.part_lba = self.get_ulonglong(0x48)
-        self.num_partitions = self.get_uint(0x50)
-        self.part_size = self.get_uint(0x54)
-        self.part_array_crc32 = self.get_uint(0x58)
+        self.num_partitions = self.get_uint_le(0x50)
+        self.part_size = self.get_uint_le(0x54)
+        self.part_array_crc32 = self.get_uint_le(0x58)
         # Rest of bytes @ 0x5C must be zeroes (420 for 512 sectors)
 
 

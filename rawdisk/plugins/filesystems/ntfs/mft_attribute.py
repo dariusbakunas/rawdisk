@@ -165,17 +165,17 @@ class MftAttrStandardInformation(MftAttr):
         # File Read
         self.rtime = self.get_ulonglong(offset + 0x18)
         # DOS File Permissions
-        self.perm = self.get_uint(offset + 0x20)
+        self.perm = self.get_uint_le(offset + 0x20)
         # Maximum Number of Versions
-        self.versions = self.get_uint(offset + 0x20)
+        self.versions = self.get_uint_le(offset + 0x20)
         # Version Number
-        self.version = self.get_uint(offset + 0x28)
-        self.class_id = self.get_uint(offset + 0x2C)
+        self.version = self.get_uint_le(offset + 0x28)
+        self.class_id = self.get_uint_le(offset + 0x2C)
 
         # Not all SI headers include 2K fields
         if (self.size > 0x48):
-            self.owner_id = self.get_uint(offset + 0x30)
-            self.sec_id = self.get_uint(offset + 0x34)
+            self.owner_id = self.get_uint_le(offset + 0x30)
+            self.sec_id = self.get_uint_le(offset + 0x34)
             self.quata = self.get_ulonglong(offset + 0x38)
             self.usn = self.get_ulonglong(offset + 0x40)
 
@@ -231,9 +231,9 @@ class MftAttrFilename(MftAttr):
         self.rtime = self.get_ulonglong(offset + 0x20)
         self.alloc_size = self.get_ulonglong(offset + 0x28)
         self.real_size = self.get_ulonglong(offset + 0x30)
-        self.flags = self.get_uint(offset + 0x38)
+        self.flags = self.get_uint_le(offset + 0x38)
         # Used by EAs and Reparse ??
-        self.reparse = self.get_uint(offset + 0x3C)
+        self.reparse = self.get_uint_le(offset + 0x3C)
         self.fname_length = self.get_uchar(offset + 0x40)
         self.fnspace = self.get_uchar(offset + 0x41)
         self.fname = self.get_chunk(offset + 0x42, 2 *

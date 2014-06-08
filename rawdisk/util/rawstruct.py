@@ -149,16 +149,21 @@ class RawStruct(object):
         """
         return struct.unpack(">H", self.data[offset:offset+2])[0]
 
-    def get_uint(self, offset, big_endian=False):
+    def get_uint_le(self, offset):
         """Returns unsigned int (4 bytes)
 
         Args:
-            offset (int): unsigned int offset in byte array
-            big_endian (bool): source is big_endian, defaults to little endian
+            offset (int): unsigned int offset in little-endian byte array
         """
-        if (big_endian):
-            return struct.unpack(">I", self.data[offset:offset+4])[0]
         return struct.unpack("<I", self.data[offset:offset+4])[0]
+
+    def get_uint_be(self, offset):
+        """Returns unsigned int (4 bytes)
+
+        Args:
+            offset (int): unsigned int offset in big-endian byte array
+        """
+        return struct.unpack(">I", self.data[offset:offset+4])[0]
 
     def get_ulong(self, offset, big_endian=False):
         """Returns unsigned long (4 bytes)

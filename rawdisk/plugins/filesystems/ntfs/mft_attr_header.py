@@ -75,8 +75,8 @@ class MftAttrHeader(RawStruct):
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)
-        self.type = self.get_uint(0)
-        self.length = self.get_uint(0x4)
+        self.type = self.get_uint_le(0)
+        self.length = self.get_uint_le(0x4)
         self.non_resident_flag = self.get_uchar(0x08)   # 0 - resident, 1 - not
         self.length_of_name = self.get_uchar(0x09)      # Used only for ADS
         self.offset_to_name = self.get_ushort_le(0x0A)     # Used only for ADS
@@ -100,7 +100,7 @@ class MftAttrHeader(RawStruct):
                 # print self.attr_name.decode('utf-16')
         else:
             # Attribute is Resident
-            self.attr_length = self.get_uint(0x10)
+            self.attr_length = self.get_uint_le(0x10)
             self.attr_offset = self.get_ushort_le(0x14)
             self.indexed = self.get_uchar(0x16)
             if (self.length_of_name > 0):

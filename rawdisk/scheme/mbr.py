@@ -77,8 +77,8 @@ class PartitionEntry(RawStruct):
         self.ending_sector = tmp & 0x3F
         self.ending_cylinder = ((tmp & 0xC0) << 2) + \
             self.get_uchar(7)
-        self.relative_sector = self.get_uint(8)
-        self.total_sectors = self.get_uint(12)
+        self.relative_sector = self.get_uint_le(8)
+        self.total_sectors = self.get_uint_le(12)
         self.part_offset = SECTOR_SIZE*self.relative_sector
 
 

@@ -66,6 +66,20 @@ class TestRawStruct(unittest.TestCase):
             r.get_ushort_be(offset),
             struct.unpack(">H", self.sample_data[offset:offset+2])[0])
 
+    def test_get_uint_le(self):
+        offset = 0
+        r = RawStruct(data = self.sample_data)
+        self.assertEqual(
+            r.get_uint_le(offset),
+            struct.unpack("<I", self.sample_data[offset:offset+4])[0])
+
+    def test_get_uint_be(self):
+        offset = 0
+        r = RawStruct(data = self.sample_data)
+        self.assertEqual(
+            r.get_uint_be(offset),
+            struct.unpack(">I", self.sample_data[offset:offset+4])[0])
+
     def test_get_uuid_le(self):
         r = RawStruct(data = self.sample_uuid_data)
         self.assertEqual(
