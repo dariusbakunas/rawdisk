@@ -79,16 +79,16 @@ class MftAttrHeader(RawStruct):
         self.length = self.get_uint(0x4)
         self.non_resident_flag = self.get_uchar(0x08)   # 0 - resident, 1 - not
         self.length_of_name = self.get_uchar(0x09)      # Used only for ADS
-        self.offset_to_name = self.get_ushort(0x0A)     # Used only for ADS
-        self.flags = self.get_ushort(0x0C)  # (Compressed, Encrypted, Sparse)
-        self.identifier = self.get_ushort(0x0E)
+        self.offset_to_name = self.get_ushort_le(0x0A)     # Used only for ADS
+        self.flags = self.get_ushort_le(0x0C)  # (Compressed, Encrypted, Sparse)
+        self.identifier = self.get_ushort_le(0x0E)
 
         if (self.non_resident_flag):
             # Attribute is Non-Resident
             self.lowest_vcn = self.get_ulonglong(0x10)
             self.highest_vcn = self.get_ulonglong(0x18)
-            self.mapping_pairs_offset = self.get_ushort(0x20)
-            self.comp_unit_size = self.get_ushort(0x22)
+            self.mapping_pairs_offset = self.get_ushort_le(0x20)
+            self.comp_unit_size = self.get_ushort_le(0x22)
             # 4 byte 0x00 padding @ 0x24
             self.alloc_size = self.get_ulonglong(0x28)
             self.real_size = self.get_ulonglong(0x30)
@@ -101,7 +101,7 @@ class MftAttrHeader(RawStruct):
         else:
             # Attribute is Resident
             self.attr_length = self.get_uint(0x10)
-            self.attr_offset = self.get_ushort(0x14)
+            self.attr_offset = self.get_ushort_le(0x14)
             self.indexed = self.get_uchar(0x16)
             if (self.length_of_name > 0):
                 self.attr_name = self.get_chunk(

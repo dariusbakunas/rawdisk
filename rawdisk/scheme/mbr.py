@@ -129,7 +129,7 @@ class Mbr(RawStruct):
         with open(filename, 'rb') as f:
             # Verify MBR signature first
             self.load_from_source(f, 0, MBR_SIZE)
-            signature = self.get_ushort(MBR_SIG_OFFSET)
+            signature = self.get_ushort_le(MBR_SIG_OFFSET)
 
             if (signature != MBR_SIGNATURE):
                 raise Exception("Invalid MBR signature")

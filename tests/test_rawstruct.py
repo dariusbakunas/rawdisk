@@ -1,5 +1,6 @@
 import unittest
 import mock
+import struct
 from rawdisk.util.rawstruct import RawStruct
 
 
@@ -41,3 +42,24 @@ class TestRawStruct(unittest.TestCase):
                 (r.size, r.data),
                 (length, self.sample_data[offset:offset + length])
             )
+
+    def test_get_uchar(self):
+        offset = 2
+        r = RawStruct(data=self.sample_data)
+        self.assertEqual(
+            r.get_uchar(offset),
+            struct.unpack("B", self.sample_data[offset:offset+1])[0])
+
+    def test_get_ushort_le(self):
+        offset = 0
+        r = RawStruct(data = self.sample_data)
+        self.assertEqual(
+            r.get_ushort_le(offset),
+            struct.unpack("<H", self.sample_data[offset:offset+2])[0])
+
+    def test_get_ushort_be(self):
+        offset = 0
+        r = RawStruct(data = self.sample_data)
+        self.assertEqual(
+            r.get_ushort_be(offset),
+            struct.unpack(">H", self.sample_data[offset:offset+2])[0])

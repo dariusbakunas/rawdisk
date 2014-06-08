@@ -54,13 +54,13 @@ class Bpb(RawStruct):
     """
     def __init__(self, data=None):
         RawStruct.__init__(self, data)
-        self.bytes_per_sector = self.get_ushort(0)
+        self.bytes_per_sector = self.get_ushort_le(0)
         self.sectors_per_cluster = self.get_uchar(2)
-        self.reserved_sectors = self.get_ushort(3)
+        self.reserved_sectors = self.get_ushort_le(3)
         self.media_descriptor = self.get_uchar(10)
 
-        self.sectors_per_track = self.get_ushort(13)
-        self.number_of_heads = self.get_ushort(15)
+        self.sectors_per_track = self.get_ushort_le(13)
+        self.number_of_heads = self.get_ushort_le(15)
         self.hidden_sectors = self.get_uint(17)
 
         self.total_sectors = self.get_ulonglong(29)

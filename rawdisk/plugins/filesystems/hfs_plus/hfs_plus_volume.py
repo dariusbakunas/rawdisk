@@ -42,7 +42,7 @@ class VolumeHeader(RawStruct):
         RawStruct.__init__(self, data)
         self.signature = self.get_string(0x00, 2)
         # HFS+ everything is stored in big-endian
-        self.version = self.get_ushort(0x02, True)
+        self.version = self.get_ushort_be(0x02)
         self.attributes = self.get_uint(0x04, True)
 
 

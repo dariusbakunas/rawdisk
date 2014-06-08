@@ -132,16 +132,14 @@ class RawStruct(object):
         """
         return struct.unpack("<H", self.data[offset:offset+2])[0]
 
-    def get_ushort(self, offset, big_endian=False):
-        """Returns unsigned short (2 bytes)
+    def get_ushort_be(self, offset):
+        """Returns unsigned short (2 bytes),
+        assuming source is big-endien.
 
         Args:
-            offset (int): unsigned short offset in byte array
-            big_endian (bool): source is big_endian, defaults to little endian
+            offset (int): unsigned short offset in byte array.
         """
-        if (big_endian):
-            return struct.unpack(">H", self.data[offset:offset+2])[0]
-        return struct.unpack("<H", self.data[offset:offset+2])[0]
+        return struct.unpack(">H", self.data[offset:offset+2])[0]
 
     def get_uint(self, offset, big_endian=False):
         """Returns unsigned int (4 bytes)
@@ -186,6 +184,15 @@ class RawStruct(object):
         return struct.unpack(str(length) + "s", self.data[
             offset:offset+length
         ])[0]
+
+    def export(self, filename):
+        """Exports byte array to specified destination
+
+        Args:
+            filename (str): destination to output file
+        """
+        with open(filename, 'w') as f:
+            f.write(self.data)
 
     def hexdump(self):
         """Prints structure's data in hex format.
