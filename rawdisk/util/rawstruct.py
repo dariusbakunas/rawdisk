@@ -48,7 +48,10 @@ class RawStruct(object):
         elif filename is not None:
             with open(filename, 'rb') as f:
                 f.seek(offset)
-                self._data = f.read(length)
+                if length is None:
+                    self._data = f.read()
+                else:
+                    self._data = f.read(length)
 
     @property
     def data(self):
