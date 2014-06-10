@@ -54,19 +54,37 @@ class Bpb(RawStruct):
     """
     def __init__(self, data=None):
         RawStruct.__init__(self, data)
-        self.bytes_per_sector = self.get_ushort(0)
-        self.sectors_per_cluster = self.get_ubyte(2)
-        self.reserved_sectors = self.get_ushort(3)
-        self.media_descriptor = self.get_ubyte(10)
+        self.bytes_per_sector = self.get_ushort_le(0)
+        self.sectors_per_cluster = self.get_uchar(2)
+        self.reserved_sectors = self.get_ushort_le(3)
+        self.media_descriptor = self.get_uchar(10)
 
-        self.sectors_per_track = self.get_ushort(13)
-        self.number_of_heads = self.get_ushort(15)
-        self.hidden_sectors = self.get_uint(17)
+        self.sectors_per_track = self.get_ushort_le(13)
+        self.number_of_heads = self.get_ushort_le(15)
+        self.hidden_sectors = self.get_uint_le(17)
 
-        self.total_sectors = self.get_ulonglong(29)
-        self.mft_cluster = self.get_ulonglong(37)
-        self.mft_mirror_cluster = self.get_ulonglong(45)
-        self.clusters_per_mft = self.get_uint(53)
-        self.clusters_per_index = self.get_ubyte(57)
-        self.volume_serial = self.get_ulonglong(58)
-        self.checksum = self.get_uint(66)
+        self.total_sectors = self.get_ulonglong_le(29)
+        self.mft_cluster = self.get_ulonglong_le(37)
+        self.mft_mirror_cluster = self.get_ulonglong_le(45)
+        self.clusters_per_mft = self.get_uint_le(53)
+        self.clusters_per_index = self.get_uchar(57)
+        self.volume_serial = self.get_ulonglong_le(58)
+        self.checksum = self.get_uint_le(66)
+
+    @property
+    def mft_offset(self):
+        """
+        Returns:
+            int: MFT Table offset from the beginning of the partition in bytes
+        """
+        return self.bytes_per_sector * \
+            self.sectors_per_cluster * self.mft_cluster
+
+    @property
+    def mft_mirror_offset(self):
+        """
+        Returns:
+            int: Mirror MFT Table offset from the beginning of the partition in bytes
+        """
+        return self.bytes_per_sector * \
+            self.sectors_per_cluster * self.mft_mirror_cluster

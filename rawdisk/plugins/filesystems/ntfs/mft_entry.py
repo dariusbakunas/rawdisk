@@ -109,9 +109,9 @@ class MftEntry(RawStruct):
             None: If atttribute type does not mach any one of the supported \
             attribute types.
         """
-        attr_type = self.get_uint(offset)
+        attr_type = self.get_uint_le(offset)
         # Attribute length is in header @ offset 0x4
-        length = self.get_uint(offset + 0x04)
+        length = self.get_uint_le(offset + 0x04)
         data = self.get_chunk(offset, length)
 
         return MftAttr.factory(attr_type, data)

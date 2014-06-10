@@ -56,3 +56,9 @@ docs/_build/
 .pypirc
 
 include/python2.7
+
+*.sublime-project
+
+*.sublime-workspace
+
+.settings/org.eclipse.core.resources.prefs

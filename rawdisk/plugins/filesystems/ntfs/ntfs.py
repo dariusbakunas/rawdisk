@@ -24,12 +24,12 @@
 
 import uuid
 import rawdisk.plugins.categories as categories
-from bitstring import ConstBitStream
+from rawdisk.util.rawstruct import RawStruct
 from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume
 from rawdisk.filesystems.detector import FilesystemDetector
 
-SIG_DATA_SIZE = 11
-OEM_ID_OFFSET = 0x03
+SIG_SIZE = 8
+SIG_OFFSET = 0x03
 
 
 class NtfsPlugin(categories.IFilesystemPlugin):
@@ -55,13 +55,12 @@ class NtfsPlugin(categories.IFilesystemPlugin):
             bool: True if filesystem signature at offset 0x03 \
             matches 'NTFS    ', False otherwise.
         """
-
-        s = ConstBitStream(
+        r = RawStruct(
             filename=filename,
-            offset=(offset + OEM_ID_OFFSET) * 8,
-            length=SIG_DATA_SIZE * 8)
+            offset=offset + SIG_OFFSET,
+            length=SIG_SIZE)
 
-        oem_id = s.read("bytes:8")
+        oem_id = r.data
 
         if (oem_id == "NTFS    "):
             return True
