@@ -41,7 +41,11 @@ class Bpb(RawStruct):
         (*mft offset = volume offset + bytes_per_sector * \
             sectors_per_cluster * mft_cluster*).
         mft_mirror_cluster (ulonglong): Mirror MFT table cluster number.
-        clusters_per_mft (uint): MFT record size.
+        clusters_per_mft (signed char): MFT record size. \
+        Per Microsoft: If this number is positive (up to 0x7F), it represents \
+        Clusters per MFT record. If the number is negative (0x80 to 0xFF), \
+        the size of the File Record is 2 raised to the absolute value of \
+        this number.
         clusters_per_index (uint): Index block size.
         volume_serial (ulonglong): Volume serial number.
         checksum (uint): BPB checksum.
@@ -73,10 +77,23 @@ class Bpb(RawStruct):
         self.total_sectors = self.get_ulonglong_le(29)
         self.mft_cluster = self.get_ulonglong_le(37)
         self.mft_mirror_cluster = self.get_ulonglong_le(45)
-        self.clusters_per_mft = self.get_uint_le(53)
+        self.clusters_per_mft = self.get_char(53)
         self.clusters_per_index = self.get_uchar(57)
         self.volume_serial = self.get_ulonglong_le(58)
         self.checksum = self.get_uint_le(66)
+
+    @property
+    def mft_record_size(self):
+        """
+        Returns:
+            int: MFT record size in bytes
+        """
+        if (self.clusters_per_mft < 0):
+            return 2 ** abs(self.clusters_per_mft)
+        else:
+            return self.clusters_per_mft * self.sectors_per_cluster * \
+            self.bytes_per_sector
+
 
     @property
     def mft_offset(self):
