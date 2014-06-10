@@ -52,8 +52,8 @@ class Bpb(RawStruct):
         | http://homepage.ntlworld.com\
 /jonathan.deboynepollard/FGA/bios-parameter-block.html
     """
-    def __init__(self, data=None):
-        RawStruct.__init__(self, data)
+    def __init__(self, data=None, offset=None, length=None):
+        RawStruct.__init__(self, data, offset=offset, length=length)
         self.bytes_per_sector = self.get_ushort_le(0)
         self.sectors_per_cluster = self.get_uchar(2)
         self.reserved_sectors = self.get_ushort_le(3)
@@ -84,7 +84,8 @@ class Bpb(RawStruct):
     def mft_mirror_offset(self):
         """
         Returns:
-            int: Mirror MFT Table offset from the beginning of the partition in bytes
+            int: Mirror MFT Table offset from the beginning of the partition \
+            in bytes
         """
         return self.bytes_per_sector * \
             self.sectors_per_cluster * self.mft_mirror_cluster

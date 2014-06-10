@@ -54,68 +54,68 @@ class TestRawStruct(unittest.TestCase):
 
     def test_get_ushort_le(self):
         offset = 0
-        r = RawStruct(data = self.sample_data)
+        r = RawStruct(data=self.sample_data)
         self.assertEqual(
             r.get_ushort_le(offset),
             struct.unpack("<H", self.sample_data[offset:offset+2])[0])
 
     def test_get_ushort_be(self):
         offset = 2
-        r = RawStruct(data = self.sample_data)
+        r = RawStruct(data=self.sample_data)
         self.assertEqual(
             r.get_ushort_be(offset),
             struct.unpack(">H", self.sample_data[offset:offset+2])[0])
 
     def test_get_uint_le(self):
         offset = 0
-        r = RawStruct(data = self.sample_data)
+        r = RawStruct(data=self.sample_data)
         self.assertEqual(
             r.get_uint_le(offset),
             struct.unpack("<I", self.sample_data[offset:offset+4])[0])
 
     def test_get_uint_be(self):
         offset = 0
-        r = RawStruct(data = self.sample_data)
+        r = RawStruct(data=self.sample_data)
         self.assertEqual(
             r.get_uint_be(offset),
             struct.unpack(">I", self.sample_data[offset:offset+4])[0])
 
     def test_get_ulong_le(self):
         offset = 0
-        r = RawStruct(data = self.sample_data)
+        r = RawStruct(data=self.sample_data)
         self.assertEqual(
             r.get_ulong_le(offset),
             struct.unpack("<L", self.sample_data[offset:offset+4])[0])
 
     def test_get_ulong_be(self):
         offset = 0
-        r = RawStruct(data = self.sample_data)
+        r = RawStruct(data=self.sample_data)
         self.assertEqual(
             r.get_ulong_be(offset),
             struct.unpack(">L", self.sample_data[offset:offset+4])[0])
 
     def test_get_ulonglong_le(self):
         offset = 0
-        r = RawStruct(data = self.sample_data)
+        r = RawStruct(data=self.sample_data)
         self.assertEqual(
             r.get_ulonglong_le(offset),
             struct.unpack("<Q", self.sample_data[offset:offset+8])[0])
 
     def test_get_ulonglong_be(self):
         offset = 0
-        r = RawStruct(data = self.sample_data)
+        r = RawStruct(data=self.sample_data)
         self.assertEqual(
             r.get_ulonglong_be(offset),
             struct.unpack(">Q", self.sample_data[offset:offset+8])[0])
 
     def test_get_uuid_le(self):
-        r = RawStruct(data = self.sample_uuid_data)
+        r = RawStruct(data=self.sample_uuid_data)
         self.assertEqual(
             r.get_uuid_le(0),
             uuid.UUID(bytes_le=self.sample_uuid_data))
 
     def test_get_uuid_be(self):
-        r = RawStruct(data = self.sample_uuid_data)
+        r = RawStruct(data=self.sample_uuid_data)
         self.assertEqual(
             r.get_uuid_be(0),
             uuid.UUID(bytes=self.sample_uuid_data))
