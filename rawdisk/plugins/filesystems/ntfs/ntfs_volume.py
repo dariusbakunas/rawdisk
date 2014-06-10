@@ -64,18 +64,18 @@ class NtfsVolume(Volume):
         """
         self.offset = offset
         self.fd = open(filename, 'rb')
-        self._load_bootsector()
+
+        self.bootsector = BootSector(
+            filename=filename,
+            length=NTFS_BOOTSECTOR_SIZE,
+            offset=self.offset)
+
         self._load_mft_table()
         self.fd.close()
 
-    def _load_bootsector(self):
-        self.fd.seek(self.offset)
-        data = self.fd.read(NTFS_BOOTSECTOR_SIZE)
-        self.bootsector = BootSector(data)
-
     def _load_mft_table(self):
-        self.mft_table = MftTable(self.mft_table_offset)
-        self.mft_table.load(self.fd)
+        self.mft_table = MftTable()
+        self.mft_table.load(self.fd, self.mft_table_offset)
 
     def __str__(self):
         return "Type: NTFS, Offset: 0x%X, Size: %s, MFT Table Offset: 0x%X" % (

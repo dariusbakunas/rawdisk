@@ -42,8 +42,15 @@ class BootSector(RawStruct):
     See More:
         http://ntfs.com/ntfs-partition-boot-sector.htm
     """
-    def __init__(self, data=None):
-        RawStruct.__init__(self, data)
+    def __init__(self, data=None, offset=None, length=None, filename=None):
+        RawStruct.__init__(
+            self,
+            data=data,
+            offset=offset,
+            length=length,
+            filename=filename
+        )
+        
         self.oem_id = self.get_string(3, 8)
         self.bpb = Bpb(self.get_chunk(
             BPB_OFFSET, BPB_SIZE + EXTENDED_BPB_SIZE))
