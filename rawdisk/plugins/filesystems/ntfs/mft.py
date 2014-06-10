@@ -34,12 +34,12 @@ class MftTable(object):
     See More:
         http://en.wikipedia.org/wiki/NTFS#Master_File_Table
     """
-    def __init__(self, offset):
-        self.offset = offset
+    def __init__(self):
         self._metadata_entries = []
 
-    def load(self, source):
+    def load(self, source, offset):
         """Loads first 12 mft entries of the table"""
+        self.offset = offset
         self._load_system_entries(source, self.offset)
 
     def get_system_entry(self, entry_id):
