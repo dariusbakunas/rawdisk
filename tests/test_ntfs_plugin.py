@@ -2,6 +2,10 @@ import unittest
 import uuid
 from rawdisk.plugins.filesystems.ntfs.ntfs import NtfsPlugin
 from rawdisk.plugins.filesystems.ntfs.bpb import Bpb
+from rawdisk.plugins.filesystems.ntfs.bootsector import BootSector
+from rawdisk.plugins.filesystems.ntfs.bootsector import BPB_OFFSET, BPB_SIZE
+from rawdisk.plugins.filesystems.ntfs.bootsector import EXTENDED_BPB_SIZE
+from rawdisk.plugins.filesystems.ntfs.mft import MftTable
 from rawdisk.filesystems.detector import FilesystemDetector
 
 
@@ -28,16 +32,18 @@ class TestNtfsPlugin(unittest.TestCase):
         self.assertEquals(len(gpt_plugins), 1)
 
     def tearDown(self):
-        # drop the singleton
+        # remove plugin registration
         self.detector._clear_plugins()
 
-class TestBpb(unittest.TestCase):
-    def setUp(self):
-        with open('sample_images/ntfs_bpb.bin', 'r') as f:
-            self.data = f.read()
 
+class TestBpb(unittest.TestCase):
     def test_init(self):
-        bpb = Bpb(self.data)
+        bpb = Bpb(
+            filename='sample_images/ntfs_bootsector.bin',
+            offset=BPB_OFFSET,
+            length=BPB_SIZE + EXTENDED_BPB_SIZE
+        )
+
         self.assertEquals(bpb.bytes_per_sector, 512)
         self.assertEquals(bpb.sectors_per_cluster, 8)
         self.assertEquals(bpb.reserved_sectors, 0)
@@ -47,9 +53,20 @@ class TestBpb(unittest.TestCase):
         self.assertEquals(bpb.total_sectors, 0x1FE7FF)
         self.assertEquals(bpb.mft_cluster, 0x15455)
         self.assertEquals(bpb.mft_mirror_cluster, 0x2)
-        self.assertEquals(bpb.clusters_per_mft, 0xF6)
+        self.assertEquals(bpb.clusters_per_mft, -10)
         self.assertEquals(bpb.clusters_per_index, 0x1)
         self.assertEquals(bpb.volume_serial, 0xa028d573cf000000L)
         self.assertEquals(bpb.checksum, 0xE228D5)
         self.assertEquals(bpb.mft_offset, 0x15455000)
         self.assertEquals(bpb.mft_mirror_offset, 0x2000)
+        self.assertEquals(bpb.mft_record_size, 1024)
+
+
+class TestBootsector(unittest.TestCase):
+    def test_init(self):
+        bootsector = BootSector(filename='sample_images/ntfs_bootsector.bin')
+        self.assertEquals(bootsector.oem_id, 'NTFS    ')
+
+class TestMftTable(unittest.TestCase):
+    def test_init(self):
+        pass
