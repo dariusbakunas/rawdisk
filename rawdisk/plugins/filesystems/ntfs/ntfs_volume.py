@@ -99,4 +99,4 @@ class NtfsVolume(Volume):
         Returns:
             int: MFT Table offset from the beginning of the disk in bytes
         """
-        return self.offset + self.bootsector.mft_offset
+        return self.offset + self.bootsector.bpb.mft_offset

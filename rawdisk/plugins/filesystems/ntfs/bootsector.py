@@ -47,5 +47,3 @@ class BootSector(RawStruct):
         self.oem_id = self.get_string(3, 8)
         self.bpb = Bpb(self.get_chunk(
             BPB_OFFSET, BPB_SIZE + EXTENDED_BPB_SIZE))
-        self.mft_offset = self.bpb.bytes_per_sector * \
-            self.bpb.sectors_per_cluster * self.bpb.mft_cluster

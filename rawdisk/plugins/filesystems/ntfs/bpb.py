@@ -70,3 +70,21 @@ class Bpb(RawStruct):
         self.clusters_per_index = self.get_uchar(57)
         self.volume_serial = self.get_ulonglong_le(58)
         self.checksum = self.get_uint_le(66)
+
+    @property
+    def mft_offset(self):
+        """
+        Returns:
+            int: MFT Table offset from the beginning of the partition in bytes
+        """
+        return self.bytes_per_sector * \
+            self.sectors_per_cluster * self.mft_cluster
+
+    @property
+    def mft_mirror_offset(self):
+        """
+        Returns:
+            int: Mirror MFT Table offset from the beginning of the partition in bytes
+        """
+        return self.bytes_per_sector * \
+            self.sectors_per_cluster * self.mft_mirror_cluster
