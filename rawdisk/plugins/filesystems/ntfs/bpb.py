@@ -52,8 +52,15 @@ class Bpb(RawStruct):
         | http://homepage.ntlworld.com\
 /jonathan.deboynepollard/FGA/bios-parameter-block.html
     """
-    def __init__(self, data=None, offset=None, length=None):
-        RawStruct.__init__(self, data, offset=offset, length=length)
+    def __init__(self, data=None, offset=None, length=None, filename=None):
+        RawStruct.__init__(
+            self,
+            data=data,
+            offset=offset,
+            length=length,
+            filename=filename
+        )
+
         self.bytes_per_sector = self.get_ushort_le(0)
         self.sectors_per_cluster = self.get_uchar(2)
         self.reserved_sectors = self.get_ushort_le(3)
