@@ -67,6 +67,30 @@ class TestBootsector(unittest.TestCase):
         bootsector = BootSector(filename='sample_images/ntfs_bootsector.bin')
         self.assertEquals(bootsector.oem_id, 'NTFS    ')
 
+
 class TestMftTable(unittest.TestCase):
     def test_init(self):
-        pass
+        mft = MftTable(filename='sample_images/ntfs_mft_table.bin')
+
+        self.assertEquals(len(mft._entries), 12)
+        self.assertEquals(mft.size, 12 * 1024)
+
+    def test_init_with_num_entries(self):
+        num_entries = 5
+        mft = MftTable(
+            filename='sample_images/ntfs_mft_table.bin',
+            num_entries=num_entries
+        )
+
+        self.assertEquals(len(mft._entries), num_entries)
+        self.assertEquals(mft.size, num_entries * 1024)
+
+    def test_init_with_offset(self):
+        mft = MftTable(
+            filename='sample_images/ntfs_mft_table.bin',
+            offset=1024
+        )
+
+        # source has total of 12 entries
+        # offset(1024) => 12 - 1 => 11
+        self.assertEquals(len(mft._entries), 11)
