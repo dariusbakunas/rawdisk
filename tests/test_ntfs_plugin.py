@@ -1,10 +1,8 @@
 import unittest
 import uuid
 from rawdisk.plugins.filesystems.ntfs.ntfs import NtfsPlugin
-from rawdisk.plugins.filesystems.ntfs.bpb import Bpb
+from rawdisk.plugins.filesystems.ntfs.bpb import Bpb, BPB_OFFSET
 from rawdisk.plugins.filesystems.ntfs.bootsector import BootSector
-from rawdisk.plugins.filesystems.ntfs.bootsector import BPB_OFFSET, BPB_SIZE
-from rawdisk.plugins.filesystems.ntfs.bootsector import EXTENDED_BPB_SIZE
 from rawdisk.plugins.filesystems.ntfs.mft import MftTable
 from rawdisk.filesystems.detector import FilesystemDetector
 
@@ -40,8 +38,7 @@ class TestBpb(unittest.TestCase):
     def test_init(self):
         bpb = Bpb(
             filename='sample_images/ntfs_bootsector.bin',
-            offset=BPB_OFFSET,
-            length=BPB_SIZE + EXTENDED_BPB_SIZE
+            offset=BPB_OFFSET
         )
 
         self.assertEquals(bpb.bytes_per_sector, 512)

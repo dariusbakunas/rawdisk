@@ -24,6 +24,10 @@
 
 from rawdisk.util.rawstruct import RawStruct
 
+BPB_SIZE = 25
+BPB_OFFSET = 0x0B
+EXTENDED_BPB_SIZE = 48
+
 
 class Bpb(RawStruct):
     """Bios parameter block.
@@ -56,12 +60,18 @@ class Bpb(RawStruct):
         | http://homepage.ntlworld.com\
 /jonathan.deboynepollard/FGA/bios-parameter-block.html
     """
-    def __init__(self, data=None, offset=None, length=None, filename=None):
+    def __init__(
+        self,
+        data=None,
+        offset=None,
+        filename=None
+    ):
+
         RawStruct.__init__(
             self,
             data=data,
             offset=offset,
-            length=length,
+            length=BPB_SIZE + EXTENDED_BPB_SIZE,
             filename=filename
         )
 

@@ -22,12 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from bpb import Bpb
+from bpb import Bpb, BPB_OFFSET, BPB_SIZE, EXTENDED_BPB_SIZE
 from rawdisk.util.rawstruct import RawStruct
-
-BPB_SIZE = 25
-BPB_OFFSET = 0x0B
-EXTENDED_BPB_SIZE = 48
 
 
 class BootSector(RawStruct):
