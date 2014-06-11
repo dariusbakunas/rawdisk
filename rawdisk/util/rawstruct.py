@@ -52,6 +52,8 @@ class RawStruct(object):
                     self._data = f.read()
                 else:
                     self._data = f.read(length)
+        else:
+            raise Exception("Data or filename must be specified.")
 
     @property
     def data(self):
