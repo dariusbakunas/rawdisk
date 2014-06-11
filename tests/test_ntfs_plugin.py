@@ -4,6 +4,7 @@ from rawdisk.plugins.filesystems.ntfs.ntfs import NtfsPlugin
 from rawdisk.plugins.filesystems.ntfs.bpb import Bpb, BPB_OFFSET
 from rawdisk.plugins.filesystems.ntfs.bootsector import BootSector
 from rawdisk.plugins.filesystems.ntfs.mft import MftTable
+from rawdisk.plugins.filesystems.ntfs.mft_entry import MftEntry
 from rawdisk.filesystems.detector import FilesystemDetector
 
 
@@ -67,27 +68,22 @@ class TestBootsector(unittest.TestCase):
 
 class TestMftTable(unittest.TestCase):
     def test_init(self):
-        mft = MftTable(filename='sample_images/ntfs_mft_table.bin')
-
-        self.assertEquals(len(mft._entries), 12)
-        self.assertEquals(mft.size, 12 * 1024)
-
-    def test_init_with_num_entries(self):
-        num_entries = 5
         mft = MftTable(
             filename='sample_images/ntfs_mft_table.bin',
-            num_entries=num_entries
         )
 
-        self.assertEquals(len(mft._entries), num_entries)
-        self.assertEquals(mft.size, num_entries * 1024)
+        self.assertEquals(len(mft._entries), 0)
+        entry = mft.get_entry(0)
+        self.assertIsNotNone(entry)
+        self.assertEquals(len(mft._entries), 1)
 
-    def test_init_with_offset(self):
+    def test_get_entry(self):
         mft = MftTable(
             filename='sample_images/ntfs_mft_table.bin',
-            offset=1024
         )
 
-        # source has total of 12 entries
-        # offset(1024) => 12 - 1 => 11
-        self.assertEquals(len(mft._entries), 11)
+        self.assertIsNotNone(mft.get_entry(0))
+        self.assertEquals(len(mft._entries), 1)
+        self.assertIsNotNone(mft.get_entry(3))
+        self.assertIsNotNone(mft.get_entry(2))
+        self.assertEquals(len(mft._entries), 3)

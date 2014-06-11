@@ -40,13 +40,20 @@ class MftEntry(RawStruct):
         header (MftEntryHeader): Initialized \
         :class:`~.mft_entry_header.MftEntryHeader`.
     """
-    def __init__(self, data):
-        RawStruct.__init__(self, data)
+    def __init__(self, data=None, offset=None, length=None, filename=None):
+        RawStruct.__init__(
+            self,
+            data=data,
+            filename=filename,
+            offset=offset,
+            length=length
+        )
+
         self.attributes = []
-        self.name_str = ""
         self.fname_str = ""
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
         self.header = MftEntryHeader(header_data)
+        self.name_str = self._get_entry_name(self.header.seq_number)
         self.load_attributes()
 
     @property
@@ -86,6 +93,24 @@ class MftEntry(RawStruct):
         data = self.get_chunk(offset, length)
 
         return MftAttr.factory(attr_type, data)
+
+    def _get_entry_name(self, index):
+        names = {
+            0: "Master File Table",
+            1: "Master File Table Mirror",
+            2: "Log File",
+            3: "Volume File",
+            4: "Attribute Definition Table",
+            5: "Root Directory",
+            6: "Volume Bitmap",
+            7: "Boot Sector",
+            8: "Bad Cluster List",
+            9: "Security",
+            10: "Upcase Table",
+            11: "Extend Table",
+        }
+
+        return names.get(index, "(unknown/unnamed)")
 
     def __str__(self):
         result = (

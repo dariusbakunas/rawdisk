@@ -30,7 +30,7 @@ from rawdisk.filesystems.volume import Volume
 NTFS_BOOTSECTOR_SIZE = 512
 
 # entries to preload
-NUM_MFT_ENTRIES = 12
+NUM_SYSTEM_ENTRIES = 12
 
 
 class NtfsVolume(Volume):
@@ -75,9 +75,10 @@ class NtfsVolume(Volume):
         self.mft_table = MftTable(
             mft_entry_size=self.bootsector.bpb.mft_record_size,
             filename=self.filename,
-            offset=self.mft_table_offset,
-            num_entries=NUM_MFT_ENTRIES
+            offset=self.mft_table_offset
         )
+
+        self.mft_table.preload_entries(NUM_SYSTEM_ENTRIES)
 
     def __str__(self):
         return "Type: NTFS, Offset: 0x%X, Size: %s, MFT Table Offset: 0x%X" % (
