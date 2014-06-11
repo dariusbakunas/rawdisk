@@ -92,8 +92,7 @@ class Bpb(RawStruct):
             return 2 ** abs(self.clusters_per_mft)
         else:
             return self.clusters_per_mft * self.sectors_per_cluster * \
-            self.bytes_per_sector
-
+                self.bytes_per_sector
 
     @property
     def mft_offset(self):
