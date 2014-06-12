@@ -26,22 +26,7 @@ from mft_attribute import MFT_ATTR_FILENAME, MftAttr
 from mft_entry_header import MftEntryHeader
 from rawdisk.util.rawstruct import RawStruct
 
-MFT_ENTRY_SIZE = 1024
 MFT_ENTRY_HEADER_SIZE = 48
-
-# NTFS System files
-MFT_ENTRY_MFT = 0x0
-MFT_ENTRY_MFTMIRROR = 0x1
-MFT_ENTRY_LOGFILE = 0x2
-MFT_ENTRY_VOLUME = 0x3
-MFT_ENTRY_ATTRDEF = 0x4
-MFT_ENTRY_ROOT = 0x5
-MFT_ENTRY_BITMAP = 0x6
-MFT_ENTRY_BOOT = 0x7
-MFT_ENTRY_BADCLUS = 0x8
-MFT_ENTRY_SECURE = 0x9
-MFT_ENTRY_UPCASE = 0xA
-MFT_ENTRY_EXTEND = 0xB
 
 
 class MftEntry(RawStruct):
@@ -55,35 +40,28 @@ class MftEntry(RawStruct):
         header (MftEntryHeader): Initialized \
         :class:`~.mft_entry_header.MftEntryHeader`.
     """
-    def __init__(self, offset, data):
-        RawStruct.__init__(self, data)
-        self.offset = offset
-        self.attributes = []
-        self.name_str = ""
-        self.fname_str = ""
+    def __init__(self, data=None, offset=None, length=None, filename=None):
+        RawStruct.__init__(
+            self,
+            data=data,
+            filename=filename,
+            offset=offset,
+            length=length
+        )
 
+        self.attributes = []
+        self.fname_str = ""
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
         self.header = MftEntryHeader(header_data)
+        self.name_str = self._get_entry_name(self.header.seq_number)
         self.load_attributes()
-
-    @property
-    def end_offset(self):
-        """
-        Returns:
-            uint: end offset of the MFT entry, beginning form the start \
-            of the disk in bytes."""
-        return self.offset + self.header.allocated_size
 
     @property
     def used_size(self):
         return self.header.used_size
 
-    @property
-    def size(self):
-        return self.header.allocated_size
-
     def load_attributes(self):
-        free_space = MFT_ENTRY_SIZE - MFT_ENTRY_HEADER_SIZE
+        free_space = self.size - MFT_ENTRY_HEADER_SIZE
         offset = self.header.first_attr_offset
 
         while free_space > 0:
@@ -115,6 +93,24 @@ class MftEntry(RawStruct):
         data = self.get_chunk(offset, length)
 
         return MftAttr.factory(attr_type, data)
+
+    def _get_entry_name(self, index):
+        names = {
+            0: "Master File Table",
+            1: "Master File Table Mirror",
+            2: "Log File",
+            3: "Volume File",
+            4: "Attribute Definition Table",
+            5: "Root Directory",
+            6: "Volume Bitmap",
+            7: "Boot Sector",
+            8: "Bad Cluster List",
+            9: "Security",
+            10: "Upcase Table",
+            11: "Extend Table",
+        }
+
+        return names.get(index, "(unknown/unnamed)")
 
     def __str__(self):
         result = (

@@ -48,7 +48,12 @@ class RawStruct(object):
         elif filename is not None:
             with open(filename, 'rb') as f:
                 f.seek(offset)
-                self._data = f.read(length)
+                if length is None:
+                    self._data = f.read()
+                else:
+                    self._data = f.read(length)
+        else:
+            raise Exception("Data or filename must be specified.")
 
     @property
     def data(self):
@@ -127,9 +132,17 @@ class RawStruct(object):
         """Returns unsigned char (1 byte)
 
         Args:
-            offset (int): unsigned char offset in byte array
+            offset (uchar): unsigned char offset in byte array
         """
         return struct.unpack("B", self.data[offset:offset+1])[0]
+
+    def get_char(self, offset):
+        """Returns char (1 byte)
+
+        Args:
+            offset (char): signed char offset in byte array
+        """
+        return struct.unpack("b", self.data[offset:offset+1])[0]
 
     def get_ushort_le(self, offset):
         """Returns unsigned short (2 bytes),
@@ -164,6 +177,14 @@ class RawStruct(object):
             offset (int): unsigned int offset in big-endian byte array
         """
         return struct.unpack(">I", self.data[offset:offset+4])[0]
+
+    def get_int_le(self, offset):
+        """Returns int (4 bytes)
+
+        Args:
+            offset (int): int offset in little-endian byte array
+        """
+        return struct.unpack("<I", self.data[offset:offset+4])[0]
 
     def get_ulong_le(self, offset):
         """Returns unsigned long (4 bytes)

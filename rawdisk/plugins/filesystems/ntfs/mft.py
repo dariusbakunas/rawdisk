@@ -22,66 +22,75 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from mft_entry import MftEntry, MFT_ENTRY_SIZE
+
+from mft_entry import MftEntry
 
 
 class MftTable(object):
     """Represents NTFS Master File Table (MFT)
 
     Args:
-        offset (uint): offset to the MFT table from disk start in bytes
+        offset (uint): Offset to the MFT table from disk start in bytes.
+        mft_record_size (uint): Mft entry size in bytes (default: 1024).
+        filename (str): A file to read the data from.
 
     See More:
         http://en.wikipedia.org/wiki/NTFS#Master_File_Table
     """
-    def __init__(self, offset):
-        self.offset = offset
-        self._metadata_entries = []
+    def __init__(
+        self,
+        mft_entry_size=1024,
+        offset=None,
+        filename=None
+    ):
 
-    def load(self, source):
-        """Loads first 12 mft entries of the table"""
-        self._load_system_entries(source, self.offset)
+        if offset is None:
+            self.offset = 0
+        else:
+            self.offset = offset
 
-    def get_system_entry(self, entry_id):
-        """Get system entry by index
+        self.entry_size = mft_entry_size
+        self.filename = filename
+        self._entries = {}
+
+    def get_entry(self, entry_id):
+        """Get mft entry by index. If entry is not already loaded it will load \
+        it from file specified during :class:`MftTable` initialization.
 
         Returns:
             MftEntry: initialized :class:`~.mft_entry.MftEntry`.
         """
-        return self._metadata_entries[entry_id]
 
-    def _load_system_entries(self, source, offset):
-        source.seek(offset)
+        if entry_id in self._entries:
+            return self._entries[entry_id]
+        else:
+            entry_offset = entry_id * self.entry_size
 
-        for n in range(0, 12):
-            data = source.read(MFT_ENTRY_SIZE)
-            entry = MftEntry(offset, data)
-            entry.name_str = self._sys_entry_name(n)
-            self._metadata_entries.append(entry)
-            source.seek(entry.end_offset)
-            offset = entry.end_offset
+            # load entry
+            entry = MftEntry(
+                filename=self.filename,
+                offset=self.offset + entry_offset,
+                length=self.entry_size
+            )
 
-    def _sys_entry_name(self, index):
-        names = {
-            0: "Master File Table",
-            1: "Master File Table Mirror",
-            2: "Log File",
-            3: "Volume File",
-            4: "Attribute Definition Table",
-            5: "Root Directory",
-            6: "Volume Bitmap",
-            7: "Boot Sector",
-            8: "Bad Cluster List",
-            9: "Security",
-            10: "Upcase Table",
-            11: "Extend Table",
-        }
+            # cache entry
+            self._entries[entry_id] = entry
 
-        return names.get(index, "(unknown/unnamed)")
+            return entry
+
+    def preload_entries(self, count):
+        """Loads specified number of MFT entries
+
+        Args:
+            count (int): Number of entries to preload.
+
+        """
+        for n in range(0, count):
+            self.get_entry(n)
 
     def __str__(self):
         result = ""
-        for entry in self._metadata_entries:
-            result += str(entry) + "\n\n"
+        for entry_id in self._entries:
+            result += str(self._entries[entry_id]) + "\n\n"
 
         return result

@@ -80,7 +80,9 @@ class MftAttrHeader(RawStruct):
         self.non_resident_flag = self.get_uchar(0x08)   # 0 - resident, 1 - not
         self.length_of_name = self.get_uchar(0x09)      # Used only for ADS
         self.offset_to_name = self.get_ushort_le(0x0A)     # Used only for ADS
-        self.flags = self.get_ushort_le(0x0C)  # (Compressed, Encrypted, Sparse)
+
+        # (Compressed, Encrypted, Sparse)
+        self.flags = self.get_ushort_le(0x0C)
         self.identifier = self.get_ushort_le(0x0E)
 
         if (self.non_resident_flag):

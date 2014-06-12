@@ -29,6 +29,9 @@ from rawdisk.filesystems.volume import Volume
 
 NTFS_BOOTSECTOR_SIZE = 512
 
+# entries to preload
+NUM_SYSTEM_ENTRIES = 12
+
 
 class NtfsVolume(Volume):
     """Represents NTFS volume.
@@ -48,7 +51,6 @@ class NtfsVolume(Volume):
         self.offset = 0
         self.bootsector = None
         self.mft_table = None
-        self.fd = None
 
     def load(self, filename, offset):
         """Loads NTFS volume information
@@ -63,19 +65,20 @@ class NtfsVolume(Volume):
             IOError: If source file/device does not exist or is not readable
         """
         self.offset = offset
-        self.fd = open(filename, 'rb')
-        self._load_bootsector()
-        self._load_mft_table()
-        self.fd.close()
+        self.filename = filename
 
-    def _load_bootsector(self):
-        self.fd.seek(self.offset)
-        data = self.fd.read(NTFS_BOOTSECTOR_SIZE)
-        self.bootsector = BootSector(data)
+        self.bootsector = BootSector(
+            filename=filename,
+            length=NTFS_BOOTSECTOR_SIZE,
+            offset=self.offset)
 
-    def _load_mft_table(self):
-        self.mft_table = MftTable(self.mft_table_offset)
-        self.mft_table.load(self.fd)
+        self.mft_table = MftTable(
+            mft_entry_size=self.bootsector.bpb.mft_record_size,
+            filename=self.filename,
+            offset=self.mft_table_offset
+        )
+
+        self.mft_table.preload_entries(NUM_SYSTEM_ENTRIES)
 
     def __str__(self):
         return "Type: NTFS, Offset: 0x%X, Size: %s, MFT Table Offset: 0x%X" % (

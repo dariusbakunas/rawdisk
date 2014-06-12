@@ -45,8 +45,7 @@ class Reader:
         detector = FilesystemDetector()
 
         if (self.scheme == scheme.common.SCHEME_MBR):
-            mbr = scheme.mbr.Mbr()
-            mbr.load(filename)
+            mbr = scheme.mbr.Mbr(filename)
 
             # Go through table entries and analyse ones that are supported
             for entry in mbr.partition_table.entries:

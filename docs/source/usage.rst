@@ -27,9 +27,9 @@ r.partitions is a list that contains matched volume objects. For example to get 
 
 	ntfs_vol = r.partitions[0]
 
-To get $MFT system entry (index: 0)::
+To get $MFT entry (index: 0)::
 
-	mft = ntfs_vol.mft_table.get_system_entry(0)
+	mft = ntfs_vol.mft_table.get_entry(0)
 
 	mft.hexdump()
 

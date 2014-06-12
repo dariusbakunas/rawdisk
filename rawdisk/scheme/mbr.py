@@ -107,33 +107,29 @@ class PartitionTable(RawStruct):
 class Mbr(RawStruct):
     """Represents the Master Boot Record of the filesystem.
 
+    Args:
+        filename (str): path to file or device to open for reading
+
     Attributes:
         partition_table (PartitionTable): Initialized \
         :class:`PartitionTable` object
+
+    Raises:
+        IOError: If file does not exist or is not readable.
+        Exception: If source has invalid MBR signature
     """
-    def __init__(self):
-        RawStruct.__init__(self)
-        self.partition_table = None
+    def __init__(self, filename=None):
+        RawStruct.__init__(
+            self,
+            filename=filename,
+            length=MBR_SIZE
+        )
 
-    def load(self, filename):
-        """Reads master boot record of the filesystem and
-        loads partition table entries
+        signature = self.get_ushort_le(MBR_SIG_OFFSET)
 
-        Args:
-            filename (str): path to file or device to open for reading
+        if (signature != MBR_SIGNATURE):
+            raise Exception("Invalid MBR signature")
 
-        Raises:
-            IOError: If file does not exist or is not readable.
-            Exception: If source has invalid MBR signature
-        """
-        with open(filename, 'rb') as f:
-            # Verify MBR signature first
-            self.load_from_source(f, 0, MBR_SIZE)
-            signature = self.get_ushort_le(MBR_SIG_OFFSET)
-
-            if (signature != MBR_SIGNATURE):
-                raise Exception("Invalid MBR signature")
-
-            self.partition_table = PartitionTable(
-                self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
-            )
+        self.partition_table = PartitionTable(
+            self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
+        )
