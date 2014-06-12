@@ -96,16 +96,16 @@ class NtfsVolume(Volume):
         # Determine the size of the MFT zone.
         num_clusters = self.bootsector.bpb.total_clusters
         self.mft_zone_size = self.bootsector.bpb.bytes_per_cluster * \
-                self._get_mft_zone_size(num_clusters)
+            self._get_mft_zone_size(num_clusters)
 
-    def _get_mft_zone_size(self, num_clusters, mft_zone_multiplier = 1):
-        """Returns mft zone size in clusters. 
+    def _get_mft_zone_size(self, num_clusters, mft_zone_multiplier=1):
+        """Returns mft zone size in clusters.
         From ntfs_progs.1.22."""
 
         sizes = {
-            4: num_clusters >> 1,       # 50%
-            3: (num_clusters * 3) >> 3, # 37,5%
-            2: num_clusters >> 2,       # 25%
+            4: num_clusters >> 1,           # 50%
+            3: (num_clusters * 3) >> 3,     # 37,5%
+            2: num_clusters >> 2,           # 25%
         }
 
         return sizes.get(mft_zone_multiplier, num_clusters >> 3)
@@ -127,10 +127,10 @@ class NtfsVolume(Volume):
         print "\tFree Space:"
         print "\tMFT Record Size: %s" % \
             size_str(self.bootsector.bpb.mft_record_size)
-        print "\tMFT Size: %s (%s of drive)" % \
-            (size_str(self.mft_zone_size), "{0:.0f}%".format(
-                    float(self.mft_zone_size) / 
-                    self.bootsector.bpb.volume_size * 100
+        print "\tMFT Size: %s (%s of drive)" % (
+            size_str(self.mft_zone_size), "{0:.0f}%".format(
+                float(self.mft_zone_size) /
+                self.bootsector.bpb.volume_size * 100
                 )
             )
 

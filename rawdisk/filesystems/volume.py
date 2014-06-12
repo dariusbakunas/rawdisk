@@ -42,6 +42,7 @@ class Volume(object):
             offset: Volume offset.
         """
         return
+
     @abc.abstractmethod
     def dump_volume(self):
         """Print volume information to std output,
