@@ -4,7 +4,6 @@ from rawdisk.plugins.filesystems.ntfs.ntfs import NtfsPlugin
 from rawdisk.plugins.filesystems.ntfs.bpb import Bpb, BPB_OFFSET
 from rawdisk.plugins.filesystems.ntfs.bootsector import BootSector
 from rawdisk.plugins.filesystems.ntfs.mft import MftTable
-from rawdisk.plugins.filesystems.ntfs.mft_entry import MftEntry
 from rawdisk.filesystems.detector import FilesystemDetector
 
 
