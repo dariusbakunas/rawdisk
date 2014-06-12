@@ -272,6 +272,9 @@ class MftAttrVolumeName(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
         self.type_str = "$VOLUME_NAME"
+        offset = self.header.size
+        length = self.header.length - self.header.size
+        self.vol_name = self.get_chunk(offset, 2 * length).decode('utf-16')
 
 
 class MftAttrVolumeInfo(MftAttr):
