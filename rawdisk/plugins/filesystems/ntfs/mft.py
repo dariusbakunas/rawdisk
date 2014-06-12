@@ -54,7 +54,8 @@ class MftTable(object):
         self._entries = {}
 
     def get_entry(self, entry_id):
-        """Get mft entry by index
+        """Get mft entry by index. If entry is not already loaded it will load \
+        it from file specified during :class:`MftTable` initialization.
 
         Returns:
             MftEntry: initialized :class:`~.mft_entry.MftEntry`.
@@ -78,6 +79,12 @@ class MftTable(object):
             return entry
 
     def preload_entries(self, count):
+        """Loads specified number of MFT entries
+
+        Args:
+            count (int): Number of entries to preload.
+
+        """
         for n in range(0, count):
             self.get_entry(n)
 
