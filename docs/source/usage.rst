@@ -33,10 +33,13 @@ Output::
 	Volume Information
 		Volume Name: New Volume
 		Volume Size: 1.00GB
+		Volume Offset: 0x10000
 		Total Sectors: 2091007
 		Total Clusters: 261375
 		Free Clusters:
 		Free Space:
+		MFT Offset: 0x15455000 (from beginning of volume)
+		MFT Mirror Offset: 0x2000
 		MFT Record Size: 1.00KB
 		MFT Size: 127.62MB (12% of drive)
 
