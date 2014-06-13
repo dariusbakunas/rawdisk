@@ -25,6 +25,19 @@
 
 from mft_entry import MftEntry
 
+ENTRY_MFT = 0
+ENTRY_MFT_MIRROR = 1
+ENTRY_LOGFILE = 2
+ENTRY_VOLUME = 3
+ENTRY_ATTRDEF = 4
+ENTRY_ROOT = 5
+ENTRY_BITMAP = 6
+ENTRY_BOOT = 7
+ENTRY_BADCLUS = 8
+ENTRY_SECURE = 9
+ENTRY_UPCASE = 10
+ENTRY_EXTEND = 11
+
 
 class MftTable(object):
     """Represents NTFS Master File Table (MFT)
