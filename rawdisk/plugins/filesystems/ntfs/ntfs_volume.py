@@ -23,8 +23,8 @@
 # THE SOFTWARE.
 
 from rawdisk.util.filesize import size_str
-from mft import MftTable
-from mft_attribute import MFT_ATTR_VOLUME_NAME
+from mft import MftTable, ENTRY_VOLUME
+from mft_attribute import MFT_ATTR_VOLUME_NAME, MFT_ATTR_VOLUME_INFO
 from bootsector import BootSector
 from rawdisk.filesystems.volume import Volume
 
@@ -54,6 +54,8 @@ class NtfsVolume(Volume):
         self.mft_table = None
         self.vol_name = None
         self.mft_zone_size = None
+        self.major_ver = None
+        self.minor_ver = None
 
     def load(self, filename, offset):
         """Loads NTFS volume information
@@ -87,11 +89,17 @@ class NtfsVolume(Volume):
 
     def _load_volume_information(self):
         # Get $Volume file.
-        mft_entry = self.mft_table.get_entry(3)
-        vol_attr = mft_entry.lookup_attribute(MFT_ATTR_VOLUME_NAME)
+        vol_entry = self.mft_table.get_entry(ENTRY_VOLUME)
+        vol_attr = vol_entry.lookup_attribute(MFT_ATTR_VOLUME_NAME)
 
         if (vol_attr is not None):
             self.vol_name = vol_attr.vol_name
+
+        vol_info_attr = vol_entry.lookup_attribute(MFT_ATTR_VOLUME_INFO)
+
+        if (vol_info_attr is not None):
+            self.major_ver = vol_info_attr.major_ver
+            self.minor_ver = vol_info_attr.minor_ver
 
         # Determine the size of the MFT zone.
         num_clusters = self.bootsector.bpb.total_clusters
@@ -120,11 +128,17 @@ class NtfsVolume(Volume):
     def dump_volume(self):
         print "Volume Information"
         print "\tVolume Name: %s" % self.vol_name
+        print "\tVolume Version: %d.%d" % (self.major_ver, self.minor_ver)
         print "\tVolume Size: %s" % size_str(self.bootsector.bpb.volume_size)
+        print "\tVolume Offset: 0x%x" % self.offset
         print "\tTotal Sectors: %u" % self.bootsector.bpb.total_sectors
         print "\tTotal Clusters: %u" % self.bootsector.bpb.total_clusters
-        print "\tFree Clusters:"
-        print "\tFree Space:"
+        # print "\tFree Clusters:"
+        # print "\tFree Space:"
+        print "\tMFT Offset: 0x%x (from beginning of volume)" % \
+            self.bootsector.bpb.mft_offset
+        print "\tMFT Mirror Offset: 0x%x" % \
+            self.bootsector.bpb.mft_mirror_offset
         print "\tMFT Record Size: %s" % \
             size_str(self.bootsector.bpb.mft_record_size)
         print "\tMFT Size: %s (%s of drive)" % (
