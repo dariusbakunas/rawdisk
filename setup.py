@@ -196,7 +196,8 @@ setup_dict = dict(
         'yapsy == 1.10.323',
         'pyxdg == 0.25',
         'bitstring==3.1.3',
-        'sphinxcontrib-napoleon == 0.2.7'
+        'sphinxcontrib-napoleon == 0.2.7',
+        'bitarray==0.8.1'
     ],
     tests_require=[
         'nose>=1.0',
