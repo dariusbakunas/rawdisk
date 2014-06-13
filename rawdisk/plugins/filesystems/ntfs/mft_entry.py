@@ -77,6 +77,12 @@ class MftEntry(RawStruct):
             else:
                 break
 
+    def lookup_attribute(self, attr_type_id):
+        for attr in self.attributes:
+            if attr.header.type == attr_type_id:
+                return attr
+        return None
+
     def get_attribute(self, offset):
         """Determines attribute type at the offset and returns \
         initialized attribute object.

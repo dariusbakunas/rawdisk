@@ -20,6 +20,28 @@ Last line looks through available filesystem plugins in *rawdisk/plugins/filesys
 
 	Type: NTFS, Offset: 0x10000, Size: 1020M, MFT Table Offset: 0x15465000
 
+Show selected volume information
+================================
+
+To print selected volume information::
+	
+	ntfs_vol = r.partitions[0]
+	ntfs_vol.dump_volume()
+
+Output::
+	
+	Volume Information
+		Volume Name: New Volume
+		Volume Version: 3.1
+		Volume Size: 1.00GB
+		Volume Offset: 0x10000
+		Total Sectors: 2091007
+		Total Clusters: 261375
+		MFT Offset: 0x15455000 (from beginning of volume)
+		MFT Mirror Offset: 0x2000
+		MFT Record Size: 1.00KB
+		MFT Size: 127.62MB (12% of drive)
+
 Analysing selected partition
 ============================
 

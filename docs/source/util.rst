@@ -6,6 +6,14 @@ Filetimes Module
     :undoc-members:
     :show-inheritance:
 
+Filesize Module
+---------------------
+
+.. automodule:: rawdisk.util.filesize
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Rawstruct Module
 ---------------------
 

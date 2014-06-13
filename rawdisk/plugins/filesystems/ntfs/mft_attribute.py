@@ -272,12 +272,28 @@ class MftAttrVolumeName(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
         self.type_str = "$VOLUME_NAME"
+        offset = self.header.size
+        length = self.header.length - self.header.size
+        self.vol_name = self.get_chunk(offset, 2 * length).decode('utf-16')
+
+# Volume Flags
+VOLUME_IS_DIRTY = 0x0001
+VOLUME_RESIZE_LOG_FILE = 0x0002
+VOLUME_UPGRADE_ON_MOUNT = 0x0004
+VOLUME_MOUNTED_ON_NT4 = 0x0008
+VOLUME_DELETE_USN_UNDERWAY = 0x0010
+VOLUME_REPAIR_OBJECT_ID = 0x0020
+VOLUME_MODIFIED_BY_CHDSK = 0x8000
 
 
 class MftAttrVolumeInfo(MftAttr):
     def __init__(self, data):
         MftAttr.__init__(self, data)
+        offset = self.header.size
         self.type_str = "$VOLUME_INFORMATION"
+        self.major_ver = self.get_uchar(offset + 0x08)
+        self.minor_ver = self.get_uchar(offset + 0x09)
+        self.flags = self.get_ushort_le(offset + 0x0A)
 
 
 class MftAttrData(MftAttr):

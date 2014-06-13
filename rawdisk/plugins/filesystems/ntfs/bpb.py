@@ -93,6 +93,19 @@ class Bpb(RawStruct):
         self.checksum = self.get_uint_le(66)
 
     @property
+    def total_clusters(self):
+        return self.total_sectors / self.sectors_per_cluster
+
+    @property
+    def bytes_per_cluster(self):
+        return self.sectors_per_cluster * self.bytes_per_sector
+
+    @property
+    def volume_size(self):
+        """Returns volume size in bytes"""
+        return self.bytes_per_sector * self.total_sectors
+
+    @property
     def mft_record_size(self):
         """
         Returns:
