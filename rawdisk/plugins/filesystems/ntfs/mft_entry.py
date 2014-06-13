@@ -57,6 +57,18 @@ class MftEntry(RawStruct):
         self.load_attributes()
 
     @property
+    def is_directory(self):
+        return self.header.flags & 0x0002
+
+    @property
+    def is_file(self):
+        return not self.is_directory
+
+    @property
+    def is_in_use(self):
+        return self.header.flags & 0x0001
+
+    @property
     def used_size(self):
         return self.header.used_size
 
