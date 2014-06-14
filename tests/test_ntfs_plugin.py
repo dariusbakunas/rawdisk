@@ -4,6 +4,8 @@ from rawdisk.plugins.filesystems.ntfs.ntfs import NtfsPlugin
 from rawdisk.plugins.filesystems.ntfs.bpb import Bpb, BPB_OFFSET
 from rawdisk.plugins.filesystems.ntfs.bootsector import BootSector
 from rawdisk.plugins.filesystems.ntfs.mft import MftTable
+from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume, \
+    NUM_SYSTEM_ENTRIES
 from rawdisk.filesystems.detector import FilesystemDetector
 
 
@@ -63,6 +65,26 @@ class TestBootsector(unittest.TestCase):
     def test_init(self):
         bootsector = BootSector(filename='sample_images/ntfs_bootsector.bin')
         self.assertEquals(bootsector.oem_id, 'NTFS    ')
+
+
+class TestNtfsVolume(unittest.TestCase):
+    def test_load(self):
+        offset = 0x10000
+        filename = 'sample_images/ntfs.vhd'
+        ntfs_vol = NtfsVolume()
+        ntfs_vol.load(filename=filename, offset=offset)
+        self.assertEquals(ntfs_vol.offset, offset)
+        self.assertEquals(ntfs_vol.filename, filename)
+        self.assertEquals(len(ntfs_vol.mft_table._entries), NUM_SYSTEM_ENTRIES)
+        self.assertEquals(ntfs_vol.major_ver, 3)
+        self.assertEquals(ntfs_vol.minor_ver, 1)
+        self.assertEquals(ntfs_vol.vol_name, u'New Volume')
+        self.assertEquals(ntfs_vol.size, 0x3fcffe00)
+        self.assertEquals(ntfs_vol.mft_table_offset, offset + \
+            ntfs_vol.bootsector.bpb.mft_offset)
+        self.assertEquals(ntfs_vol.mft_mirror_offset, offset + \
+            ntfs_vol.bootsector.bpb.mft_mirror_offset)
+        self.assertEquals(ntfs_vol.mft_zone_size, 0x7f9f000)
 
 
 class TestMftTable(unittest.TestCase):
