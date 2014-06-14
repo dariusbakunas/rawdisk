@@ -129,16 +129,16 @@ class NtfsVolume(Volume):
         print "Volume Information"
         print "\tVolume Name: %s" % self.vol_name
         print "\tVolume Version: %d.%d" % (self.major_ver, self.minor_ver)
-        print "\tVolume Size: %s" % size_str(self.bootsector.bpb.volume_size)
+        print "\tVolume Size: %s" % size_str(self.size)
         print "\tVolume Offset: 0x%x" % self.offset
         print "\tTotal Sectors: %u" % self.bootsector.bpb.total_sectors
         print "\tTotal Clusters: %u" % self.bootsector.bpb.total_clusters
         # print "\tFree Clusters:"
         # print "\tFree Space:"
-        print "\tMFT Offset: 0x%x (from beginning of volume)" % \
-            self.bootsector.bpb.mft_offset
+        print "\tMFT Offset: 0x%x" % \
+            self.mft_table_offset
         print "\tMFT Mirror Offset: 0x%x" % \
-            self.bootsector.bpb.mft_mirror_offset
+            self.mft_mirror_offset
         print "\tMFT Record Size: %s" % \
             size_str(self.bootsector.bpb.mft_record_size)
         print "\tMFT Size: %s (%s of drive)" % (
