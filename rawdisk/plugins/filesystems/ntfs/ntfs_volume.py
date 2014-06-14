@@ -163,3 +163,11 @@ class NtfsVolume(Volume):
             int: MFT Table offset from the beginning of the disk in bytes
         """
         return self.offset + self.bootsector.bpb.mft_offset
+
+    @property
+    def mft_mirror_offset(self):
+        """
+        Returns:
+            int: MFT Mirror Table offset from the beginning of the disk in bytes
+        """
+        return self.offset + self.bootsector.bpb.mft_mirror_offset
