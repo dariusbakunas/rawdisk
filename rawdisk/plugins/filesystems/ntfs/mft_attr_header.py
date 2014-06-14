@@ -99,7 +99,7 @@ class MftAttrHeader(RawStruct):
             if (self.length_of_name > 0):
                 self.attr_name = self.get_chunk(
                     0x40, 2 * self.length_of_name).decode('utf-16')
-            
+
             # data runs start @ self.data_run_offset
 
         else:
