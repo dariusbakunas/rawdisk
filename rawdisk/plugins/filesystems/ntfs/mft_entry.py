@@ -40,7 +40,7 @@ class MftEntry(RawStruct):
         header (MftEntryHeader): Initialized \
         :class:`~.mft_entry_header.MftEntryHeader`.
     """
-    def __init__(self, data=None, offset=None, length=None, filename=None):
+    def __init__(self, data=None, offset=None, length=None, filename=None, index=None):
         RawStruct.__init__(
             self,
             data=data,
@@ -49,12 +49,15 @@ class MftEntry(RawStruct):
             length=length
         )
 
+        # find a way to get this index from the header
+        self.index = index
+
         self.attributes = []
         self.fname_str = ""
         header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
         self.header = MftEntryHeader(header_data)
-        self.name_str = self._get_entry_name(self.header.seq_number)
-        self.load_attributes()
+        self.name_str = self._get_entry_name(self.index)
+        self._load_attributes()
 
     @property
     def is_directory(self):
@@ -72,12 +75,12 @@ class MftEntry(RawStruct):
     def used_size(self):
         return self.header.used_size
 
-    def load_attributes(self):
+    def _load_attributes(self):
         free_space = self.size - MFT_ENTRY_HEADER_SIZE
         offset = self.header.first_attr_offset
 
         while free_space > 0:
-            attr = self.get_attribute(offset)
+            attr = self._get_attribute(offset)
 
             if (attr is not None):
                 if attr.header.type == MFT_ATTR_FILENAME:
@@ -95,7 +98,7 @@ class MftEntry(RawStruct):
                 return attr
         return None
 
-    def get_attribute(self, offset):
+    def _get_attribute(self, offset):
         """Determines attribute type at the offset and returns \
         initialized attribute object.
 
@@ -133,7 +136,7 @@ class MftEntry(RawStruct):
     def __str__(self):
         result = (
             "File: %d\n%s (%s)" % (
-                self.header.seq_number,
+                self.index,
                 self.name_str,
                 self.fname_str
             ))

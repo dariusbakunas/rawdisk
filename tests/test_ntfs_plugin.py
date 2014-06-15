@@ -154,3 +154,18 @@ class TestMftEntryHeader(unittest.TestCase):
         self.assertEquals(header.next_attr_id, 0x0)
         self.assertEquals(header.mft_record_number, 0x0)
 
+class TestMftEntry(unittest.TestCase):
+    def test_init(self):
+        mft = MftTable(
+            filename='sample_images/ntfs_mft_table.bin',
+        )
+
+        entry = mft.get_entry(0)
+        self.assertEquals(len(entry.attributes), 4)
+        self.assertEquals(entry.fname_str, '$MFT')
+        self.assertEquals(entry.name_str, 'Master File Table')
+        self.assertFalse(entry.is_directory)
+        self.assertTrue(entry.is_file)
+        self.assertTrue(entry.is_in_use)
+        self.assertIsNotNone(entry.lookup_attribute(0x10))
+
