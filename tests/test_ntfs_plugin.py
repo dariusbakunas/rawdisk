@@ -132,3 +132,25 @@ class TestMftTable(unittest.TestCase):
         self.assertIsNotNone(mft.get_entry(3))
         self.assertIsNotNone(mft.get_entry(2))
         self.assertEquals(len(mft._entries), 3)
+
+class TestMftEntryHeader(unittest.TestCase):
+    def test_init(self):
+        mft = MftTable(
+            filename='sample_images/ntfs_mft_table.bin',
+        )
+        entry = mft.get_entry(0)
+        header = entry.header
+        self.assertEquals(header.file_signature, 'FILE')
+        self.assertEquals(header.update_seq_array_offset, 0x30)
+        self.assertEquals(header.update_seq_array_size, 0x3)
+        self.assertEquals(header.logfile_seq_number, 0x2022ea)
+        self.assertEquals(header.seq_number, 0x1)
+        self.assertEquals(header.hard_link_count, 0x1)
+        self.assertEquals(header.first_attr_offset, 0x38)
+        self.assertEquals(header.flags, 0x1)
+        self.assertEquals(header.used_size, 0x1A0)
+        self.assertEquals(header.allocated_size, 0x400)
+        self.assertEquals(header.base_file_record, 0x0)
+        self.assertEquals(header.next_attr_id, 0x0)
+        self.assertEquals(header.mft_record_number, 0x0)
+
