@@ -24,6 +24,7 @@
 
 from rawdisk.util.rawstruct import RawStruct
 from rawdisk.util.filetimes import filetime_to_dt
+from rawdisk.util.bitparse import parse_little_endian_signed
 from mft_attr_header import MftAttrHeader
 
 
@@ -46,6 +47,15 @@ ATTR_IS_COMPRESSED = 0x0001
 ATTR_COMPRESSION_MASK = 0x00ff
 ATTR_IS_ENCRYPTED = 0x4000
 ATTR_IS_SPARSE = 0x8000
+
+
+class DataRun(object):
+    def __init__(self, length, offset):
+        self.length = length
+        self.offset = offset
+
+    def __str__(self):
+        return "Lenght: 0x%x, Offset: 0x%x" % (self.length, self.offset)
 
 
 class MftAttr(RawStruct):
@@ -82,6 +92,66 @@ class MftAttr(RawStruct):
         self.header = MftAttrHeader(
             self.get_chunk(0, header_size)
         )
+
+        self.dataruns = []
+
+        if (self.header.non_resident_flag):
+            self._load_dataruns()
+
+            if len(self.dataruns) > 0:
+                self._parse_dataruns()
+
+    def _parse_dataruns(self):
+        """Convert LCN too absolute values and regroup
+
+        See More:
+            http://ftp.kolibrios.org/users/Asper/docs/NTFS/ntfsdoc.html#concept_attribute_header
+        """
+        first_run = self.dataruns[0]
+
+        if (len(self.dataruns) > 1):
+            base = first_run.offset
+            for run in self.dataruns[1:]:
+                run.offset = run.offset + base
+
+
+    def _load_dataruns(self):
+        offset = self.header.data_run_offset
+        run = self.data[self.header.data_run_offset:]
+        length = len(run)
+
+        while (length > 0):
+            header = self.get_uchar(offset)
+
+            if (header == 0x00):
+                return
+
+            l = header & 0x1
+            o = header >> 4
+
+            #if (l > 6 or l == 0):
+                # datarun oddity??
+            #    return
+
+            offset = offset + 1
+            run_length_buf = self.get_chunk(offset, l)
+            run_length = parse_little_endian_signed(run_length_buf)
+
+            datarun = None
+
+            if (o > 0):
+                run_offset_buf = self.get_chunk(offset + l, o)
+                run_offset = parse_little_endian_signed(run_offset_buf)
+                offset = offset + l + o
+                length = length - 1 - l - o
+                datarun = DataRun(run_length, run_offset)
+            else:
+                # sparse
+                offset = offset + l
+                length = length - 1 - l
+                datarun = DataRun(run_length, 0)
+
+            self.dataruns.append(datarun)
 
     @staticmethod
     def factory(attr_type, data):

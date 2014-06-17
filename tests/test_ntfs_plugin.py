@@ -169,3 +169,13 @@ class TestMftEntry(unittest.TestCase):
         self.assertTrue(entry.is_in_use)
         self.assertIsNotNone(entry.lookup_attribute(0x10))
 
+
+class TestMftAttrHeader(unittest.TestCase):
+    def test_init(self):
+        mft = MftTable(
+            filename='sample_images/ntfs_mft_table.bin',
+        )
+
+        entry = mft.get_entry(0)
+        attr = entry.lookup_attributef
+
