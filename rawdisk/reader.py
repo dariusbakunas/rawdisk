@@ -1,9 +1,9 @@
-import scheme
+import rawdisk.scheme
 from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.plugins.manager import Manager
 
 
-class Reader:
+class Reader(object):
     """Main class used to start filesystem analysis.
 
     Attributes:
@@ -18,6 +18,7 @@ class Reader:
         self.debug = False
         self.partitions = []
         self.scheme = None
+        self.filename = None
 
         # Load filesystem detection plugins
         Manager.load_filesystem_plugins()
@@ -41,11 +42,11 @@ class Reader:
         self.filename = filename
 
         # Detect partitioning scheme
-        self.scheme = scheme.common.detect_scheme(filename)
+        self.scheme = rawdisk.scheme.common.detect_scheme(filename)
         detector = FilesystemDetector()
 
-        if (self.scheme == scheme.common.SCHEME_MBR):
-            mbr = scheme.mbr.Mbr(filename)
+        if self.scheme == rawdisk.scheme.common.SCHEME_MBR:
+            mbr = rawdisk.scheme.mbr.Mbr(filename)
 
             # Go through table entries and analyse ones that are supported
             for entry in mbr.partition_table.entries:
@@ -55,12 +56,12 @@ class Reader:
                     entry.part_type
                 )
 
-                if (volume is not None):
+                if volume is not None:
                     volume.load(filename, entry.part_offset)
                     self.partitions.append(volume)
 
-        elif (self.scheme == scheme.common.SCHEME_GPT):
-            gpt = scheme.gpt.Gpt()
+        elif self.scheme == rawdisk.scheme.common.SCHEME_GPT:
+            gpt = rawdisk.scheme.gpt.Gpt()
             gpt.load(filename)
 
             for entry in gpt.partition_entries:
@@ -70,11 +71,11 @@ class Reader:
                     entry.type_guid
                 )
 
-                if (volume is not None):
+                if volume is not None:
                     volume.load(filename, entry.first_lba * 512)
                     self.partitions.append(volume)
 
-        elif (self.scheme == scheme.common.SCHEME_UNKNOWN):
+        elif self.scheme == rawdisk.scheme.common.SCHEME_UNKNOWN:
             print 'Partitioning scheme is not supported.'
         else:
             print 'Partitioning scheme could not be determined.'
