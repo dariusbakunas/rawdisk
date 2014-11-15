@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-__all__ = ['scheme', 'filesystems', 'reader', 'plugins', 'metadata']
+__all__ = ['scheme', 'filesystems', 'reader', 'plugins']
 
 import scheme
 import filesystems
 import plugins
 import reader
-import metadata
 
 __author__ = 'Darius Bakunas-Milanowski'
 __email__ = 'bakunas@gmail.com'
