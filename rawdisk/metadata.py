@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 """Project metadata
 
 Information describing the project.
