@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
 import unittest
 from rawdisk.util.filetimes import dt_to_filetime, filetime_to_dt
 from datetime import datetime
