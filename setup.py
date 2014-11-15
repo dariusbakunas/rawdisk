@@ -35,6 +35,15 @@ setup(
     url='https://github.com/dariusbakunas/rawdisk',
     packages=[
         'rawdisk',
+        'rawdisk.filesystems',
+        'rawdisk.plugins',
+        'rawdisk.plugins.filesystems',
+        'rawdisk.plugins.filesystems.apple_boot',
+        'rawdisk.plugins.filesystems.efi_system',
+        'rawdisk.plugins.filesystems.hfs_plus',
+        'rawdisk.plugins.filesystems.ntfs',
+        'rawdisk.scheme',
+        'rawdisk.util',
     ],
     package_dir={'rawdisk':
                  'rawdisk'},
@@ -53,5 +62,10 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    tests_require=test_requirements,
+    entry_points={
+        'console_scripts':[
+            'rawdisk = rawdisk.main:main',
+        ]
+    }
 )
