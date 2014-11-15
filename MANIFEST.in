@@ -1,6 +1,0 @@
-# Informational files
-include README.md
-
-include *.txt
-recursive-include rawdisk *.yapsy-plugin
-recursive-include docs *.txt
