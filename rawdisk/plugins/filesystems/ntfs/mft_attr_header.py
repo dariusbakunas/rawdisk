@@ -111,4 +111,3 @@ class MftAttrHeader(RawStruct):
                 # print self.attr_name.decode('utf-16')
             # The rest byte is 0x00 padding
             # print "Attr Offset: 0x%x" % (self.attr_offset)
-            
