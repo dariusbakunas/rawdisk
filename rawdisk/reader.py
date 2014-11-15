@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import scheme
 from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.plugins.manager import Manager

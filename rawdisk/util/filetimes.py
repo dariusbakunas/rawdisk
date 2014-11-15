@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (c) 2009, David Buxton <david@gasmark6.com>
 # All rights reserved.
 #
@@ -104,4 +106,3 @@ if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
-    
