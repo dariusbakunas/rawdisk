@@ -13,10 +13,15 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 requirements = [
     # TODO: put package requirements here
+    'hexdump == 2.0',
+    'yapsy == 1.10.323',
+    'pyxdg == 0.25',
+    'hurry.filesize == 0.9',
 ]
 
 test_requirements = [
     # TODO: put package test requirements here
+    'nose>=1.0',
 ]
 
 setup(
