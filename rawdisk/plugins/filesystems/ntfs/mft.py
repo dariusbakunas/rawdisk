@@ -61,7 +61,8 @@ class MftTable(object):
             entry = MftEntry(
                 filename=self.filename,
                 offset=self.offset + entry_offset,
-                length=self.entry_size
+                length=self.entry_size,
+                index=entry_id
             )
 
             # cache entry
