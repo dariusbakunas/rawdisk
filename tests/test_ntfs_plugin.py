@@ -12,7 +12,7 @@ from rawdisk.filesystems.detector import FilesystemDetector
 
 class TestNtfsPlugin(unittest.TestCase):
     def setUp(self):
-        self.filename = 'sample_images/ntfs.vhd'
+        self.filename = 'sample_images/ntfs_mbr.vhd'
         self.offset = 0x10000
         self.p = NtfsPlugin()
         self.detector = FilesystemDetector()
