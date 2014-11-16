@@ -32,7 +32,7 @@ class MftAttrHeader(RawStruct):
         covered by this attribute record.
         highest_vcn (ulonglong): The highest VCN covered by this \
         attribute record.
-        mapping_pairs_offset (ushort): The offset to the mapping \
+        data_run_offset (ushort): The offset to the mapping \
         pairs array from the start of the attribute record, in bytes.
         comp_unit_size (ushort): Compression unit size = 2 x clusters. \
         0 implies uncompressed.
@@ -68,7 +68,7 @@ class MftAttrHeader(RawStruct):
             # Attribute is Non-Resident
             self.lowest_vcn = self.get_ulonglong_le(0x10)
             self.highest_vcn = self.get_ulonglong_le(0x18)
-            self.mapping_pairs_offset = self.get_ushort_le(0x20)
+            self.data_run_offset = self.get_ushort_le(0x20)
             self.comp_unit_size = self.get_ushort_le(0x22)
             # 4 byte 0x00 padding @ 0x24
             self.alloc_size = self.get_ulonglong_le(0x28)
