@@ -19,8 +19,10 @@ class MftEntry(RawStruct):
         header (MftEntryHeader): Initialized \
         :class:`~.mft_entry_header.MftEntryHeader`.
     """
-    def __init__(self, data=None, offset=None, length=None,
-            filename=None, index=None):
+    def __init__(
+        self, data=None, offset=None, length=None,
+        filename=None, index=None
+    ):
         RawStruct.__init__(
             self,
             data=data,
