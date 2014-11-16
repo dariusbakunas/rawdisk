@@ -22,14 +22,6 @@ rawdisk.main module
     :undoc-members:
     :show-inheritance:
 
-rawdisk.metadata module
------------------------
-
-.. automodule:: rawdisk.metadata
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 rawdisk.reader module
 ---------------------
 
