@@ -76,7 +76,7 @@ class TestMftTable(unittest.TestCase):
 
         self.assertEquals(len(mft._entries), 0)
         entry = mft.get_entry(0)
-        self.assertIsNotNone(entry)
+        self.assertTrue(entry is not None)
         self.assertEquals(len(mft._entries), 1)
 
     def test_get_entry(self):
@@ -84,8 +84,8 @@ class TestMftTable(unittest.TestCase):
             filename='sample_images/ntfs_mft_table.bin',
         )
 
-        self.assertIsNotNone(mft.get_entry(0))
+        self.assertTrue(mft.get_entry(0) is not None)
         self.assertEquals(len(mft._entries), 1)
-        self.assertIsNotNone(mft.get_entry(3))
-        self.assertIsNotNone(mft.get_entry(2))
+        self.assertTrue(mft.get_entry(3) is not None)
+        self.assertTrue(mft.get_entry(2) is not None)
         self.assertEquals(len(mft._entries), 3)
