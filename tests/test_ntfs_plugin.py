@@ -175,4 +175,4 @@ class TestMftEntry(unittest.TestCase):
         self.assertFalse(entry.is_directory)
         self.assertTrue(entry.is_file)
         self.assertTrue(entry.is_in_use)
-        self.assertIsNotNone(entry.lookup_attribute(0x10))
+        self.assertIsTrue(entry.lookup_attribute(0x10) is not None)
