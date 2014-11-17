@@ -50,24 +50,6 @@ class RawStruct(object):
         """
         return len(self._data)
 
-    def load_from_source(
-        self, fd=None, offset=None, length=None
-    ):
-        """Loads byte array for the structure from the file or device
-
-        Args:
-            source (fd): file descriptor used to load data
-            offset (int): data offset
-            length (int): number of bytes to read
-        """
-
-        if offset is None:
-            offset = 0
-
-        if (fd is not None):
-            fd.seek(offset)
-            self._data = fd.read(length)
-
     def get_chunk(self, offset, length):
         """
         Args:
