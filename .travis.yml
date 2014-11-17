@@ -17,6 +17,5 @@ script: python setup.py test
 
 after_success:
     - coverage run --source rawdisk setup.py test
-    - coverage report -m
     - coverage xml
     - codecov
