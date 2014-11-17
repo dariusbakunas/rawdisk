@@ -2,6 +2,9 @@
 rawdisk
 ===============================
 
+.. image:: https://badges.gitter.im/Join Chat.svg
+    :target: https://gitter.im/dariusbakunas/rawdisk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 .. image:: https://badge.fury.io/py/rawdisk.png
     :target: http://badge.fury.io/py/rawdisk
 
