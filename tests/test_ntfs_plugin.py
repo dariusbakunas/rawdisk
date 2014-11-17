@@ -11,18 +11,35 @@ from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume, \
     NUM_SYSTEM_ENTRIES
 from rawdisk.filesystems.detector import FilesystemDetector
 
-#These are real values for the sample 'ntfs_mbr.vhd' volume:
-SAMPLE_VOLUME_SIZE      = 0x6FFE00
-SAMPLE_VOLUME_NAME      = 'NTFS Volume'
-SAMPLE_VOLUME_SERIAL    = 0xb2e44491c5000000L
-SAMPLE_VOLUME_CHECKSUM  = 0x1ae444
-SAMPLE_MFT_ZONE_SIZE    = 0xDF000
-SAMPLE_BYTES_PER_SECTOR = 512
+# These are real values for the sample 'ntfs_mbr.vhd' volume:
+SAMPLE_OEM_ID               = 'NTFS    '
+SAMPLE_NTFS_PART_OFFSET     = 0x10000
+SAMPLE_TOTAL_SECTORS        = 0x37FF
+SAMPLE_NUM_HEADS            = 0xFF
+SAMPLE_CLUSTERS_PER_INDEX   = 0x1
+SAMPLE_SECTORS_PER_TRACK    = 0x3F
+SAMPLE_SECTORS_PER_CLUSTER  = 8
+SAMPLE_CLUSTERS_PER_MFT     = -10
+SAMPLE_MEDIA_DESCRIPTOR     = 0xF8
+SAMPLE_RESERVED_SECTORS     = 0
+SAMPLE_VOLUME_SIZE          = 0x6FFE00
+SAMPLE_VOLUME_NAME          = 'NTFS Volume'
+SAMPLE_VOLUME_SERIAL        = 0xb2e44491c5000000L
+SAMPLE_VOLUME_CHECKSUM      = 0x1ae444
+SAMPLE_VOLUME_MAJOR_VER     = 3
+SAMPLE_VOLUME_MINOR_VER     = 1
+SAMPLE_MFT_CLUSTER          = 0x255
+SAMPLE_MFT_MIRR_CLUSTER     = 0x2
+SAMPLE_MFT_OFFSET           = 0x255000
+SAMPLE_MFT_MIRR_OFFSET      = 0x2000
+SAMPLE_MFT_RECORD_SIZE      = 1024
+SAMPLE_MFT_ZONE_SIZE        = 0xDF000
+SAMPLE_BYTES_PER_SECTOR     = 512
 
 class TestNtfsPlugin(unittest.TestCase):
     def setUp(self):
         self.filename = 'sample_images/ntfs_mbr.vhd'
-        self.offset = 0x10000
+        self.offset = SAMPLE_NTFS_PART_OFFSET
         self.p = NtfsPlugin()
         self.detector = FilesystemDetector()
 
@@ -54,32 +71,32 @@ class TestBpb(unittest.TestCase):
         )
 
         self.assertEquals(bpb.bytes_per_sector, SAMPLE_BYTES_PER_SECTOR)
-        self.assertEquals(bpb.sectors_per_cluster, 8)
-        self.assertEquals(bpb.reserved_sectors, 0)
-        self.assertEquals(bpb.media_descriptor, 0xF8)
-        self.assertEquals(bpb.sectors_per_track, 0x3F)
-        self.assertEquals(bpb.number_of_heads, 0xFF)
-        self.assertEquals(bpb.total_sectors, 0x37FF)
-        self.assertEquals(bpb.mft_cluster, 0x255)
-        self.assertEquals(bpb.mft_mirror_cluster, 0x2)
-        self.assertEquals(bpb.clusters_per_mft, -10)
-        self.assertEquals(bpb.clusters_per_index, 0x1)
+        self.assertEquals(bpb.sectors_per_cluster, SAMPLE_SECTORS_PER_CLUSTER)
+        self.assertEquals(bpb.reserved_sectors, SAMPLE_RESERVED_SECTORS)
+        self.assertEquals(bpb.media_descriptor, SAMPLE_MEDIA_DESCRIPTOR)
+        self.assertEquals(bpb.sectors_per_track, SAMPLE_SECTORS_PER_TRACK)
+        self.assertEquals(bpb.number_of_heads, SAMPLE_NUM_HEADS)
+        self.assertEquals(bpb.total_sectors, SAMPLE_TOTAL_SECTORS)
+        self.assertEquals(bpb.mft_cluster, SAMPLE_MFT_CLUSTER)
+        self.assertEquals(bpb.mft_mirror_cluster, SAMPLE_MFT_MIRR_CLUSTER)
+        self.assertEquals(bpb.clusters_per_mft, SAMPLE_CLUSTERS_PER_MFT)
+        self.assertEquals(bpb.clusters_per_index, SAMPLE_CLUSTERS_PER_INDEX)
         self.assertEquals(bpb.volume_serial, SAMPLE_VOLUME_SERIAL)
         self.assertEquals(bpb.checksum, SAMPLE_VOLUME_CHECKSUM)
-        self.assertEquals(bpb.mft_offset, 0x255000)
-        self.assertEquals(bpb.mft_mirror_offset, 0x2000)
-        self.assertEquals(bpb.mft_record_size, 1024)
+        self.assertEquals(bpb.mft_offset, SAMPLE_MFT_OFFSET)
+        self.assertEquals(bpb.mft_mirror_offset, SAMPLE_MFT_MIRR_OFFSET)
+        self.assertEquals(bpb.mft_record_size, SAMPLE_MFT_RECORD_SIZE)
 
 
 class TestBootsector(unittest.TestCase):
     def test_init(self):
         bootsector = BootSector(filename='sample_images/ntfs_bootsector.bin')
-        self.assertEquals(bootsector.oem_id, 'NTFS    ')
+        self.assertEquals(bootsector.oem_id, SAMPLE_OEM_ID)
 
 
 class TestNtfsVolume(unittest.TestCase):
     def test_load(self):
-        offset = 0x10000
+        offset = SAMPLE_NTFS_PART_OFFSET
         filename = 'sample_images/ntfs_mbr.vhd'
         ntfs_vol = NtfsVolume()
         ntfs_vol.load(filename=filename, offset=offset)
@@ -87,8 +104,8 @@ class TestNtfsVolume(unittest.TestCase):
         self.assertEquals(ntfs_vol.filename, filename)
         self.assertEquals(
             len(ntfs_vol.mft_table._entries), NUM_SYSTEM_ENTRIES)
-        self.assertEquals(ntfs_vol.major_ver, 3)
-        self.assertEquals(ntfs_vol.minor_ver, 1)
+        self.assertEquals(ntfs_vol.major_ver, SAMPLE_VOLUME_MAJOR_VER)
+        self.assertEquals(ntfs_vol.minor_ver, SAMPLE_VOLUME_MINOR_VER)
         self.assertEquals(ntfs_vol.vol_name, SAMPLE_VOLUME_NAME)
         self.assertEquals(ntfs_vol.size, SAMPLE_VOLUME_SIZE)
         self.assertEquals(ntfs_vol.mft_table_offset, offset + \
