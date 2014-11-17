@@ -48,6 +48,10 @@ class TestRawStruct(unittest.TestCase):
                 (length, self.sample_data[offset:offset + length])
             )
 
+    def test_init_without_filename_or_data(self):
+        with self.assertRaises(ValueError):
+            r = RawStruct()
+
     def test_get_uchar(self):
         offset = 2
         r = RawStruct(data=self.sample_data)
