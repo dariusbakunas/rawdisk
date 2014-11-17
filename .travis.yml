@@ -7,7 +7,7 @@ python:
   - "2.6"
   - "pypy"
 
-before_install: pip install codecov
+before_install: sudo pip install codecov
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -r requirements.txt
