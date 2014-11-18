@@ -5,6 +5,7 @@ import unittest
 import mock
 import struct
 import uuid
+import io
 from rawdisk.util.rawstruct import RawStruct
 
 
@@ -52,6 +53,15 @@ class TestRawStruct(unittest.TestCase):
         with self.assertRaises(ValueError):
             r = RawStruct()
 
+    def test_get_field(self):
+        offset = 2
+        format = "B"
+        length = 1
+        r = RawStruct(data=self.sample_data)
+        self.assertEqual(
+            r.get_field(offset, length, format),
+            struct.unpack(format, self.sample_data[offset:offset+length])[0])
+
     def test_get_uchar(self):
         offset = 2
         r = RawStruct(data=self.sample_data)
@@ -86,6 +96,13 @@ class TestRawStruct(unittest.TestCase):
         self.assertEqual(
             r.get_uint_be(offset),
             struct.unpack(">I", self.sample_data[offset:offset+4])[0])
+
+    def test_get_int_le(self):
+        offset = 0
+        r = RawStruct(data=self.sample_data)
+        self.assertEqual(
+            r.get_int_le(offset),
+            struct.unpack("<I", self.sample_data[offset:offset+4])[0])
 
     def test_get_ulong_le(self):
         offset = 0
@@ -126,3 +143,10 @@ class TestRawStruct(unittest.TestCase):
         self.assertEqual(
             r.get_uuid_be(0),
             uuid.UUID(bytes=self.sample_uuid_data))
+
+    def test_export(self):
+        test_stream = io.BytesIO()
+        r = RawStruct(data=self.sample_data)
+        r._export_to_fd(test_stream)
+        test_stream.seek(0)
+        self.assertEqual(self.sample_data, test_stream.readline())

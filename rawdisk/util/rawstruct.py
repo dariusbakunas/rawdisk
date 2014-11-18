@@ -190,6 +190,9 @@ class RawStruct(object):
             offset:offset+length
         ])[0]
 
+    def _export_to_fd(self, fd):
+        fd.write(self.data)
+
     def export(self, filename):
         """Exports byte array to specified destination
 
@@ -197,7 +200,7 @@ class RawStruct(object):
             filename (str): destination to output file
         """
         with open(filename, 'w') as f:
-            f.write(self.data)
+            self._export_to_fd(f)
 
     def hexdump(self):
         """Prints structure's data in hex format.
