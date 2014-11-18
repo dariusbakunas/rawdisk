@@ -52,7 +52,7 @@ class TestRawStruct(unittest.TestCase):
 
     def test_init_without_filename_or_data(self):
         with self.assertRaises(ValueError):
-            r = RawStruct()
+            RawStruct()
 
     def test_get_field(self):
         offset = 2
