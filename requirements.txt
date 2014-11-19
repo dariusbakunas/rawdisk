@@ -2,6 +2,5 @@ wheel==0.23.0
 hexdump==2.0
 yapsy==1.10.323
 pyxdg==0.25
-hurry.filesize==0.9
 nose>=1.0
 mock==1.0.1

@@ -16,7 +16,6 @@ requirements = [
     'hexdump == 2.0',
     'yapsy == 1.10.323',
     'pyxdg == 0.25',
-    'hurry.filesize == 0.9',
 ]
 
 test_requirements = [

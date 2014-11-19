@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import hurry.filesize
 
 import math
 import string
@@ -70,7 +69,3 @@ class size(long):
 
 def size_str(size_int, format_str="{0:.2cM}"):
     return format_str.format(size(size_int))
-
-
-def _size_str(size):
-    return hurry.filesize.size(size)
