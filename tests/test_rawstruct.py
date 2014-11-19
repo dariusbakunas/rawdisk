@@ -5,7 +5,6 @@ import unittest
 import mock
 import struct
 import uuid
-import io
 from rawdisk.util.rawstruct import RawStruct
 
 
