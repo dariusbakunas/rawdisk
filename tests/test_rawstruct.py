@@ -135,7 +135,15 @@ class TestRawStruct(unittest.TestCase):
             uuid.UUID(bytes=self.sample_uuid_data))
 
     def test_export(self):
-        test_stream = io.BytesIO()
-        self.rwstruct._export_to_fd(test_stream)
-        test_stream.seek(0)
-        self.assertEqual(self.sample_data, test_stream.readline())
+        m = mock.mock_open()
+        with mock.patch('__builtin__.open', m, create=True):
+            self.rwstruct.export('filename')
+
+        m.assert_called_once_with('filename', 'w')
+        handle = m()
+        handle.write.assert_called_once_with(self.sample_data)
+
+    @mock.patch('hexdump.hexdump')
+    def test_hexdump(self, mock_hexdump):
+        self.rwstruct.hexdump()
+        mock_hexdump.assert_called_with(self.sample_data)
