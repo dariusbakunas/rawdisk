@@ -15,7 +15,8 @@ Contents:
    installation
    usage
    contributing
-   diagrams
+   filesystem_diagrams
+   rawdisk_diagrams
    authors
    history
 

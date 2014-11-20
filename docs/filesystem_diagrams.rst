@@ -1,6 +1,6 @@
-========
-Diagrams
-========
+===================
+Filesystem Diagrams
+===================
 
 Master Boot Record
 ------------------
@@ -60,8 +60,3 @@ GUID Partition Table
 --------------------
 
 .. image:: images/GUID_partition_table.png
-
-Class Diagram
--------------
-
-.. image:: images/class_diagram.png
