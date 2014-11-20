@@ -97,7 +97,12 @@ class Mbr(RawStruct):
         IOError: If file does not exist or is not readable.
         Exception: If source has invalid MBR signature
     """
-    def __init__(self, filename=None):
+    def _load_partition_table(self):
+        self.partition_table = PartitionTable(
+                self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
+        )
+
+    def __init__(self, filename=None, load_partition_table=True):
         RawStruct.__init__(
             self,
             filename=filename,
@@ -109,6 +114,5 @@ class Mbr(RawStruct):
         if (signature != MBR_SIGNATURE):
             raise Exception("Invalid MBR signature")
 
-        self.partition_table = PartitionTable(
-            self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
-        )
+        if (load_partition_table):
+            self._load_partition_table()
