@@ -2,18 +2,16 @@ import unittest
 import mock
 from rawdisk.scheme.mbr import Mbr
 from rawdisk.scheme.mbr import PT_TABLE_SIZE
-from rawdisk.util.rawstruct import RawStruct
-from rawdisk.util import rawstruct
 
 
 class TestMbrModule(unittest.TestCase):
     def setUp(self):
         self.mbr = Mbr(
-                filename='sample_images/ntfs_mbr.vhd',
-            )
+            filename='sample_images/ntfs_mbr.vhd',
+        )
 
     def test_partition_table_has_correct_size(self):
-        self.assertEquals(self.mbr.partition_table.size, PT_TABLE_SIZE);
+        self.assertEquals(self.mbr.partition_table.size, PT_TABLE_SIZE)
 
     def test_partition_table_has_one_entry(self):
         self.assertEquals(len(self.mbr.partition_table.entries), 1)
@@ -40,5 +38,3 @@ class TestMbrModule(unittest.TestCase):
             Mbr(
                 filename='sample_images/ntfs_mbr.vhd',
             )
-
-

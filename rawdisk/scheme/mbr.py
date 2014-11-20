@@ -99,7 +99,7 @@ class Mbr(RawStruct):
     """
     def _load_partition_table(self):
         self.partition_table = PartitionTable(
-                self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
+            self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
         )
 
     def __init__(self, filename=None, load_partition_table=True):
