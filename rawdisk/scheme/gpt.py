@@ -110,25 +110,27 @@ class Gpt(object):
             IOError: If file does not exist or not readable
         """
         with open(filename, 'rb') as f:
-            self.fd = f
             f.seek(GPT_HEADER_OFFSET + 0x0C)
             header_size = struct.unpack("<I", f.read(4))[0]
             f.seek(GPT_HEADER_OFFSET)
             self.header = GptHeader(f.read(header_size))
-            self._load_partition_entries()
+            self._load_partition_entries(fd=f)
 
-    def _load_partition_entries(self, block_size=512):
+    def _load_partition_entries(self, block_size=512, fd=None):
         """Loads the list of :class:`GptPartition` partition entries
 
         Args:
             block_size (uint): Block size of the volume, default: 512
         """
 
-        self.fd.seek(self.header.part_lba * block_size)
+        fd.seek(self.header.part_lba * block_size)
         for p in xrange(0, self.header.num_partitions):
-            data = self.fd.read(self.header.part_size)
+            data = fd.read(self.header.part_size)
             entry = GptPartition(data)
             if entry.type_guid != uuid.UUID(
                 '{00000000-0000-0000-0000-000000000000}'
             ):
                 self.partition_entries.append(entry)
+            else:
+                #stop loading on empty partition entry
+                break
