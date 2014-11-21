@@ -99,11 +99,12 @@ class Gpt(object):
     def __init__(self):
         self.partition_entries = []
 
-    def load(self, filename):
+    def load(self, filename, bs=512):
         """Loads GPT partition table.
 
         Args:
             filename (str): path to file or device to open for reading
+            bs (uint): Block size of the volume, default: 512
 
         Raises:
             IOError: If file does not exist or not readable
@@ -113,16 +114,16 @@ class Gpt(object):
             header_size = struct.unpack("<I", f.read(4))[0]
             f.seek(GPT_HEADER_OFFSET)
             self.header = GptHeader(f.read(header_size))
-            self._load_partition_entries(fd=f)
+            self._load_partition_entries(f, bs)
 
-    def _load_partition_entries(self, block_size=512, fd=None):
+    def _load_partition_entries(self, fd, bs):
         """Loads the list of :class:`GptPartition` partition entries
 
         Args:
-            block_size (uint): Block size of the volume, default: 512
+            bs (uint): Block size of the volume
         """
 
-        fd.seek(self.header.part_lba * block_size)
+        fd.seek(self.header.part_lba * bs)
         for p in xrange(0, self.header.num_partitions):
             data = fd.read(self.header.part_size)
             entry = GptPartition(data)
