@@ -1,7 +1,12 @@
 Rawdisk Diagrams
 ================
 
-Class Diagram
--------------
+Reader Class Diagram
+--------------------
 
-.. image:: images/class_diagram.png
+.. image:: images/reader_class_diagram.png
+
+NTFS Volume Class Diagram
+-------------------------
+
+.. image:: images/ntfs_volume_class_diagram.png
