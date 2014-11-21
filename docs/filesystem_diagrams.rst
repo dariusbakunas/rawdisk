@@ -62,3 +62,26 @@ GUID Partition Table
 --------------------
 
 .. image:: images/GUID_partition_table.png
+
+
+GPT Header
+----------
+
+.. image:: images/gpt_header_diagram.png
+
+Example::
+
+    >>> from rawdisk.scheme.gpt import Gpt
+    >>> gpt = Gpt()
+    >>> gpt.load('sample_images/ntfs_primary_gpt.bin')
+    >>> gpt.header.hexdump()
+
+    00000000: 45 46 49 20 50 41 52 54  00 00 01 00 5C 00 00 00  EFI PART....\...
+    00000010: 99 24 C1 58 00 00 00 00  01 00 00 00 00 00 00 00  .$.X............
+    00000020: FF FF 03 00 00 00 00 00  22 00 00 00 00 00 00 00  ........".......
+    00000030: DE FF 03 00 00 00 00 00  E5 66 99 AF FB 00 CD 45  .........f.....E
+    00000040: BE 63 26 2D 91 88 DC E7  02 00 00 00 00 00 00 00  .c&-............
+    00000050: 80 00 00 00 80 00 00 00  62 5A F4 F0              ........bZ..
+
+    >>> gpt.header.size
+    92

@@ -53,7 +53,6 @@ class GptHeader(RawStruct):
         self.backup_lba = self.get_ulonglong_le(0x20)
         self.first_usable_lba = self.get_ulonglong_le(0x28)
         self.last_usable_lba = self.get_ulonglong_le(0x30)
-        # Not sure if this is correct
         self.disk_guid = self.get_uuid_le(0x38)
         self.part_lba = self.get_ulonglong_le(0x48)
         self.num_partitions = self.get_uint_le(0x50)
