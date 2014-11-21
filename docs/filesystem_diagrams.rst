@@ -45,6 +45,7 @@ Example::
     000001f0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 55 aa  |..............U.|
     00000200
 
+
 MBR Partition Entry
 -------------------
 
@@ -55,6 +56,7 @@ Example::
     % hexdump -C -s 0x1be -n 16 sample_images/ntfs_mbr.vhd
 
     000001be  00 02 03 00 07 e5 25 00  80 00 00 00 00 38 00 00  |......%......8..|
+
 
 GUID Partition Table
 --------------------
