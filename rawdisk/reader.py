@@ -31,7 +31,7 @@ class Reader(object):
         for part in self.partitions:
             print part
 
-    def load(self, filename):
+    def load(self, filename, bs=512):
         """Starts filesystem analysis. Detects supported filesystems and \
         loads :attr:`partitions` array.
 
@@ -69,12 +69,12 @@ class Reader(object):
             for entry in gpt.partition_entries:
                 volume = detector.detect_gpt(
                     filename,
-                    entry.first_lba * 512,
+                    entry.first_lba * bs,
                     entry.type_guid
                 )
 
                 if (volume is not None):
-                    volume.load(filename, entry.first_lba * 512)
+                    volume.load(filename, entry.first_lba * bs)
                     self.partitions.append(volume)
 
         elif (self.scheme == rawdisk.scheme.common.SCHEME_UNKNOWN):
