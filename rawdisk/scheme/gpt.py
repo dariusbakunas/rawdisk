@@ -61,7 +61,7 @@ class GptHeader(RawStruct):
         # Rest of bytes @ 0x5C must be zeroes (420 for 512 sectors)
 
 
-class GptPartition(RawStruct):
+class GptPartitionEntry(RawStruct):
     """Represents GPT partition entry.
 
     Args:
@@ -85,7 +85,8 @@ class GptPartition(RawStruct):
         self.first_lba = self.get_ulonglong_le(0x20)
         self.last_lba = self.get_ulonglong_le(0x28)
         self.attr_flags = self.get_ulonglong_le(0x30)
-        self.name = self.get_chunk(0x38, 72).decode('utf-16')
+        self.name = self.get_chunk(
+            0x38, 72).decode('utf-16').partition(b'\0')[0]
 
 
 class Gpt(object):
@@ -126,11 +127,11 @@ class Gpt(object):
         fd.seek(self.header.part_lba * bs)
         for p in xrange(0, self.header.num_partitions):
             data = fd.read(self.header.part_size)
-            entry = GptPartition(data)
+            entry = GptPartitionEntry(data)
             if entry.type_guid != uuid.UUID(
                 '{00000000-0000-0000-0000-000000000000}'
             ):
                 self.partition_entries.append(entry)
             else:
-                #stop loading on empty partition entry
+                # stop loading on empty partition entry
                 break
