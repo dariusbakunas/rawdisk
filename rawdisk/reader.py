@@ -17,7 +17,6 @@ class Reader(object):
         or :attr:`SCHEME_GPT <rawdisk.scheme.common.SCHEME_GPT>`.
     """
     def __init__(self):
-        self.debug = False
         self.partitions = []
         self.scheme = None
         self.filename = None
