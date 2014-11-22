@@ -21,9 +21,10 @@ class Reader(object):
         self.partitions = []
         self.scheme = None
         self.filename = None
+        self.manager = Manager()
 
         # Load filesystem detection plugins
-        Manager.load_filesystem_plugins()
+        self.manager.load_plugins()
 
     def list_partitions(self):
         """Print a list of detected partitions."""

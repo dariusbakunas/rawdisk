@@ -18,8 +18,26 @@ class Manager(object):
         http://yapsy.sourceforge.net
     """
 
-    @staticmethod
-    def load_filesystem_plugins():
+    def __init__(self):
+        self.fs_plugins = []
+        self.search_path = []
+
+    def load_plugins(self):
+        self._initialize_search_path()
+        self._load_filesystem_plugins()
+        self._register_filesystem_plugins()
+
+    def _initialize_search_path(self):
+        self.search_path = [os.path.join(
+            os.path.dirname(rawdisk.__file__), "plugins/filesystems"), ]
+        [self.search_path.append(os.path.join(path, APP_NAME, "plugins/filesystems"))
+            for path in xdg_data_dirs]
+
+    def _register_filesystem_plugins(self):
+        for pluginInfo in self.fs_plugins:
+            pluginInfo.plugin_object.register()
+
+    def _load_filesystem_plugins(self):
         # import logging
         # logging.basicConfig(level=logging.DEBUG)
 
@@ -40,20 +58,14 @@ class Manager(object):
         ])
 
         # Load the plugins from the plugin directory.
-        manager = PluginManagerSingleton.get()
-
-        places = [os.path.join(
-            os.path.dirname(rawdisk.__file__), "plugins/filesystems"), ]
-        [places.append(os.path.join(path, APP_NAME, "plugins/filesystems"))
-            for path in xdg_data_dirs]
-
-        manager.setPluginPlaces(places)
-        manager.setCategoriesFilter({
+        self.manager = PluginManagerSingleton.get()
+        self.manager.setPluginPlaces(self.search_path)
+        self.manager.setCategoriesFilter({
             "Filesystem": IFilesystemPlugin,
         })
 
         # Load plugins
-        manager.collectPlugins()
+        self.manager.collectPlugins()
 
-        for pluginInfo in manager.getPluginsOfCategory("Filesystem"):
-            pluginInfo.plugin_object.register()
+        for pluginInfo in self.manager.getPluginsOfCategory("Filesystem"):
+            self.fs_plugins.append(pluginInfo)
