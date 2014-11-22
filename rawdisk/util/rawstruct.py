@@ -189,14 +189,24 @@ class RawStruct(object):
             offset:offset+length
         ])[0]
 
-    def export(self, filename):
+    def export(self, filename, offset=0, length=None):
         """Exports byte array to specified destination
 
         Args:
             filename (str): destination to output file
         """
         with open(filename, 'w') as f:
-            f.write(self.data)
+            output = self.data
+
+            if (length is None):
+                length = len(self.data) - offset
+
+            if (offset > 0):
+                output = self.data[offset:length]
+            else:
+                output = self.data[:length]
+
+            f.write(output)
 
     def hexdump(self):
         """Prints structure's data in hex format.

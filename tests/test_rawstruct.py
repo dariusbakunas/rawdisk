@@ -142,6 +142,17 @@ class TestRawStruct(unittest.TestCase):
         handle = m()
         handle.write.assert_called_once_with(self.sample_data)
 
+    def test_export_with_offset_and_length(self):
+        offset = 2;
+        length = 4;
+        m = mock.mock_open()
+        with mock.patch('__builtin__.open', m, create=True):
+            self.rwstruct.export('filename', offset, length)
+            handle = m()
+            handle.write.assert_called_once_with(
+                self.sample_data[offset:length]
+            )
+
     @mock.patch('hexdump.hexdump')
     def test_hexdump(self, mock_hexdump):
         self.rwstruct.hexdump()
