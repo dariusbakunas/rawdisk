@@ -26,7 +26,7 @@ test_requirements = [
 
 setup(
     name='rawdisk',
-    version='0.1.1',
+    version='0.1.2',
     description='Experimental python code to explore different volume formats',
     long_description=readme + '\n\n' + history,
     author='Darius Bakunas-Milanowski',
