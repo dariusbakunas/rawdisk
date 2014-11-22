@@ -30,7 +30,9 @@ class Manager(object):
     def _initialize_search_path(self):
         self.search_path = [os.path.join(
             os.path.dirname(rawdisk.__file__), "plugins/filesystems"), ]
-        [self.search_path.append(os.path.join(path, APP_NAME, "plugins/filesystems"))
+        [self.search_path.append(
+            os.path.join(path, APP_NAME, "plugins/filesystems")
+        )
             for path in xdg_data_dirs]
 
     def _register_filesystem_plugins(self):

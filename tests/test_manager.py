@@ -1,6 +1,7 @@
 import unittest
 from rawdisk.plugins.manager import Manager
 
+
 class ManagerModuleTest(unittest.TestCase):
     def setUp(self):
         self.manager = Manager()
