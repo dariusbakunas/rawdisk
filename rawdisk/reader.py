@@ -3,6 +3,8 @@
 import rawdisk.scheme
 from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.plugins.manager import Manager
+from rawdisk.filesystems.unknown_volume import UnknownVolume
+from rawdisk.scheme.mbr import SECTOR_SIZE
 
 
 class Reader(object):
@@ -61,6 +63,13 @@ class Reader(object):
                 if (volume is not None):
                     volume.load(filename, entry.part_offset)
                     self.partitions.append(volume)
+                else:
+                    self.partitions.append(
+                        UnknownVolume(
+                            entry.part_offset, entry.part_type,
+                            entry.total_sectors * SECTOR_SIZE
+                        )
+                    )
 
         elif (self.scheme == rawdisk.scheme.common.SCHEME_GPT):
             gpt = rawdisk.scheme.gpt.Gpt()
@@ -76,6 +85,13 @@ class Reader(object):
                 if (volume is not None):
                     volume.load(filename, entry.first_lba * bs)
                     self.partitions.append(volume)
+                else:
+                    self.partitions.append(
+                        UnknownVolume(
+                            entry.first_lba * bs, entry.type_guid,
+                            (entry.last_lba - entry.first_lba) * bs
+                        )
+                    )
 
         elif (self.scheme == rawdisk.scheme.common.SCHEME_UNKNOWN):
             print 'Partitioning scheme is not supported.'
