@@ -20,6 +20,9 @@ class EfiSystemVolume(Volume):
         except IOError, e:
             print e
 
+    def dump_volume(self):
+        print "TODO"
+
     def __str__(self):
         return "Type: EFI System, Offset: 0x%X" % (
             self.offset
