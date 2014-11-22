@@ -1,6 +1,6 @@
 [Core]
 Name = EfiSystemPlugin
-Module = efi_system
+Module = efi_system/efi_system.py
 
 [Documentation]
 Author = Darius Bakunas

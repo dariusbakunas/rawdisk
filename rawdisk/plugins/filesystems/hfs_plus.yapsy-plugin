@@ -1,6 +1,6 @@
 [Core]
 Name = HfsPlusPlugin
-Module = hfs_plus
+Module = hfs_plus/hfs_plus.py
 
 [Documentation]
 Author = Darius Bakunas

@@ -1,6 +1,6 @@
 [Core]
 Name = AppleBootPlugin
-Module = apple_boot
+Module = apple_boot/apple_boot.py
 
 [Documentation]
 Author = Darius Bakunas
