@@ -16,6 +16,7 @@ Contents:
    usage
    contributing
    filesystem_diagrams
+   ntfs_diagrams
    rawdisk_diagrams
    references
    authors
