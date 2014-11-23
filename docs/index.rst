@@ -17,6 +17,7 @@ Contents:
    contributing
    filesystem_diagrams
    rawdisk_diagrams
+   references
    authors
    history
 
