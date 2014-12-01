@@ -23,5 +23,4 @@ class EXTENDED_BIOS_PARAMETER_BLOCK(Structure):
         ("clusters_per_mft",    c_byte),
         ("clusters_per_index",  c_ubyte),
         ("volume_serial",       c_ulonglong),
-        ("checksum",            c_uint),
     ]

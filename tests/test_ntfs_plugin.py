@@ -25,7 +25,6 @@ SAMPLE_RESERVED_SECTORS = 0
 SAMPLE_VOLUME_SIZE = 0x6FFE00
 SAMPLE_VOLUME_NAME = 'NTFS Volume'
 SAMPLE_VOLUME_SERIAL = 0x1AE444B2E44491C5
-SAMPLE_VOLUME_CHECKSUM = 0x1ae444
 SAMPLE_VOLUME_MAJOR_VER = 3
 SAMPLE_VOLUME_MINOR_VER = 1
 SAMPLE_MFT_CLUSTER = 0x255
@@ -95,8 +94,6 @@ class TestBootsector(unittest.TestCase):
             )
         self.assertEquals(
             bootsector.extended_bpb.volume_serial, SAMPLE_VOLUME_SERIAL)
-        self.assertEquals(
-            bootsector.extended_bpb.checksum, SAMPLE_VOLUME_CHECKSUM)
         self.assertEquals(bootsector.mft_offset, SAMPLE_MFT_OFFSET)
         self.assertEquals(bootsector.mft_mirror_offset, SAMPLE_MFT_MIRR_OFFSET)
         self.assertEquals(bootsector.mft_record_size, SAMPLE_MFT_RECORD_SIZE)

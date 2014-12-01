@@ -45,7 +45,6 @@ class BootSector(RawStruct):
             self.get_byte(0x40),
             self.get_ubyte(0x44),
             self.get_ulonglong_le(0x48),
-            self.get_uint_le(0x50)
         )
 
     @property
