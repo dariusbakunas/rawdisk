@@ -12,3 +12,13 @@ class BIOS_PARAMETER_BLOCK(Structure):
         ("hidden_sectors",      c_uint),
         ("total_sectors",       c_ulonglong),
     ]
+
+class EXTENDED_BIOS_PARAMETER_BLOCK(Structure):
+    _fields_ = [
+        ("mft_cluster",         c_ulonglong),
+        ("mft_mirror_cluster",  c_ulonglong),
+        ("clusters_per_mft",    c_byte),
+        ("clusters_per_index",  c_ubyte),
+        ("volume_serial",       c_ulonglong),
+        ("checksum",            c_uint),
+    ]

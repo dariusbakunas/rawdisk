@@ -64,36 +64,27 @@ class TestNtfsPlugin(unittest.TestCase):
         self.detector._clear_plugins()
 
 
-class TestBpb(unittest.TestCase):
-    def test_init(self):
-        bpb = Bpb(
-            filename='sample_images/ntfs_bootsector.bin',
-            offset=BPB_OFFSET
-        )
-
-        self.assertEquals(bpb.info.bytes_per_sector, SAMPLE_BYTES_PER_SECTOR)
-        self.assertEquals(bpb.info.sectors_per_cluster, SAMPLE_SECTORS_PER_CLUSTER)
-        self.assertEquals(bpb.info.reserved_sectors, SAMPLE_RESERVED_SECTORS)
-        self.assertEquals(bpb.info.media_type, SAMPLE_MEDIA_DESCRIPTOR)
-        self.assertEquals(bpb.info.sectors_per_track, SAMPLE_SECTORS_PER_TRACK)
-        self.assertEquals(bpb.info.heads, SAMPLE_NUM_HEADS)
-        self.assertEquals(bpb.info.hidden_sectors, 128)
-        self.assertEquals(bpb.info.total_sectors, SAMPLE_TOTAL_SECTORS)
-        self.assertEquals(bpb.mft_cluster, SAMPLE_MFT_CLUSTER)
-        self.assertEquals(bpb.mft_mirror_cluster, SAMPLE_MFT_MIRR_CLUSTER)
-        self.assertEquals(bpb.clusters_per_mft, SAMPLE_CLUSTERS_PER_MFT)
-        self.assertEquals(bpb.clusters_per_index, SAMPLE_CLUSTERS_PER_INDEX)
-        self.assertEquals(bpb.volume_serial, SAMPLE_VOLUME_SERIAL)
-        self.assertEquals(bpb.checksum, SAMPLE_VOLUME_CHECKSUM)
-        self.assertEquals(bpb.mft_offset, SAMPLE_MFT_OFFSET)
-        self.assertEquals(bpb.mft_mirror_offset, SAMPLE_MFT_MIRR_OFFSET)
-        self.assertEquals(bpb.mft_record_size, SAMPLE_MFT_RECORD_SIZE)
-
-
 class TestBootsector(unittest.TestCase):
     def test_init(self):
         bootsector = BootSector(filename='sample_images/ntfs_bootsector.bin')
         self.assertEquals(bootsector.oem_id, SAMPLE_OEM_ID)
+        self.assertEquals(bootsector.bpb.bytes_per_sector, SAMPLE_BYTES_PER_SECTOR)
+        self.assertEquals(bootsector.bpb.sectors_per_cluster, SAMPLE_SECTORS_PER_CLUSTER)
+        self.assertEquals(bootsector.bpb.reserved_sectors, SAMPLE_RESERVED_SECTORS)
+        self.assertEquals(bootsector.bpb.media_type, SAMPLE_MEDIA_DESCRIPTOR)
+        self.assertEquals(bootsector.bpb.sectors_per_track, SAMPLE_SECTORS_PER_TRACK)
+        self.assertEquals(bootsector.bpb.heads, SAMPLE_NUM_HEADS)
+        self.assertEquals(bootsector.bpb.hidden_sectors, 128)
+        self.assertEquals(bootsector.bpb.total_sectors, SAMPLE_TOTAL_SECTORS)
+        self.assertEquals(bootsector.extended_bpb.mft_cluster, SAMPLE_MFT_CLUSTER)
+        self.assertEquals(bootsector.extended_bpb.mft_mirror_cluster, SAMPLE_MFT_MIRR_CLUSTER)
+        self.assertEquals(bootsector.extended_bpb.clusters_per_mft, SAMPLE_CLUSTERS_PER_MFT)
+        self.assertEquals(bootsector.extended_bpb.clusters_per_index, SAMPLE_CLUSTERS_PER_INDEX)
+        self.assertEquals(bootsector.extended_bpb.volume_serial, SAMPLE_VOLUME_SERIAL)
+        self.assertEquals(bootsector.extended_bpb.checksum, SAMPLE_VOLUME_CHECKSUM)
+        self.assertEquals(bootsector.mft_offset, SAMPLE_MFT_OFFSET)
+        self.assertEquals(bootsector.mft_mirror_offset, SAMPLE_MFT_MIRR_OFFSET)
+        self.assertEquals(bootsector.mft_record_size, SAMPLE_MFT_RECORD_SIZE)
 
 
 class TestNtfsVolume(unittest.TestCase):
@@ -112,10 +103,10 @@ class TestNtfsVolume(unittest.TestCase):
         self.assertEquals(ntfs_vol.size, SAMPLE_VOLUME_SIZE)
         self.assertEquals(
             ntfs_vol.mft_table_offset, offset +
-            ntfs_vol.bootsector.bpb.mft_offset)
+            ntfs_vol.bootsector.mft_offset)
         self.assertEquals(
             ntfs_vol.mft_mirror_offset, offset +
-            ntfs_vol.bootsector.bpb.mft_mirror_offset)
+            ntfs_vol.bootsector.mft_mirror_offset)
         self.assertEquals(ntfs_vol.mft_zone_size, SAMPLE_MFT_ZONE_SIZE)
 
 

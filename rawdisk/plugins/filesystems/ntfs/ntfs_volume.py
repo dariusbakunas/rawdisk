@@ -57,7 +57,7 @@ class NtfsVolume(Volume):
             offset=self.offset)
 
         self.mft_table = MftTable(
-            mft_entry_size=self.bootsector.bpb.mft_record_size,
+            mft_entry_size=self.bootsector.mft_record_size,
             filename=self.filename,
             offset=self.mft_table_offset
         )
@@ -81,8 +81,8 @@ class NtfsVolume(Volume):
             self.minor_ver = vol_info_attr.minor_ver
 
         # Determine the size of the MFT zone.
-        num_clusters = self.bootsector.bpb.total_clusters
-        self.mft_zone_size = self.bootsector.bpb.bytes_per_cluster * \
+        num_clusters = self.bootsector.total_clusters
+        self.mft_zone_size = self.bootsector.bytes_per_cluster * \
             self._get_mft_zone_size(num_clusters)
 
     def _get_mft_zone_size(self, num_clusters, mft_zone_multiplier=1):
@@ -133,7 +133,7 @@ class NtfsVolume(Volume):
         Returns:
             int: Total size of NTFS volume in bytes
         """
-        return self.bootsector.bpb.volume_size
+        return self.bootsector.volume_size
 
     @property
     def mft_table_offset(self):
@@ -141,7 +141,7 @@ class NtfsVolume(Volume):
         Returns:
             int: MFT Table offset from the beginning of the disk in bytes
         """
-        return self.offset + self.bootsector.bpb.mft_offset
+        return self.offset + self.bootsector.mft_offset
 
     @property
     def mft_mirror_offset(self):
@@ -149,4 +149,4 @@ class NtfsVolume(Volume):
         Returns:
         int: MFT Mirror Table offset from the beginning of the disk in bytes
         """
-        return self.offset + self.bootsector.bpb.mft_mirror_offset
+        return self.offset + self.bootsector.mft_mirror_offset
