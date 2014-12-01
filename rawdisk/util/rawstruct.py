@@ -88,7 +88,7 @@ class RawStruct(object):
         """
         return struct.unpack(format, self.data[offset:offset+length])[0]
 
-    def get_uchar(self, offset):
+    def get_ubyte(self, offset):
         """Returns unsigned char (1 byte)
 
         Args:
@@ -96,7 +96,7 @@ class RawStruct(object):
         """
         return struct.unpack("B", self.data[offset:offset+1])[0]
 
-    def get_char(self, offset):
+    def get_byte(self, offset):
         """Returns char (1 byte)
 
         Args:

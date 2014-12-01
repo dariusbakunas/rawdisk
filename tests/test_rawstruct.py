@@ -64,7 +64,7 @@ class TestRawStruct(unittest.TestCase):
     def test_get_uchar(self):
         offset = 2
         self.assertEqual(
-            self.rwstruct.get_uchar(offset),
+            self.rwstruct.get_ubyte(offset),
             struct.unpack("B", self.sample_data[offset:offset+1])[0])
 
     def test_get_ushort_le(self):

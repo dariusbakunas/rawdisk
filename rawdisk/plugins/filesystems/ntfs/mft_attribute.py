@@ -39,8 +39,8 @@ class MftAttr(RawStruct):
     def __init__(self, data):
         RawStruct.__init__(self, data)
         self.type_str = "$UNKNOWN"
-        non_resident_flag = self.get_uchar(8)
-        name_length = self.get_uchar(9)
+        non_resident_flag = self.get_ubyte(8)
+        name_length = self.get_ubyte(9)
         header_size = 0
 
         if non_resident_flag:
@@ -213,8 +213,8 @@ class MftAttrFilename(MftAttr):
         self.flags = self.get_uint_le(offset + 0x38)
         # Used by EAs and Reparse ??
         self.reparse = self.get_uint_le(offset + 0x3C)
-        self.fname_length = self.get_uchar(offset + 0x40)
-        self.fnspace = self.get_uchar(offset + 0x41)
+        self.fname_length = self.get_ubyte(offset + 0x40)
+        self.fnspace = self.get_ubyte(offset + 0x41)
         self.fname = self.get_chunk(offset + 0x42, 2 *
                                     self.fname_length).decode('utf-16')
 
@@ -271,8 +271,8 @@ class MftAttrVolumeInfo(MftAttr):
         MftAttr.__init__(self, data)
         offset = self.header.size
         self.type_str = "$VOLUME_INFORMATION"
-        self.major_ver = self.get_uchar(offset + 0x08)
-        self.minor_ver = self.get_uchar(offset + 0x09)
+        self.major_ver = self.get_ubyte(offset + 0x08)
+        self.minor_ver = self.get_ubyte(offset + 0x09)
         self.flags = self.get_ushort_le(offset + 0x0A)
 
 
