@@ -5,9 +5,6 @@ from rawdisk.util.rawstruct import RawStruct
 from headers import BIOS_PARAMETER_BLOCK, EXTENDED_BIOS_PARAMETER_BLOCK
 
 
-BPB_OFFSET = 0x0B
-
-
 class BootSector(RawStruct):
     """Represents NTFS Bootsector
 
@@ -33,22 +30,22 @@ class BootSector(RawStruct):
 
         self.bpb = BIOS_PARAMETER_BLOCK(
             self.get_ushort_le(0x0B),
-            self.get_uchar(BPB_OFFSET + 2),
-            self.get_ushort_le(BPB_OFFSET + 3),
-            self.get_uchar(BPB_OFFSET + 10),
-            self.get_ushort_le(BPB_OFFSET + 13),
-            self.get_ushort_le(BPB_OFFSET + 15),
-            self.get_uint_le(BPB_OFFSET + 17),
-            self.get_ulonglong_le(BPB_OFFSET + 29),
+            self.get_ubyte(0x0D),
+            self.get_ushort_le(0x0E),
+            self.get_ubyte(0x15),
+            self.get_ushort_le(0x18),
+            self.get_ushort_le(0x1A),
+            self.get_uint_le(0x1C),
+            self.get_ulonglong_le(0x28),
         )
 
         self.extended_bpb = EXTENDED_BIOS_PARAMETER_BLOCK(
-            self.get_ulonglong_le(BPB_OFFSET + 37),
-            self.get_ulonglong_le(BPB_OFFSET + 45),
-            self.get_char(BPB_OFFSET + 53),
-            self.get_uchar(BPB_OFFSET + 57),
-            self.get_ulonglong_le(BPB_OFFSET + 58),
-            self.get_uint_le(BPB_OFFSET + 66)
+            self.get_ulonglong_le(0x30),
+            self.get_ulonglong_le(0x38),
+            self.get_byte(0x40),
+            self.get_ubyte(0x44),
+            self.get_ulonglong_le(0x48),
+            self.get_uint_le(0x50)
         )
 
     @property
