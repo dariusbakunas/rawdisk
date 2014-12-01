@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
+from headers import BIOS_PARAMETER_BLOCK
 from rawdisk.util.rawstruct import RawStruct
 
 BPB_SIZE = 25
@@ -39,6 +39,7 @@ class Bpb(RawStruct):
         | http://homepage.ntlworld.com\
 /jonathan.deboynepollard/FGA/bios-parameter-block.html
     """
+
     def __init__(
         self,
         data=None,
@@ -54,16 +55,17 @@ class Bpb(RawStruct):
             filename=filename
         )
 
-        self.bytes_per_sector = self.get_ushort_le(0)
-        self.sectors_per_cluster = self.get_uchar(2)
-        self.reserved_sectors = self.get_ushort_le(3)
-        self.media_descriptor = self.get_uchar(10)
+        self.info = BIOS_PARAMETER_BLOCK(
+                self.get_ushort_le(0),
+                self.get_uchar(2),
+                self.get_ushort_le(3),
+                self.get_uchar(10),
+                self.get_ushort_le(13),
+                self.get_ushort_le(15),
+                self.get_uint_le(17),
+                self.get_ulonglong_le(29),
+            )
 
-        self.sectors_per_track = self.get_ushort_le(13)
-        self.number_of_heads = self.get_ushort_le(15)
-        self.hidden_sectors = self.get_uint_le(17)
-
-        self.total_sectors = self.get_ulonglong_le(29)
         self.mft_cluster = self.get_ulonglong_le(37)
         self.mft_mirror_cluster = self.get_ulonglong_le(45)
         self.clusters_per_mft = self.get_char(53)
@@ -73,16 +75,16 @@ class Bpb(RawStruct):
 
     @property
     def total_clusters(self):
-        return self.total_sectors / self.sectors_per_cluster
+        return self.info.total_sectors / self.info.sectors_per_cluster
 
     @property
     def bytes_per_cluster(self):
-        return self.sectors_per_cluster * self.bytes_per_sector
+        return self.info.sectors_per_cluster * self.info.bytes_per_sector
 
     @property
     def volume_size(self):
         """Returns volume size in bytes"""
-        return self.bytes_per_sector * self.total_sectors
+        return self.info.bytes_per_sector * self.info.total_sectors
 
     @property
     def mft_record_size(self):
@@ -102,8 +104,8 @@ class Bpb(RawStruct):
         Returns:
             int: MFT Table offset from the beginning of the partition in bytes
         """
-        return self.bytes_per_sector * \
-            self.sectors_per_cluster * self.mft_cluster
+        return self.info.bytes_per_sector * \
+            self.info.sectors_per_cluster * self.mft_cluster
 
     @property
     def mft_mirror_offset(self):
@@ -112,5 +114,5 @@ class Bpb(RawStruct):
             int: Mirror MFT Table offset from the beginning of the partition \
             in bytes
         """
-        return self.bytes_per_sector * \
-            self.sectors_per_cluster * self.mft_mirror_cluster
+        return self.info.bytes_per_sector * \
+            self.info.sectors_per_cluster * self.mft_mirror_cluster
