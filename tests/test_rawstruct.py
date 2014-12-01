@@ -143,8 +143,8 @@ class TestRawStruct(unittest.TestCase):
         handle.write.assert_called_once_with(self.sample_data)
 
     def test_export_with_offset_and_length(self):
-        offset = 2;
-        length = 4;
+        offset = 2
+        length = 4
         m = mock.mock_open()
         with mock.patch('__builtin__.open', m, create=True):
             self.rwstruct.export('filename', offset, length)

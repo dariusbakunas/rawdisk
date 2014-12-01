@@ -4,7 +4,6 @@
 import unittest
 import uuid
 from rawdisk.plugins.filesystems.ntfs.ntfs import NtfsPlugin
-from rawdisk.plugins.filesystems.ntfs.bpb import Bpb, BPB_OFFSET
 from rawdisk.plugins.filesystems.ntfs.bootsector import BootSector
 from rawdisk.plugins.filesystems.ntfs.mft import MftTable
 from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume, \
@@ -19,6 +18,7 @@ SAMPLE_NUM_HEADS = 0xFF
 SAMPLE_CLUSTERS_PER_INDEX = 0x1
 SAMPLE_SECTORS_PER_TRACK = 0x3F
 SAMPLE_SECTORS_PER_CLUSTER = 8
+SAMPLE_VOLUME_HIDDEN_SECTORS = 128L
 SAMPLE_CLUSTERS_PER_MFT = -10
 SAMPLE_MEDIA_DESCRIPTOR = 0xF8
 SAMPLE_RESERVED_SECTORS = 0
@@ -68,20 +68,35 @@ class TestBootsector(unittest.TestCase):
     def test_init(self):
         bootsector = BootSector(filename='sample_images/ntfs_bootsector.bin')
         self.assertEquals(bootsector.oem_id, SAMPLE_OEM_ID)
-        self.assertEquals(bootsector.bpb.bytes_per_sector, SAMPLE_BYTES_PER_SECTOR)
-        self.assertEquals(bootsector.bpb.sectors_per_cluster, SAMPLE_SECTORS_PER_CLUSTER)
-        self.assertEquals(bootsector.bpb.reserved_sectors, SAMPLE_RESERVED_SECTORS)
+        self.assertEquals(
+            bootsector.bpb.bytes_per_sector, SAMPLE_BYTES_PER_SECTOR)
+        self.assertEquals(
+            bootsector.bpb.sectors_per_cluster, SAMPLE_SECTORS_PER_CLUSTER)
+        self.assertEquals(
+            bootsector.bpb.reserved_sectors, SAMPLE_RESERVED_SECTORS)
         self.assertEquals(bootsector.bpb.media_type, SAMPLE_MEDIA_DESCRIPTOR)
-        self.assertEquals(bootsector.bpb.sectors_per_track, SAMPLE_SECTORS_PER_TRACK)
+        self.assertEquals(
+            bootsector.bpb.sectors_per_track, SAMPLE_SECTORS_PER_TRACK)
         self.assertEquals(bootsector.bpb.heads, SAMPLE_NUM_HEADS)
-        self.assertEquals(bootsector.bpb.hidden_sectors, 128)
+        self.assertEquals(
+            bootsector.bpb.hidden_sectors, SAMPLE_VOLUME_HIDDEN_SECTORS)
         self.assertEquals(bootsector.bpb.total_sectors, SAMPLE_TOTAL_SECTORS)
-        self.assertEquals(bootsector.extended_bpb.mft_cluster, SAMPLE_MFT_CLUSTER)
-        self.assertEquals(bootsector.extended_bpb.mft_mirror_cluster, SAMPLE_MFT_MIRR_CLUSTER)
-        self.assertEquals(bootsector.extended_bpb.clusters_per_mft, SAMPLE_CLUSTERS_PER_MFT)
-        self.assertEquals(bootsector.extended_bpb.clusters_per_index, SAMPLE_CLUSTERS_PER_INDEX)
-        self.assertEquals(bootsector.extended_bpb.volume_serial, SAMPLE_VOLUME_SERIAL)
-        self.assertEquals(bootsector.extended_bpb.checksum, SAMPLE_VOLUME_CHECKSUM)
+        self.assertEquals(
+            bootsector.extended_bpb.mft_cluster, SAMPLE_MFT_CLUSTER)
+        self.assertEquals(
+            bootsector.extended_bpb.mft_mirror_cluster,
+            SAMPLE_MFT_MIRR_CLUSTER
+            )
+        self.assertEquals(
+            bootsector.extended_bpb.clusters_per_mft, SAMPLE_CLUSTERS_PER_MFT)
+        self.assertEquals(
+            bootsector.extended_bpb.clusters_per_index,
+            SAMPLE_CLUSTERS_PER_INDEX
+            )
+        self.assertEquals(
+            bootsector.extended_bpb.volume_serial, SAMPLE_VOLUME_SERIAL)
+        self.assertEquals(
+            bootsector.extended_bpb.checksum, SAMPLE_VOLUME_CHECKSUM)
         self.assertEquals(bootsector.mft_offset, SAMPLE_MFT_OFFSET)
         self.assertEquals(bootsector.mft_mirror_offset, SAMPLE_MFT_MIRR_OFFSET)
         self.assertEquals(bootsector.mft_record_size, SAMPLE_MFT_RECORD_SIZE)

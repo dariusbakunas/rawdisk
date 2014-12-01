@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from ctypes import *
+from ctypes import Structure, c_ushort, c_ubyte, c_uint, c_ulonglong, \
+    c_byte
+
 
 class BIOS_PARAMETER_BLOCK(Structure):
     _fields_ = [
@@ -12,6 +14,7 @@ class BIOS_PARAMETER_BLOCK(Structure):
         ("hidden_sectors",      c_uint),
         ("total_sectors",       c_ulonglong),
     ]
+
 
 class EXTENDED_BIOS_PARAMETER_BLOCK(Structure):
     _fields_ = [
