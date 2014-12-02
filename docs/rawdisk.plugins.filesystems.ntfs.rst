@@ -4,18 +4,18 @@ rawdisk.plugins.filesystems.ntfs package
 Submodules
 ----------
 
-rawdisk.plugins.filesystems.ntfs.bootsector module
+rawdisk.plugins.filesystems.ntfs.headers module
 --------------------------------------------------
 
-.. automodule:: rawdisk.plugins.filesystems.ntfs.bootsector
+.. automodule:: rawdisk.plugins.filesystems.ntfs.headers
     :members:
     :undoc-members:
     :show-inheritance:
 
-rawdisk.plugins.filesystems.ntfs.bpb module
--------------------------------------------
+rawdisk.plugins.filesystems.ntfs.bootsector module
+--------------------------------------------------
 
-.. automodule:: rawdisk.plugins.filesystems.ntfs.bpb
+.. automodule:: rawdisk.plugins.filesystems.ntfs.bootsector
     :members:
     :undoc-members:
     :show-inheritance:
@@ -48,14 +48,6 @@ rawdisk.plugins.filesystems.ntfs.mft_entry module
 -------------------------------------------------
 
 .. automodule:: rawdisk.plugins.filesystems.ntfs.mft_entry
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-rawdisk.plugins.filesystems.ntfs.mft_entry_header module
---------------------------------------------------------
-
-.. automodule:: rawdisk.plugins.filesystems.ntfs.mft_entry_header
     :members:
     :undoc-members:
     :show-inheritance:

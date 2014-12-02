@@ -2,7 +2,6 @@
 
 
 from mft_attribute import MFT_ATTR_FILENAME, MftAttr
-from mft_entry_header import MftEntryHeader
 from rawdisk.util.rawstruct import RawStruct
 from headers import MFT_RECORD_HEADER
 
