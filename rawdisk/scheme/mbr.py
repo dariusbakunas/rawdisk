@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-
-
 from rawdisk.util.rawstruct import RawStruct
+from headers import MBR_PARTITION_ENTRY
 
 
 MBR_SIGNATURE = 0xAA55
@@ -12,53 +11,6 @@ PT_ENTRY_SIZE = 16
 PT_TABLE_OFFSET = 0x1BE
 PT_TABLE_SIZE = PT_ENTRY_SIZE * 4
 SECTOR_SIZE = 512
-
-
-class PartitionEntry(RawStruct):
-    """Represents MBR partition entry
-
-    Args:
-        data (str): byte array to initialize structure with.
-
-    Attributes:
-        boot_indicator (ubyte): Boot indicator bit flag: 0 = no, 0x80 = \
-        bootable (or "active")
-        starting_head (ubyte): Starting head for the partition
-        starting_sector (6 bits): Starting sector for the partition
-        starting_cylinder (10 bits): Starting cylinder for the partition
-        part_type (ubyte): Partition type id
-        ending_head (ubyte): Ending head of the partition
-        ending_sector (6 bits): Ending sector
-        ending_cylinder (10 bits): Ending cylinder
-        relative_sector (uint): The offset from the beginning of the disk to \
-        the beginning of the volume, counting by sectors.
-        total_sectors (uint): The total number of sectors in the volume.
-        part_offset (uint): The offset from the beginning of the disk \
-        to the beginning of the volume, counting by bytes.
-
-    See Also:
-        | MBR Table (http://technet.microsoft.com/en-us/library/cc976786.aspx)
-        | MBR Partition Types \
-        (http://en.wikipedia.org/wiki/Partition_type#List_of_partition_IDs)
-    """
-    def __init__(self, data):
-        RawStruct.__init__(self, data)
-        self.boot_indicator = self.get_ubyte(0)
-        self.starting_head = self.get_ubyte(1)
-        tmp = self.get_ubyte(2)
-        self.starting_sector = tmp & 0x3F   # Only bits 0-5 are used
-        self.starting_cylinder = ((tmp & 0xC0) << 2) + \
-            self.get_ubyte(3)
-        self.part_type = self.get_ubyte(4)
-        self.ending_head = self.get_ubyte(5)
-
-        tmp = self.get_ubyte(6)
-        self.ending_sector = tmp & 0x3F
-        self.ending_cylinder = ((tmp & 0xC0) << 2) + \
-            self.get_ubyte(7)
-        self.relative_sector = self.get_uint_le(8)
-        self.total_sectors = self.get_uint_le(12)
-        self.part_offset = SECTOR_SIZE*self.relative_sector
 
 
 class PartitionTable(RawStruct):
@@ -75,9 +27,26 @@ class PartitionTable(RawStruct):
         self.entries = []
 
         for i in range(0, 4):
-            entry = PartitionEntry(
-                self.get_chunk(PT_ENTRY_SIZE * i, PT_ENTRY_SIZE)
-            )
+            offset = PT_ENTRY_SIZE * i
+            tmp = self.get_ubyte(offset + 2)
+            tmp2 = self.get_ubyte(offset + 6)
+            relative_sector = self.get_uint_le(offset + 8)
+
+            entry = MBR_PARTITION_ENTRY(
+                    self.get_ubyte(offset),             # boot_indicator
+                    self.get_ubyte(offset + 1),         # starting_head
+                    tmp & 0x3F,                         # starting_sector
+                    ((tmp & 0xC0) << 2) + \
+                        self.get_ubyte(offset + 3),     # starting_cylinder
+                    self.get_ubyte(offset + 4),         # part_type
+                    self.get_ubyte(offset + 5),         # ending_head
+                    tmp2 & 0x3F,                        # ending_sector
+                    ((tmp2 & 0xC0) << 2) + \
+                        self.get_ubyte(offset + 7),     # ending_cylinder
+                    relative_sector,                    # relative_sector
+                    self.get_uint_le(offset + 12),      # total_sectors
+                    SECTOR_SIZE * relative_sector       # part_offset
+                )
 
             if (entry.part_type != 0):
                 self.entries.append(entry)
