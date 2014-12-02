@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+
 import unittest
-from rawdisk.scheme.gpt import Gpt, GptHeader, GptPartitionEntry
+from rawdisk.scheme.gpt import Gpt, GptPartitionEntry
 from uuid import UUID
 
 
@@ -13,16 +15,7 @@ class TestGptModule(unittest.TestCase):
             bs=512
         )
 
-        self.assertEquals(len(self.gpt.partition_entries), 2)
-
-
-class TestGptHeader(unittest.TestCase):
-    def setUp(self):
-        with open('sample_images/gpt_header.bin', 'rb') as f:
-            self.data = f.read()
-
-    def test_init(self):
-        header = GptHeader(self.data)
+        header = self.gpt.header
         self.assertEquals(header.signature, 'EFI PART')
         self.assertEquals(header.revision, 0x10000)
         self.assertEquals(header.header_size, 92)
@@ -32,13 +25,14 @@ class TestGptHeader(unittest.TestCase):
         self.assertEquals(header.first_usable_lba, 34)
         self.assertEquals(header.last_usable_lba, 262110)
         self.assertEquals(
-            header.disk_guid,
+            UUID(header.disk_guid),
             UUID('af9966e5-00fb-45cd-be63-262d9188dce7')
         )
         self.assertEquals(header.part_lba, 2)
         self.assertEquals(header.num_partitions, 128)
         self.assertEquals(header.part_size, 128)
         self.assertEquals(header.part_array_crc32, 0xf0f45a62)
+        self.assertEquals(len(self.gpt.partition_entries), 2)
 
 
 class TestGptPartitionEntry(unittest.TestCase):
