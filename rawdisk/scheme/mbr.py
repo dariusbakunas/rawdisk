@@ -33,20 +33,20 @@ class PartitionTable(RawStruct):
             relative_sector = self.get_uint_le(offset + 8)
 
             entry = MBR_PARTITION_ENTRY(
-                    self.get_ubyte(offset),             # boot_indicator
-                    self.get_ubyte(offset + 1),         # starting_head
-                    tmp & 0x3F,                         # starting_sector
-                    ((tmp & 0xC0) << 2) + \
-                        self.get_ubyte(offset + 3),     # starting_cylinder
-                    self.get_ubyte(offset + 4),         # part_type
-                    self.get_ubyte(offset + 5),         # ending_head
-                    tmp2 & 0x3F,                        # ending_sector
-                    ((tmp2 & 0xC0) << 2) + \
-                        self.get_ubyte(offset + 7),     # ending_cylinder
-                    relative_sector,                    # relative_sector
-                    self.get_uint_le(offset + 12),      # total_sectors
-                    SECTOR_SIZE * relative_sector       # part_offset
-                )
+                self.get_ubyte(offset),             # boot_indicator
+                self.get_ubyte(offset + 1),         # starting_head
+                tmp & 0x3F,                         # starting_sector
+                # starting_cylinder
+                ((tmp & 0xC0) << 2) + self.get_ubyte(offset + 3),
+                self.get_ubyte(offset + 4),         # part_type
+                self.get_ubyte(offset + 5),         # ending_head
+                tmp2 & 0x3F,                        # ending_sector
+                # ending_cylinder
+                ((tmp2 & 0xC0) << 2) + self.get_ubyte(offset + 7),
+                relative_sector,                    # relative_sector
+                self.get_uint_le(offset + 12),      # total_sectors
+                SECTOR_SIZE * relative_sector       # part_offset
+            )
 
             if (entry.part_type != 0):
                 self.entries.append(entry)
