@@ -4,6 +4,7 @@
 from mft_attribute import MFT_ATTR_FILENAME, MftAttr
 from mft_entry_header import MftEntryHeader
 from rawdisk.util.rawstruct import RawStruct
+from headers import MFT_RECORD_HEADER
 
 MFT_ENTRY_HEADER_SIZE = 48
 
@@ -34,8 +35,23 @@ class MftEntry(RawStruct):
         self.index = index
         self.attributes = []
         self.fname_str = ""
-        header_data = self.get_chunk(0, MFT_ENTRY_HEADER_SIZE)
-        self.header = MftEntryHeader(header_data)
+
+        self.header = MFT_RECORD_HEADER(
+            self.get_string(0, 4),
+            self.get_ushort_le(4),
+            self.get_ushort_le(6),
+            self.get_ulonglong_le(8),
+            self.get_ushort_le(16),
+            self.get_ushort_le(18),
+            self.get_ushort_le(20),
+            self.get_ushort_le(22),
+            self.get_uint_le(24),
+            self.get_ushort_le(28),
+            self.get_ulonglong_le(30),
+            self.get_ushort_le(38),
+            self.get_uint_le(42)
+        )
+
         self.name_str = self._get_entry_name(self.index)
         self._load_attributes()
 

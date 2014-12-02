@@ -145,16 +145,17 @@ class TestMftTable(unittest.TestCase):
         self.assertEquals(len(mft._entries), 3)
 
 
-class TestMftEntryHeader(unittest.TestCase):
+class TestMftEntry(unittest.TestCase):
     def test_init(self):
         mft = MftTable(
             filename='sample_images/ntfs_mft_table.bin',
         )
         entry = mft.get_entry(0)
+
         header = entry.header
-        self.assertEquals(header.file_signature, 'FILE')
-        self.assertEquals(header.update_seq_array_offset, 0x30)
-        self.assertEquals(header.update_seq_array_size, 0x3)
+        self.assertEquals(header.signature, 'FILE')
+        self.assertEquals(header.upd_seq_array_offset, 0x30)
+        self.assertEquals(header.upd_seq_array_size, 0x3)
         self.assertEquals(header.logfile_seq_number, 0x104D82)
         self.assertEquals(header.seq_number, 0x1)
         self.assertEquals(header.hard_link_count, 0x1)
@@ -166,13 +167,6 @@ class TestMftEntryHeader(unittest.TestCase):
         self.assertEquals(header.next_attr_id, 0x0)
         self.assertEquals(header.mft_record_number, 0x0)
 
-
-class TestMftEntry(unittest.TestCase):
-    def test_init(self):
-        mft = MftTable(
-            filename='sample_images/ntfs_mft_table.bin',
-        )
-        entry = mft.get_entry(0)
         self.assertEquals(len(entry.attributes), 4)
         self.assertEquals(entry.fname_str, '$MFT')
         self.assertEquals(entry.name_str, 'Master File Table')
