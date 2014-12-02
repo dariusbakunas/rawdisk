@@ -6,9 +6,6 @@ from ctypes import Structure, c_ushort, c_ubyte, c_uint, c_ulonglong, \
 class MBR_PARTITION_ENTRY(Structure):
     """Represents MBR partition entry
 
-    Args:
-        data (str): byte array to initialize structure with.
-
     Attributes:
         boot_indicator (ubyte): Boot indicator bit flag: 0 = no, 0x80 = \
         bootable (or "active")
