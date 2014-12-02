@@ -75,7 +75,7 @@ class GPT_HEADER(Structure):
         ("backup_lba",          c_ulonglong),
         ("first_usable_lba",    c_ulonglong),
         ("last_usable_lba",     c_ulonglong),
-        ("disk_guid",           c_char * 36),
+        ("disk_guid",           c_ubyte * 16),
         ("part_lba",            c_ulonglong),
         ("num_partitions",      c_uint),
         ("part_size",           c_uint),

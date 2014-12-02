@@ -5,7 +5,8 @@ import uuid
 import struct
 from rawdisk.util.rawstruct import RawStruct
 from headers import GPT_HEADER
-import ctypes
+from ctypes import c_ubyte
+import hexdump
 
 GPT_HEADER_OFFSET = 0x200
 GPT_SIG_SIZE = 8
@@ -76,7 +77,8 @@ class Gpt(object):
                 header_data.get_ulonglong_le(0x20),
                 header_data.get_ulonglong_le(0x28),
                 header_data.get_ulonglong_le(0x30),
-                str(header_data.get_uuid_le(0x38)),
+                (c_ubyte * 16).from_buffer_copy(
+                    header_data.get_chunk(0x38, 16)),
                 header_data.get_ulonglong_le(0x48),
                 header_data.get_uint_le(0x50),
                 header_data.get_uint_le(0x54),

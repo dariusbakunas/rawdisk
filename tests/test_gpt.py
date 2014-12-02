@@ -25,7 +25,7 @@ class TestGptModule(unittest.TestCase):
         self.assertEquals(header.first_usable_lba, 34)
         self.assertEquals(header.last_usable_lba, 262110)
         self.assertEquals(
-            UUID(header.disk_guid),
+            UUID(bytes_le = "".join(map(chr, header.disk_guid))),
             UUID('af9966e5-00fb-45cd-be63-262d9188dce7')
         )
         self.assertEquals(header.part_lba, 2)
