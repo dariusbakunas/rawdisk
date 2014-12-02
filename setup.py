@@ -16,6 +16,7 @@ requirements = [
     'hexdump == 2.0',
     'yapsy == 1.10.323',
     'pyxdg == 0.25',
+    'sphinxcontrib-napoleon == 0.2.8',
 ]
 
 test_requirements = [
