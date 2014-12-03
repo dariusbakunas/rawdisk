@@ -4,6 +4,14 @@ rawdisk.scheme package
 Submodules
 ----------
 
+rawdisk.scheme.headers module
+----------------------------
+
+.. automodule:: rawdisk.scheme.headers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 rawdisk.scheme.common module
 ----------------------------
 
