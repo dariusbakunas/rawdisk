@@ -29,22 +29,22 @@ class BootSector(RawStruct):
         self.oem_id = self.get_string(3, 8)
 
         self.bpb = BIOS_PARAMETER_BLOCK(
-            self.get_ushort_le(0x0B),
-            self.get_ubyte(0x0D),
-            self.get_ushort_le(0x0E),
-            self.get_ubyte(0x15),
-            self.get_ushort_le(0x18),
-            self.get_ushort_le(0x1A),
-            self.get_uint_le(0x1C),
-            self.get_ulonglong_le(0x28),
+            self.get_ushort_le(0x0B),       # bytes_per_sector
+            self.get_ubyte(0x0D),           # sectors_per_cluster
+            self.get_ushort_le(0x0E),       # reserved_sectors
+            self.get_ubyte(0x15),           # media_type
+            self.get_ushort_le(0x18),       # sectors_per_track
+            self.get_ushort_le(0x1A),       # heads
+            self.get_uint_le(0x1C),         # hidden_sectors
+            self.get_ulonglong_le(0x28),    # total sectors
         )
 
         self.extended_bpb = EXTENDED_BIOS_PARAMETER_BLOCK(
-            self.get_ulonglong_le(0x30),
-            self.get_ulonglong_le(0x38),
-            self.get_byte(0x40),
-            self.get_ubyte(0x44),
-            self.get_ulonglong_le(0x48),
+            self.get_ulonglong_le(0x30),    # mft_cluster
+            self.get_ulonglong_le(0x38),    # mft_mirror_cluster
+            self.get_byte(0x40),            # clusters_per_mft
+            self.get_ubyte(0x44),           # clusters_per_index
+            self.get_ulonglong_le(0x48),    # volume_serial
         )
 
     @property

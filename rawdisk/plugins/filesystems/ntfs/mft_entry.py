@@ -36,19 +36,19 @@ class MftEntry(RawStruct):
         self.fname_str = ""
 
         self.header = MFT_RECORD_HEADER(
-            self.get_string(0, 4),
-            self.get_ushort_le(4),
-            self.get_ushort_le(6),
-            self.get_ulonglong_le(8),
-            self.get_ushort_le(16),
-            self.get_ushort_le(18),
-            self.get_ushort_le(20),
-            self.get_ushort_le(22),
-            self.get_uint_le(24),
-            self.get_ushort_le(28),
-            self.get_ulonglong_le(30),
-            self.get_ushort_le(38),
-            self.get_uint_le(42)
+            self.get_string(0, 4),      # signature
+            self.get_ushort_le(4),      # upd_seq_array_offset
+            self.get_ushort_le(6),      # upd_seq_array_size
+            self.get_ulonglong_le(8),   # logfile_seq_number
+            self.get_ushort_le(16),     # seq_number
+            self.get_ushort_le(18),     # hard_link_count
+            self.get_ushort_le(20),     # first_attr_offset
+            self.get_ushort_le(22),     # flags
+            self.get_uint_le(24),       # used_size
+            self.get_ushort_le(28),     # allocated_size
+            self.get_ulonglong_le(30),  # base_file_record
+            self.get_ushort_le(38),     # next_attr_id
+            self.get_uint_le(42)        # mft_record_number
         )
 
         self.name_str = self._get_entry_name(self.index)
