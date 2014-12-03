@@ -50,7 +50,7 @@ class TestGptPartitionEntry(unittest.TestCase):
             part.part_guid,
             UUID('5cc56719-2e2b-4a46-b455-c5c26e74675c')
         )
-        self.assertEquals(part.first_lba, 65664)
-        self.assertEquals(part.last_lba, 258175)
-        self.assertEquals(part.attr_flags, 0)
-        self.assertEquals(part.name, 'Basic data partition')
+        self.assertEquals(part.fields.first_lba, 65664)
+        self.assertEquals(part.fields.last_lba, 258175)
+        self.assertEquals(part.fields.attr_flags, 0)
+        self.assertEquals(part.fields.name, 'Basic data partition')

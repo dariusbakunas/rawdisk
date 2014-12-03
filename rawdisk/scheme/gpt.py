@@ -4,8 +4,8 @@
 import uuid
 import struct
 from rawdisk.util.rawstruct import RawStruct
-from headers import GPT_HEADER
-from ctypes import c_ubyte
+from headers import GPT_HEADER, GPT_PARTITION_ENTRY
+from ctypes import c_ubyte, string_at
 import hexdump
 
 GPT_HEADER_OFFSET = 0x200
@@ -36,31 +36,27 @@ class GptHeader(RawStruct):
 
 
 class GptPartitionEntry(RawStruct):
-    """Represents GPT partition entry.
-
-    Args:
-        data (str): byte array that belongs to valid GPT partition entry.
-
-    Attributes:
-        type_guid (uuid): Partition type GUID
-        part_guid (uuid): Unique partition GUID
-        first_lba (ulonglong): First LBA of partition
-        last_lba (ulonglong): Last LBA of partition
-        attr_flags (ulonglong): Attribute flags (e.g. bit 60 denotes read-only)
-        name (str): Partition name (36 UTF-16LE code units)
-
-    See Also:
-        http://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_entries
-    """
     def __init__(self, data):
         RawStruct.__init__(self, data)
-        self.type_guid = self.get_uuid_le(0x00)
-        self.part_guid = self.get_uuid_le(0x10)
-        self.first_lba = self.get_ulonglong_le(0x20)
-        self.last_lba = self.get_ulonglong_le(0x28)
-        self.attr_flags = self.get_ulonglong_le(0x30)
-        self.name = self.get_chunk(
-            0x38, 72).decode('utf-16').partition(b'\0')[0]
+
+        self.fields = GPT_PARTITION_ENTRY(
+            (c_ubyte * 16).from_buffer_copy(
+                self.get_chunk(0, 16)),                 # type_guid
+            (c_ubyte * 16).from_buffer_copy(
+                self.get_chunk(0x10, 16)),              # part_guid
+            self.get_ulonglong_le(0x20),                # first_lba
+            self.get_ulonglong_le(0x28),                # last_lba
+            self.get_ulonglong_le(0x30),                # attr_flags
+            self.get_chunk(0x38, 72).decode('utf-16'),  # name
+        )
+
+    @property
+    def type_guid(self):
+        return uuid.UUID(bytes_le = "".join(map(chr, self.fields.type_guid)))
+
+    @property
+    def part_guid(self):
+        return uuid.UUID(bytes_le = "".join(map(chr, self.fields.part_guid)))
 
 
 class Gpt(object):

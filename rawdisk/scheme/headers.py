@@ -81,3 +81,27 @@ class GPT_HEADER(Structure):
         ("part_size",           c_uint),
         ("part_array_crc32",    c_uint),
     ]
+
+
+class GPT_PARTITION_ENTRY(Structure):
+    """Represents GPT partition entry.
+
+    Attributes:
+        type_guid (uuid): Partition type GUID
+        part_guid (uuid): Unique partition GUID
+        first_lba (ulonglong): First LBA of partition
+        last_lba (ulonglong): Last LBA of partition
+        attr_flags (ulonglong): Attribute flags (e.g. bit 60 denotes read-only)
+        name (str): Partition name (36 UTF-16LE code units)
+
+    See Also:
+        http://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_entries
+    """
+    _fields_ = [
+        ("type_guid",           c_ubyte * 16),
+        ("part_guid",           c_ubyte * 16),
+        ("first_lba",           c_ulonglong),
+        ("last_lba",            c_ulonglong),
+        ("attr_flags",          c_ulonglong),
+        ("name",                c_wchar * 72),
+    ]
