@@ -13,6 +13,32 @@ PT_TABLE_SIZE = PT_ENTRY_SIZE * 4
 SECTOR_SIZE = 512
 
 
+class MbrPartitionEntry(RawStruct):
+    def __init__(self, data):
+        RawStruct.__init__(self, data)
+
+        tmp = self.get_ubyte(2)
+        tmp2 = self.get_ubyte(6)
+
+        self.fields = MBR_PARTITION_ENTRY(
+            self.get_ubyte(0),          # boot indicator
+            self.get_ubyte(1),          # starting_head
+            tmp & 0x3F,                 # starting_sector
+            ((tmp & 0xC0) << 2) + \
+                self.get_ubyte(3),      # starting cylinder
+            self.get_ubyte(4),          # part_type
+            self.get_ubyte(5),          # ending_head
+            tmp2 & 0x3F,                # ending_sector
+            ((tmp2 & 0xC0) << 2) + \
+                self.get_ubyte(7),      # ending cylinder
+            self.get_uint_le(8),        # relative sector
+            self.get_uint_le(12),       # total sectors
+        )
+
+    @property
+    def part_offset(self):
+        return SECTOR_SIZE * self.fields.relative_sector
+
 class PartitionTable(RawStruct):
     """Represents MBR partition table.
 
@@ -27,37 +53,11 @@ class PartitionTable(RawStruct):
         self.entries = []
 
         for i in range(0, 4):
-            offset = PT_ENTRY_SIZE * i
-            boot_indicator = self.get_ubyte(offset)
-            starting_head = self.get_ubyte(offset + 1)
-            tmp = self.get_ubyte(offset + 2)
-            starting_sector = tmp & 0x3F
-            starting_cylinder = ((tmp & 0xC0) << 2) + \
-                self.get_ubyte(offset + 3)
-            tmp2 = self.get_ubyte(offset + 6)
-            part_type = self.get_ubyte(offset + 4)
-            ending_head = self.get_ubyte(offset + 5)
-            ending_sector = tmp2 & 0x3F
-            ending_cylinder = ((tmp2 & 0xC0) << 2) + self.get_ubyte(offset + 7)
-            relative_sector = self.get_uint_le(offset + 8)
-            total_sectors = self.get_uint_le(offset + 12)
-            part_offset = SECTOR_SIZE * relative_sector
-
-            entry = MBR_PARTITION_ENTRY(
-                boot_indicator,
-                starting_head,
-                starting_sector,
-                starting_cylinder,
-                part_type,
-                ending_head,
-                ending_sector,
-                ending_cylinder,
-                relative_sector,
-                total_sectors,
-                part_offset
+            entry = MbrPartitionEntry(
+                self.get_chunk(PT_ENTRY_SIZE * i, PT_ENTRY_SIZE)
             )
 
-            if (entry.part_type != 0):
+            if (entry.fields.part_type != 0):
                 self.entries.append(entry)
 
 

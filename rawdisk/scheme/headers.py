@@ -38,7 +38,6 @@ class MBR_PARTITION_ENTRY(Structure):
         ("ending_cylinder",     c_ubyte),
         ("relative_sector",     c_ubyte),
         ("total_sectors",       c_uint),
-        ("part_offset",         c_uint),
     ]
 
 
