@@ -13,6 +13,28 @@ GPT_SIG_SIZE = 8
 GPT_SIGNATURE = 'EFI PART'
 
 
+class GptHeader(RawStruct):
+    def __init__(self, data):
+        RawStruct.__init__(self, data)
+
+        self.fields = GPT_HEADER(
+            self.get_string(0, 8),              # signature
+            self.get_uint_le(0x08),             # revsion
+            self.get_uint_le(0x0C),             # header_size
+            self.get_uint_le(0x10),             # crc32
+            self.get_ulonglong_le(0x18),        # current_lba
+            self.get_ulonglong_le(0x20),        # backup_lba
+            self.get_ulonglong_le(0x28),        # first_usable_lba
+            self.get_ulonglong_le(0x30),        # last_usable_lba
+            (c_ubyte * 16).from_buffer_copy(    # disk_guid
+                self.get_chunk(0x38, 16)),
+            self.get_ulonglong_le(0x48),        # part_lba
+            self.get_uint_le(0x50),             # num_partitions
+            self.get_uint_le(0x54),             # part_size
+            self.get_uint_le(0x58)              # part_array_crc32
+        )
+
+
 class GptPartitionEntry(RawStruct):
     """Represents GPT partition entry.
 
@@ -66,26 +88,11 @@ class Gpt(object):
             f.seek(GPT_HEADER_OFFSET + 0x0C)
             header_size = struct.unpack("<I", f.read(4))[0]
             f.seek(GPT_HEADER_OFFSET)
-            header_data = RawStruct(f.read(header_size))
 
-            self.header = GPT_HEADER(
-                header_data.get_string(0, 8),
-                header_data.get_uint_le(0x08),
-                header_data.get_uint_le(0x0C),
-                header_data.get_uint_le(0x10),
-                header_data.get_ulonglong_le(0x18),
-                header_data.get_ulonglong_le(0x20),
-                header_data.get_ulonglong_le(0x28),
-                header_data.get_ulonglong_le(0x30),
-                (c_ubyte * 16).from_buffer_copy(
-                    header_data.get_chunk(0x38, 16)),
-                header_data.get_ulonglong_le(0x48),
-                header_data.get_uint_le(0x50),
-                header_data.get_uint_le(0x54),
-                header_data.get_uint_le(0x58)
-            )
+            header_data = f.read(header_size)
+            self.header = GptHeader(header_data)
 
-            if (self.header.signature != GPT_SIGNATURE):
+            if (self.header.fields.signature != GPT_SIGNATURE):
                 raise Exception("Invalid GPT signature")
 
             self._load_partition_entries(f, bs)
@@ -97,9 +104,9 @@ class Gpt(object):
             bs (uint): Block size of the volume
         """
 
-        fd.seek(self.header.part_lba * bs)
-        for p in xrange(0, self.header.num_partitions):
-            data = fd.read(self.header.part_size)
+        fd.seek(self.header.fields.part_lba * bs)
+        for p in xrange(0, self.header.fields.num_partitions):
+            data = fd.read(self.header.fields.part_size)
             entry = GptPartitionEntry(data)
             if entry.type_guid != uuid.UUID(
                 '{00000000-0000-0000-0000-000000000000}'
