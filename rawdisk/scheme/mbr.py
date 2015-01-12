@@ -24,13 +24,13 @@ class MbrPartitionEntry(RawStruct):
             self.get_ubyte(0),          # boot indicator
             self.get_ubyte(1),          # starting_head
             tmp & 0x3F,                 # starting_sector
-            ((tmp & 0xC0) << 2) + \
-                self.get_ubyte(3),      # starting cylinder
+            ((tmp & 0xC0) << 2) +
+            self.get_ubyte(3),          # starting cylinder
             self.get_ubyte(4),          # part_type
             self.get_ubyte(5),          # ending_head
             tmp2 & 0x3F,                # ending_sector
-            ((tmp2 & 0xC0) << 2) + \
-                self.get_ubyte(7),      # ending cylinder
+            ((tmp2 & 0xC0) << 2) +
+            self.get_ubyte(7),      # ending cylinder
             self.get_uint_le(8),        # relative sector
             self.get_uint_le(12),       # total sectors
         )
@@ -38,6 +38,7 @@ class MbrPartitionEntry(RawStruct):
     @property
     def part_offset(self):
         return SECTOR_SIZE * self.fields.relative_sector
+
 
 class PartitionTable(RawStruct):
     """Represents MBR partition table.
