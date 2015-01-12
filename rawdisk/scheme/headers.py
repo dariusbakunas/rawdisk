@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from ctypes import Structure, c_ushort, c_ubyte, c_uint, c_ulonglong, \
-    c_byte, c_char, c_wchar
+from hexdump import hexdump
+from ctypes import Structure, c_ubyte, c_uint, c_ulonglong, \
+    c_char, c_wchar
 
 
 class MBR_PARTITION_ENTRY(Structure):
@@ -65,11 +66,13 @@ class GPT_HEADER(Structure):
     See Also:
         http://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_table_header_.28LBA_1.29
     """
+    _pack_ = 1
     _fields_ = [
         ("signature",           c_char * 8),
         ("revision",            c_uint),
         ("header_size",         c_uint),
         ("crc32",               c_uint),
+        ("reserved_0",          c_uint),
         ("current_lba",         c_ulonglong),
         ("backup_lba",          c_ulonglong),
         ("first_usable_lba",    c_ulonglong),
@@ -80,6 +83,12 @@ class GPT_HEADER(Structure):
         ("part_size",           c_uint),
         ("part_array_crc32",    c_uint),
     ]
+
+    def __new__(self, buffer):
+        return self.from_buffer_copy(buffer)
+
+    def hexdump(self):
+        hexdump(buffer(self)[:])
 
 
 class GPT_PARTITION_ENTRY(Structure):
