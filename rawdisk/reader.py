@@ -31,7 +31,7 @@ class Reader(object):
         for part in self.partitions:
             print part
 
-    def load(self, filename, bs=512):
+    def load(self, filename, bs=512, verbose=False):
         """Starts filesystem analysis. Detects supported filesystems and \
         loads :attr:`partitions` array.
 
@@ -61,6 +61,11 @@ class Reader(object):
                 if (volume is not None):
                     volume.load(filename, entry.part_offset)
                     self.partitions.append(volume)
+                else:
+                    if verbose:
+                        print "Partition type 0x%02X (%s) is not supported" % \
+                          (entry.part_type, entry.get_type_label())
+
 
         elif (self.scheme == rawdisk.scheme.common.SCHEME_GPT):
             gpt = rawdisk.scheme.gpt.Gpt()

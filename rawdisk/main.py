@@ -20,14 +20,17 @@ def main():
         '-f', '--file', dest='filename', type='string',
         help='specify source file'
     )
-
+    parser.add_option(
+        '-v', '--verbose', action="store_true",
+        help='verbose output'
+    )
     (options, args) = parser.parse_args()
 
     if options.filename is None:
         parser.error('Filename not given')
 
     r = rawdisk.reader.Reader()
-    r.load(options.filename)
+    r.load(options.filename, verbose=options.verbose)
 
     if (r.scheme == scheme.common.SCHEME_MBR):
         print "Scheme: MBR"

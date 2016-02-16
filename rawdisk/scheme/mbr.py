@@ -13,6 +13,15 @@ PT_TABLE_OFFSET = 0x1BE
 PT_TABLE_SIZE = PT_ENTRY_SIZE * 4
 SECTOR_SIZE = 512
 
+DEFAULT_GEOMETRY = {
+  'HPC': 255, # heads per cylinder
+  'SPT': 63,  # sectors per track
+}
+
+TYPES = {
+  0x0C: 'fat32_lba',
+  0x83: 'linux',
+}
 
 class PartitionEntry(RawStruct):
     """Represents MBR partition entry
@@ -43,6 +52,7 @@ class PartitionEntry(RawStruct):
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)
+
         self.boot_indicator = self.get_uchar(0)
         self.starting_head = self.get_uchar(1)
         tmp = self.get_uchar(2)
@@ -59,6 +69,43 @@ class PartitionEntry(RawStruct):
         self.relative_sector = self.get_uint_le(8)
         self.total_sectors = self.get_uint_le(12)
         self.part_offset = SECTOR_SIZE*self.relative_sector
+
+    def chs2lba(self, cyl, head, sect, geometry=DEFAULT_GEOMETRY):
+        """ helper for consistency check """
+        hpc, spt = geometry['HPC'], geometry['SPT']
+        return sect-1 + head*spt + cyl*hpc*spt
+
+    def get_type_label(self):
+        if self.part_type in TYPES:
+            return '%s' % TYPES[self.part_type]
+        else:
+            return 'unknown'
+
+    def __str__(self):
+        # calculated values
+        fields = self.__dict__.copy()
+        fields['chs_start_sector'] = self.chs2lba(
+            self.starting_cylinder,
+            self.starting_head,
+            self.starting_sector)
+        fields['chs_end_sector'] = self.chs2lba(
+            self.ending_cylinder,
+            self.ending_head,
+            self.ending_sector)
+        fields['lba_start_sector'] = self.relative_sector
+        fields['lba_end_sector'] = (self.relative_sector
+            + self.total_sectors - 1)
+
+        fields['label'] = '(%s)' % self.get_type_label()
+
+        return """\
+Bootable: %(boot_indicator)s
+Type: 0x%(part_type)02X %(label)s
+Start (CHS): %(chs_start_sector)s
+End   (CHS): %(chs_end_sector)s
+Start (LBA): %(lba_start_sector)s
+End   (LBA): %(lba_end_sector)s
+""" % fields
 
 
 class PartitionTable(RawStruct):
