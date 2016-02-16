@@ -11,13 +11,14 @@ except ImportError:
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
-requirements = [
+requirements = open('requirements.txt').readlines()
+"""[
     # TODO: put package requirements here
-    'hexdump == 2.0',
+    'hexdump == 3.3',
     'yapsy == 1.10.323',
     'pyxdg == 0.25',
     'sphinxcontrib-napoleon == 0.2.8',
-]
+]"""
 
 test_requirements = [
     # TODO: put package test requirements here
