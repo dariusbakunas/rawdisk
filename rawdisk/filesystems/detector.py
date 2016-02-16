@@ -54,8 +54,8 @@ class FilesystemDetector(object):
         else:
             self.gpt_plugins[fs_guid] = [plugin, ]
 
-    def detect_mbr(self, filename, offset, fs_id):
-        """Used by rawdisk.reader.Reader to match mbr partitions agains
+    def detect_mbr(self, filename, offset, fs_id, verbose=False):
+        """Used by rawdisk.reader.Reader to match mbr partitions against
         filesystem plugins.
 
         Args:
@@ -74,6 +74,8 @@ class FilesystemDetector(object):
             for plugin in plugins:
                 if plugin.detect(filename, offset):
                     return plugin.get_volume_object()
+        if verbose:
+            print "Error: failed to detect filesystem for supported partition"
         return None
 
     def detect_gpt(self, filename, offset, fs_guid):

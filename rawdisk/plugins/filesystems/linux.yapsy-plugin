@@ -1,0 +1,8 @@
+[Core]
+Name = LinuxPlugin
+Module = linux/ext.py
+
+[Documentation]
+Author = anatoly techtonik
+Version = 0.1
+Description = Detects Linux filesystem(s)

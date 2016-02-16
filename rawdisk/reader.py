@@ -55,7 +55,8 @@ class Reader(object):
                 volume = detector.detect_mbr(
                     filename,
                     entry.part_offset,
-                    entry.part_type
+                    entry.part_type,
+                    verbose=verbose
                 )
 
                 if (volume is not None):
