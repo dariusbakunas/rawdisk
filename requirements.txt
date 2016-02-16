@@ -1,5 +1,5 @@
 wheel==0.23.0
-hexdump==2.0
+hexdump==3.3
 yapsy==1.10.323
 pyxdg==0.25
 nose>=1.0
