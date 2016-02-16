@@ -73,7 +73,10 @@ class FilesystemDetector(object):
             plugins = self.mbr_plugins.get(fs_id)
             for plugin in plugins:
                 if plugin.detect(filename, offset):
-                    return plugin.get_volume_object()
+                    volume = plugin.get_volume_object()
+                    if verbose and not volume:
+                        print "Error: failed to get volume"
+                    return volume
         if verbose:
             print "Error: failed to detect filesystem for supported partition"
         return None
