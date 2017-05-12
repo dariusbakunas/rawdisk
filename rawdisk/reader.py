@@ -31,7 +31,7 @@ class Reader(object):
         """Print a list of detected partitions."""
 
         for part in self.partitions:
-            print part
+            print(part)
 
     def load(self, filename, bs=512):
         """Starts filesystem analysis. Detects supported filesystems and \
@@ -94,6 +94,6 @@ class Reader(object):
                     )
 
         elif (self.scheme == rawdisk.scheme.common.SCHEME_UNKNOWN):
-            print 'Partitioning scheme is not supported.'
+            print('Partitioning scheme is not supported.')
         else:
-            print 'Partitioning scheme could not be determined.'
+            print('Partitioning scheme could not be determined.')
