@@ -7,9 +7,7 @@ to match filesystems"""
 from rawdisk.util.singleton import Singleton
 
 
-class FilesystemDetector(object):
-    __metaclass__ = Singleton
-
+class FilesystemDetector(object, metaclass=Singleton):
     """A class that allows to match filesystem id or guid against available
     plugins.
 
