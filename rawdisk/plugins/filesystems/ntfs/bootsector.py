@@ -2,7 +2,7 @@
 
 
 from rawdisk.util.rawstruct import RawStruct
-from headers import BIOS_PARAMETER_BLOCK, EXTENDED_BIOS_PARAMETER_BLOCK
+from .headers import BIOS_PARAMETER_BLOCK, EXTENDED_BIOS_PARAMETER_BLOCK
 
 
 class BootSector(RawStruct):

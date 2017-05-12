@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from mft_entry import MftEntry
+from .mft_entry import MftEntry
 
 ENTRY_MFT = 0
 ENTRY_MFT_MIRROR = 1

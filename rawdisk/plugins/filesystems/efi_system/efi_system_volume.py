@@ -17,11 +17,11 @@ class EfiSystemVolume(Volume):
             self.offset = offset
             # self.fd = open(filename, 'rb')
             # self.fd.close()
-        except IOError, e:
-            print e
+        except IOError as e:
+            print(e)
 
     def dump_volume(self):
-        print "TODO"
+        print("TODO")
 
     def __str__(self):
         return "Type: EFI System, Offset: 0x%X" % (

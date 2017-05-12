@@ -2,6 +2,6 @@
 
 __all__ = ['categories', 'manager', 'filesystems']
 
-import categories
-import manager
-import filesystems
+from . import categories
+from . import manager
+from . import filesystems

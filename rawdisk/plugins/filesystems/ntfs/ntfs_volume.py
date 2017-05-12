@@ -2,9 +2,9 @@
 
 
 from rawdisk.util.filesize import size_str
-from mft import MftTable, ENTRY_VOLUME
-from mft_attribute import MFT_ATTR_VOLUME_NAME, MFT_ATTR_VOLUME_INFO
-from bootsector import BootSector
+from .mft import MftTable, ENTRY_VOLUME
+from .mft_attribute import MFT_ATTR_VOLUME_NAME, MFT_ATTR_VOLUME_INFO
+from .bootsector import BootSector
 from rawdisk.filesystems.volume import Volume
 
 NTFS_BOOTSECTOR_SIZE = 512
@@ -105,27 +105,27 @@ class NtfsVolume(Volume):
         )
 
     def dump_volume(self):
-        print "Volume Information"
-        print "\tVolume Name: %s" % self.vol_name
-        print "\tVolume Version: %d.%d" % (self.major_ver, self.minor_ver)
-        print "\tVolume Size: %s" % size_str(self.size)
-        print "\tVolume Offset: 0x%x" % self.offset
-        print "\tTotal Sectors: %u" % self.bootsector.bpb.total_sectors
-        print "\tTotal Clusters: %u" % self.bootsector.bpb.total_clusters
+        print("Volume Information")
+        print("\tVolume Name: %s" % self.vol_name)
+        print("\tVolume Version: %d.%d" % (self.major_ver, self.minor_ver))
+        print("\tVolume Size: %s" % size_str(self.size))
+        print("\tVolume Offset: 0x%x" % self.offset)
+        print("\tTotal Sectors: %u" % self.bootsector.bpb.total_sectors)
+        print("\tTotal Clusters: %u" % self.bootsector.bpb.total_clusters)
         # print "\tFree Clusters:"
         # print "\tFree Space:"
-        print "\tMFT Offset: 0x%x (from beginning of volume)" % \
-            self.mft_table_offset
-        print "\tMFT Mirror Offset: 0x%x" % \
-            self.bootsector.bpb.mft_mirror_offset
-        print "\tMFT Record Size: %s" % \
-            size_str(self.bootsector.bpb.mft_record_size)
-        print "\tMFT Size: %s (%s of drive)" % (
+        print("\tMFT Offset: 0x%x (from beginning of volume)" % \
+            self.mft_table_offset)
+        print("\tMFT Mirror Offset: 0x%x" % \
+            self.bootsector.bpb.mft_mirror_offset)
+        print("\tMFT Record Size: %s" % \
+            size_str(self.bootsector.bpb.mft_record_size))
+        print("\tMFT Size: %s (%s of drive)" % (
             size_str(self.mft_zone_size), "{0:.0f}%".format(
                 float(self.mft_zone_size) /
                 self.bootsector.bpb.volume_size * 100
                 )
-            )
+            ))
 
     @property
     def size(self):
