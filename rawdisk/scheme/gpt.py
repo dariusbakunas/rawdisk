@@ -4,7 +4,7 @@
 import uuid
 import struct
 from rawdisk.util.rawstruct import RawStruct
-from headers import GPT_HEADER, GPT_PARTITION_ENTRY
+from .headers import GPT_HEADER, GPT_PARTITION_ENTRY
 from ctypes import c_ubyte
 
 
@@ -79,7 +79,7 @@ class Gpt(object):
         """
 
         fd.seek(self.header.part_lba * bs)
-        for p in xrange(0, self.header.num_partitions):
+        for p in range(0, self.header.num_partitions):
             data = fd.read(self.header.part_size)
             entry = GptPartitionEntry(data)
             if entry.type_guid != uuid.UUID(

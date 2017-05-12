@@ -2,6 +2,6 @@
 
 __all__ = ['mbr', 'gpt', 'common']
 
-import common
-import mbr
-import gpt
+from . import common
+from . import mbr
+from . import gpt

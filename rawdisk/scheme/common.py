@@ -9,8 +9,8 @@ Attributes:
     SCHEME_MBR (int): MBR Scheme was indentified
 """
 
-import mbr
-import gpt
+from . import mbr
+from . import gpt
 import struct
 
 SCHEME_UNKNOWN = 0x1

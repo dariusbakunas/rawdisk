@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from rawdisk.util.rawstruct import RawStruct
-from headers import MBR_PARTITION_ENTRY
+from .headers import MBR_PARTITION_ENTRY
 
 
 MBR_SIGNATURE = 0xAA55
