@@ -111,7 +111,7 @@ class NtfsVolume(Volume):
         print("\tVolume Size: %s" % size_str(self.size))
         print("\tVolume Offset: 0x%x" % self.offset)
         print("\tTotal Sectors: %u" % self.bootsector.bpb.total_sectors)
-        print("\tTotal Clusters: %u" % self.bootsector.bpb.total_clusters)
+        print("\tTotal Clusters: %u" % self.bootsector.total_clusters)
         # print "\tFree Clusters:"
         # print "\tFree Space:"
         print("\tMFT Offset: 0x%x (from beginning of volume)" % \
