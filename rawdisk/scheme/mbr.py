@@ -39,6 +39,10 @@ class MbrPartitionEntry(RawStruct):
     def part_offset(self):
         return SECTOR_SIZE * self.fields.relative_sector
 
+    @property
+    def part_type(self):
+        return self.fields.part_type
+
 
 class PartitionTable(RawStruct):
     """Represents MBR partition table.
