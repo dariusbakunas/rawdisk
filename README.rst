@@ -5,7 +5,7 @@ rawdisk
 .. image:: https://badge.fury.io/py/rawdisk.png
     :target: http://badge.fury.io/py/rawdisk
 
-.. image:: https://travis-ci.org/dariusbakunas/rawdisk.png?branch=master
+.. image:: https://travis-ci.org/dariusbakunas/rawdisk.svg?branch=move_to_py3
     :target: https://travis-ci.org/dariusbakunas/rawdisk
 
 .. image:: https://pypip.in/d/rawdisk/badge.png
