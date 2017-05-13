@@ -16,7 +16,7 @@ class TestGptModule(unittest.TestCase):
         )
 
         header = self.gpt.header
-        self.assertEqual(header.signature, 'EFI PART')
+        self.assertEqual(header.signature, b'EFI PART')
         self.assertEqual(header.revision, 0x10000)
         self.assertEqual(header.header_size, 92)
         self.assertEqual(header.crc32, 0x58c12499)
@@ -25,7 +25,7 @@ class TestGptModule(unittest.TestCase):
         self.assertEqual(header.first_usable_lba, 34)
         self.assertEqual(header.last_usable_lba, 262110)
         self.assertEqual(
-            UUID(bytes_le="".join(map(chr, header.disk_guid))),
+            UUID(bytes_le=bytes(header.disk_guid)),
             UUID('af9966e5-00fb-45cd-be63-262d9188dce7')
         )
         self.assertEqual(header.part_lba, 2)

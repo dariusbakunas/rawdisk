@@ -10,7 +10,7 @@ from ctypes import c_ubyte
 
 GPT_HEADER_OFFSET = 0x200
 GPT_SIG_SIZE = 8
-GPT_SIGNATURE = 'EFI PART'
+GPT_SIGNATURE = b'EFI PART'
 
 
 class GptPartitionEntry(RawStruct):
@@ -30,11 +30,11 @@ class GptPartitionEntry(RawStruct):
 
     @property
     def type_guid(self):
-        return uuid.UUID(bytes_le="".join(map(chr, self.fields.type_guid)))
+        return uuid.UUID(bytes_le=bytes(self.fields.type_guid))
 
     @property
     def part_guid(self):
-        return uuid.UUID(bytes_le="".join(map(chr, self.fields.part_guid)))
+        return uuid.UUID(bytes_le=bytes(self.fields.part_guid))
 
 
 class Gpt(object):
