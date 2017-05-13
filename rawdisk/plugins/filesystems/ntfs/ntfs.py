@@ -41,7 +41,7 @@ class NtfsPlugin(categories.IFilesystemPlugin):
 
         oem_id = r.data
 
-        if (oem_id == "NTFS    "):
+        if oem_id == b"NTFS    ":
             return True
 
         return False

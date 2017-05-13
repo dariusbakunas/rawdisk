@@ -11,7 +11,7 @@ from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume, \
 from rawdisk.filesystems.detector import FilesystemDetector
 
 # These are real values for the sample 'ntfs_mbr.vhd' volume:
-SAMPLE_OEM_ID = 'NTFS    '
+SAMPLE_OEM_ID = b'NTFS    '
 SAMPLE_NTFS_PART_OFFSET = 0x10000
 SAMPLE_TOTAL_SECTORS = 0x37FF
 SAMPLE_NUM_HEADS = 0xFF
@@ -153,7 +153,7 @@ class TestMftEntry(unittest.TestCase):
         entry = mft.get_entry(0)
 
         header = entry.header
-        self.assertEqual(header.signature, 'FILE')
+        self.assertEqual(header.signature, b'FILE')
         self.assertEqual(header.upd_seq_array_offset, 0x30)
         self.assertEqual(header.upd_seq_array_size, 0x3)
         self.assertEqual(header.logfile_seq_number, 0x104D82)
