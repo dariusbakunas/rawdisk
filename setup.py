@@ -28,7 +28,7 @@ test_requirements = [
 
 setup(
     name='rawdisk',
-    version='0.1.2',
+    version='0.2.0',
     description='Experimental python code to explore different volume formats',
     long_description=readme + '\n\n' + history,
     author='Darius Bakunas-Milanowski',
@@ -63,7 +63,7 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     entry_points={
-        'console_scripts':[
+        'console_scripts': [
             'rawdisk = rawdisk.main:main',
         ]
     }

@@ -4,6 +4,14 @@
 History
 =======
 
+0.2.0 (2017-05-13)
+------------------
+
+* Cleared spiderwebs
+* Fixed failing builds
+* Converted project to Python 3.5
+* Updated usage examples
+
 0.1.2 (2014-11-21)
 ------------------
 
