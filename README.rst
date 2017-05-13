@@ -9,7 +9,7 @@ rawdisk
     :target: https://travis-ci.org/dariusbakunas/rawdisk
 
 .. image:: https://pypip.in/d/rawdisk/badge.png
-    :target: https://pypi.python.org/pypi/rawdisk
+    :target: https://badge.fury.io/py/rawdisk.svg
 
 .. image:: https://codecov.io/github/dariusbakunas/rawdisk/coverage.svg?branch=master
     :target: https://codecov.io/github/dariusbakunas/rawdisk?branch=master
