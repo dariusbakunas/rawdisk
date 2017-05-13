@@ -88,7 +88,7 @@ class GPT_HEADER(Structure):
         return self.from_buffer_copy(buffer)
 
     def hexdump(self):
-        hexdump(buffer(self)[:])
+        hexdump(memoryview(self)[:])
 
 
 class GPT_PARTITION_ENTRY(Structure):
