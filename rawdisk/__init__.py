@@ -9,4 +9,4 @@ from . import reader
 
 __author__ = 'Darius Bakunas-Milanowski'
 __email__ = 'bakunas@gmail.com'
-__version__ = '0.2.0'
+__version__ = '0.2.1'
