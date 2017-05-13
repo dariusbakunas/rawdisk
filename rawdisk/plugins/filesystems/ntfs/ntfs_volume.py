@@ -114,16 +114,16 @@ class NtfsVolume(Volume):
         print("\tTotal Clusters: %u" % self.bootsector.total_clusters)
         # print "\tFree Clusters:"
         # print "\tFree Space:"
-        print("\tMFT Offset: 0x%x (from beginning of volume)" % \
-            self.mft_table_offset)
-        print("\tMFT Mirror Offset: 0x%x" % \
-            self.bootsector.bpb.mft_mirror_offset)
-        print("\tMFT Record Size: %s" % \
-            size_str(self.bootsector.bpb.mft_record_size))
+        print("\tMFT Offset: 0x%x (from beginning of volume)" %
+              self.mft_table_offset)
+        print("\tMFT Mirror Offset: 0x%x" %
+              self.bootsector.mft_mirror_offset)
+        print("\tMFT Record Size: %s" %
+              size_str(self.bootsector.mft_record_size))
         print("\tMFT Size: %s (%s of drive)" % (
             size_str(self.mft_zone_size), "{0:.0f}%".format(
                 float(self.mft_zone_size) /
-                self.bootsector.bpb.volume_size * 100
+                self.bootsector.volume_size * 100
                 )
             ))
 
