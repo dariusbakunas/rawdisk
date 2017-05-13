@@ -80,7 +80,7 @@ class BootSector(RawStruct):
 
     @property
     def total_clusters(self):
-        return self.bpb.total_sectors / self.bpb.sectors_per_cluster
+        return int(self.bpb.total_sectors / self.bpb.sectors_per_cluster)
 
     @property
     def bytes_per_cluster(self):
