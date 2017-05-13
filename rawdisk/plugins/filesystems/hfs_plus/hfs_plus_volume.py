@@ -50,8 +50,8 @@ class HfsPlusVolume(Volume):
             self.vol_header = VolumeHeader(data)
 
             self.fd.close()
-        except IOError, e:
-            print e
+        except IOError as e:
+            print(e)
 
     def __str__(self):
         return "Type: HFS+, Offset: 0x%X" % (

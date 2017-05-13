@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-from mft_attribute import MFT_ATTR_FILENAME, MftAttr
+from .mft_attribute import MFT_ATTR_FILENAME, MftAttr
 from rawdisk.util.rawstruct import RawStruct
-from headers import MFT_RECORD_HEADER
+from .headers import MFT_RECORD_HEADER
 
 MFT_ENTRY_HEADER_SIZE = 48
 

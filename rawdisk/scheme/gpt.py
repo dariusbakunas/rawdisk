@@ -4,13 +4,13 @@
 import uuid
 import struct
 from rawdisk.util.rawstruct import RawStruct
-from headers import GPT_HEADER, GPT_PARTITION_ENTRY
+from .headers import GPT_HEADER, GPT_PARTITION_ENTRY
 from ctypes import c_ubyte
 
 
 GPT_HEADER_OFFSET = 0x200
 GPT_SIG_SIZE = 8
-GPT_SIGNATURE = 'EFI PART'
+GPT_SIGNATURE = b'EFI PART'
 
 
 class GptPartitionEntry(RawStruct):
@@ -30,11 +30,11 @@ class GptPartitionEntry(RawStruct):
 
     @property
     def type_guid(self):
-        return uuid.UUID(bytes_le="".join(map(chr, self.fields.type_guid)))
+        return uuid.UUID(bytes_le=bytes(self.fields.type_guid))
 
     @property
     def part_guid(self):
-        return uuid.UUID(bytes_le="".join(map(chr, self.fields.part_guid)))
+        return uuid.UUID(bytes_le=bytes(self.fields.part_guid))
 
 
 class Gpt(object):
@@ -79,7 +79,7 @@ class Gpt(object):
         """
 
         fd.seek(self.header.part_lba * bs)
-        for p in xrange(0, self.header.num_partitions):
+        for p in range(0, self.header.num_partitions):
             data = fd.read(self.header.part_size)
             entry = GptPartitionEntry(data)
             if entry.type_guid != uuid.UUID(

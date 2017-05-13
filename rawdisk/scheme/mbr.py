@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from rawdisk.util.rawstruct import RawStruct
-from headers import MBR_PARTITION_ENTRY
+from .headers import MBR_PARTITION_ENTRY
 
 
 MBR_SIGNATURE = 0xAA55
@@ -38,6 +38,10 @@ class MbrPartitionEntry(RawStruct):
     @property
     def part_offset(self):
         return SECTOR_SIZE * self.fields.relative_sector
+
+    @property
+    def part_type(self):
+        return self.fields.part_type
 
 
 class PartitionTable(RawStruct):
@@ -87,10 +91,10 @@ class Mbr(RawStruct):
         self.bootstrap = self.get_chunk(0, 446)
         signature = self.get_ushort_le(MBR_SIG_OFFSET)
 
-        if (signature != MBR_SIGNATURE):
+        if signature != MBR_SIGNATURE:
             raise Exception("Invalid MBR signature")
 
-        if (load_partition_table):
+        if load_partition_table:
             self._load_partition_table()
 
     def export_bootstrap(self, filename):

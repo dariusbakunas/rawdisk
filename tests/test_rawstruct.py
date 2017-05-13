@@ -38,7 +38,7 @@ class TestRawStruct(unittest.TestCase):
         offset = 2
         length = 3
         file_mock = mock.MagicMock()
-        with mock.patch('__builtin__.open', file_mock):
+        with mock.patch('builtins.open', file_mock):
             manager = file_mock.return_value.__enter__.return_value
             manager.read.side_effect = \
                 lambda length: self.sample_data[offset:offset+length]
@@ -135,7 +135,7 @@ class TestRawStruct(unittest.TestCase):
 
     def test_export(self):
         m = mock.mock_open()
-        with mock.patch('__builtin__.open', m, create=True):
+        with mock.patch('builtins.open', m, create=True):
             self.rwstruct.export('filename')
 
         m.assert_called_once_with('filename', 'w')
@@ -146,7 +146,7 @@ class TestRawStruct(unittest.TestCase):
         offset = 2
         length = 4
         m = mock.mock_open()
-        with mock.patch('__builtin__.open', m, create=True):
+        with mock.patch('builtins.open', m, create=True):
             self.rwstruct.export('filename', offset, length)
             handle = m()
             handle.write.assert_called_once_with(

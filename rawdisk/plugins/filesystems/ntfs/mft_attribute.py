@@ -3,7 +3,7 @@
 
 from rawdisk.util.rawstruct import RawStruct
 from rawdisk.util.filetimes import filetime_to_dt
-from mft_attr_header import MftAttrHeader
+from .mft_attr_header import MftAttrHeader
 
 
 MFT_ATTR_STANDARD_INFORMATION = 0x10
@@ -254,7 +254,8 @@ class MftAttrVolumeName(MftAttr):
         offset = self.header.size
         length = self.header.length - self.header.size
         self.vol_name = self.get_chunk(
-            offset, 2 * length).decode('utf-16').partition(b'\0')[0]
+            offset, 2 * length).decode('utf-16').partition('\0')[0]
+
 
 # Volume Flags
 VOLUME_IS_DIRTY = 0x0001

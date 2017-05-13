@@ -5,7 +5,7 @@ import math
 import string
 
 
-class size(long):
+class size(int):
     """ define a size class to allow custom formatting
         format specifiers supported :
             em : formats the size as bits in IEC format i.e. \
@@ -30,12 +30,14 @@ class size(long):
                 'b', 'c', 'd', 'o', 'x', 'n', 'e', 'f', 'g', '%'
             ]:
                 # Numeric format.
-                return long(self).__format__(fmt)
+                return int(self).__format__(fmt)
             else:
                 return str(self).__format__(fmt)
 
         # work out the scale, suffix and base
-        factor, suffix = (8, "b") if fmt[-1] in string.lowercase else (1, "B")
+        factor, suffix = (8, "b") if fmt[-1] in string.ascii_lowercase \
+            else (1, "B")
+
         base = 1024 if fmt[-2] in ["e", "c"] else 1000
 
         # Add the i for the IEC format

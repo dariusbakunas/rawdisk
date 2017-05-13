@@ -4,11 +4,10 @@
 import abc
 
 
-class Volume(object):
+class Volume(object, metaclass=abc.ABCMeta):
     """This is base class for all Volume objects supplied by
     filesystem plugins.
     """
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def load(self, filename, offset):

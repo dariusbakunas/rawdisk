@@ -2,7 +2,7 @@
 
 
 from rawdisk.util.rawstruct import RawStruct
-from headers import BIOS_PARAMETER_BLOCK, EXTENDED_BIOS_PARAMETER_BLOCK
+from .headers import BIOS_PARAMETER_BLOCK, EXTENDED_BIOS_PARAMETER_BLOCK
 
 
 class BootSector(RawStruct):
@@ -80,7 +80,7 @@ class BootSector(RawStruct):
 
     @property
     def total_clusters(self):
-        return self.bpb.total_sectors / self.bpb.sectors_per_cluster
+        return int(self.bpb.total_sectors / self.bpb.sectors_per_cluster)
 
     @property
     def bytes_per_cluster(self):

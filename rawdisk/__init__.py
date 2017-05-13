@@ -2,10 +2,10 @@
 
 __all__ = ['scheme', 'filesystems', 'reader', 'plugins']
 
-import scheme
-import filesystems
-import plugins
-import reader
+from . import scheme
+from . import filesystems
+from . import plugins
+from . import reader
 
 __author__ = 'Darius Bakunas-Milanowski'
 __email__ = 'bakunas@gmail.com'
