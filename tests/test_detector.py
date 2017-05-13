@@ -102,5 +102,6 @@ class TestFilesystemDetector(unittest.TestCase):
     def tearDown(self):
         FilesystemDetector._instances = {}
 
+
 if __name__ == "__main__":
     unittest.main()

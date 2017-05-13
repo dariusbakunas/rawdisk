@@ -11,4 +11,3 @@ class TestReader(unittest.TestCase):
         self.reader.load(filename='sample_images/ntfs_mbr.vhd')
         self.assertEquals(self.reader.scheme, SCHEME_MBR)
         self.assertEquals(len(self.reader.partitions), 1)
-

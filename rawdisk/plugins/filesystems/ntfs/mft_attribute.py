@@ -256,6 +256,7 @@ class MftAttrVolumeName(MftAttr):
         self.vol_name = self.get_chunk(
             offset, 2 * length).decode('utf-16').partition('\0')[0]
 
+
 # Volume Flags
 VOLUME_IS_DIRTY = 0x0001
 VOLUME_RESIZE_LOG_FILE = 0x0002

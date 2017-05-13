@@ -12,5 +12,6 @@ class TestFilesizeModule(unittest.TestCase):
     def test_size_str_w_format(self):
         self.assertEqual(size_str(100000, "{0:E}"), "1.000000E+05")
 
+
 if __name__ == "__main__":
     unittest.main()

@@ -91,10 +91,10 @@ class Mbr(RawStruct):
         self.bootstrap = self.get_chunk(0, 446)
         signature = self.get_ushort_le(MBR_SIG_OFFSET)
 
-        if (signature != MBR_SIGNATURE):
+        if signature != MBR_SIGNATURE:
             raise Exception("Invalid MBR signature")
 
-        if (load_partition_table):
+        if load_partition_table:
             self._load_partition_table()
 
     def export_bootstrap(self, filename):

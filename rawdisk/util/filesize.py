@@ -35,7 +35,9 @@ class size(int):
                 return str(self).__format__(fmt)
 
         # work out the scale, suffix and base
-        factor, suffix = (8, "b") if fmt[-1] in string.ascii_lowercase else (1, "B")
+        factor, suffix = (8, "b") if fmt[-1] in string.ascii_lowercase \
+            else (1, "B")
+
         base = 1024 if fmt[-2] in ["e", "c"] else 1000
 
         # Add the i for the IEC format
