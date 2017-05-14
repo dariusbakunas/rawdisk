@@ -34,6 +34,10 @@ def setup_logging(config_path=None, log_level=logging.INFO):
                 'handlers': ['console'],
                 'level': log_level,
                 'propagate': True
+            },
+            'yapsy': {
+                'handlers': ['console'],
+                'level': logging.INFO
             }
         }
     }
