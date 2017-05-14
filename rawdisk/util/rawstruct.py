@@ -9,7 +9,7 @@ class RawStruct(object):
     """Helper class used as a parent class for most filesystem structures.
 
     Args:
-        data (str): Byte array to initialize structure with.
+        data (bytes): Byte array to initialize structure with.
         filename (str): A file to read the data from.
         offset (int): Offset into data or file (if specified).
         length (int): Number of bytes to read.
@@ -37,7 +37,7 @@ class RawStruct(object):
     def data(self):
         """
         Returns:
-            str: Byte array of the structure.
+            bytes: Byte array of the structure.
         """
         return self._data
 
@@ -55,7 +55,7 @@ class RawStruct(object):
             offset (int): byte array start [x:]
             length (int): number of bytes to return [:x]
         Returns:
-            str: Custom length byte array of the structure.
+            bytes: Custom length byte array of the structure.
         """
         return self.data[offset:offset+length]
 
@@ -194,14 +194,13 @@ class RawStruct(object):
 
         Args:
             filename (str): destination to output file
+            offset (int): byte offset (default: 0)
         """
         with open(filename, 'w') as f:
-            output = self.data
-
-            if (length is None):
+            if length is None:
                 length = len(self.data) - offset
 
-            if (offset > 0):
+            if offset > 0:
                 output = self.data[offset:length]
             else:
                 output = self.data[:length]

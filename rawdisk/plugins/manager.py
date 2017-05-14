@@ -25,7 +25,7 @@ class Manager(object):
         self.search_path = []
 
     def load_plugins(self):
-        self.logger.debug('Loading filesystem plugins')
+        self.logger.info('Loading filesystem plugins')
         self._initialize_search_path()
         self._load_filesystem_plugins()
         self._register_filesystem_plugins()

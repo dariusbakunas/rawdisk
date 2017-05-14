@@ -1,7 +1,7 @@
 import unittest
 import mock
 from rawdisk.scheme.mbr import Mbr
-from rawdisk.scheme.mbr import PT_TABLE_SIZE
+from rawdisk.scheme.mbr import PARTITION_TABLE_SIZE
 
 
 class TestMbrModule(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestMbrModule(unittest.TestCase):
         )
 
     def test_partition_table_has_correct_size(self):
-        self.assertEqual(self.mbr.partition_table.size, PT_TABLE_SIZE)
+        self.assertEqual(self.mbr.partition_table.size, PARTITION_TABLE_SIZE)
 
     def test_partition_table_has_one_entry(self):
         self.assertEqual(len(self.mbr.partition_table.entries), 1)

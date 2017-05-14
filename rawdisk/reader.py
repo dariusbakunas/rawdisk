@@ -49,7 +49,7 @@ class Reader(object):
         self.scheme = rawdisk.scheme.common.detect_scheme(filename)
         detector = FilesystemDetector()
 
-        if (self.scheme == rawdisk.scheme.common.SCHEME_MBR):
+        if self.scheme == rawdisk.scheme.common.SCHEME_MBR:
             mbr = rawdisk.scheme.mbr.Mbr(filename)
 
             # Go through table entries and analyse ones that are supported
@@ -60,7 +60,7 @@ class Reader(object):
                     entry.part_type
                 )
 
-                if (volume is not None):
+                if volume is not None:
                     volume.load(filename, entry.part_offset)
                     self.partitions.append(volume)
                 else:
@@ -71,7 +71,7 @@ class Reader(object):
                         )
                     )
 
-        elif (self.scheme == rawdisk.scheme.common.SCHEME_GPT):
+        elif self.scheme == rawdisk.scheme.common.SCHEME_GPT:
             gpt = rawdisk.scheme.gpt.Gpt()
             gpt.load(filename)
 
@@ -82,7 +82,7 @@ class Reader(object):
                     entry.type_guid
                 )
 
-                if (volume is not None):
+                if volume is not None:
                     volume.load(filename, entry.first_lba * bs)
                     self.partitions.append(volume)
                 else:
