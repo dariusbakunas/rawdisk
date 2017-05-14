@@ -9,24 +9,49 @@ import yaml
 from . import scheme
 
 
-def setup_logging(config_path='logging.yaml', default_level=logging.INFO):
+def setup_logging(config_path, logging_level=logging.INFO):
     """Setup logging configuration
     """
-    path = config_path
 
-    if os.path.exists(path):
-        with open(path, 'rt') as f:
-            config = yaml.safe_load(f.read())
+    config = {
+        'version': 1,
+        'disable_existing_loggers': False,  # this fixes the problem
+        'formatters': {
+            'standard': {
+                'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            },
+        },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'level': logging_level,
+                'formatter': 'standard',
+                'stream': 'ext://sys.stdout'
+            },
+        },
+        'loggers': {
+            '': {
+                'handlers': ['console'],
+                'level': logging_level,
+                'propagate': True
+            }
+        }
+    }
 
-        logging.config.dictConfig(config)
-    else:
-        logging.basicConfig(level=default_level)
+    if config_path:
+        if os.path.exists(config_path):
+            with open(config_path, 'rt') as f:
+                config = yaml.safe_load(f.read())
+        else:
+            print('Specified path does not exist: {}, using default config'.format(config_path))
+
+    logging.config.dictConfig(config)
 
 
-def main():
+def parse_args():
     parser = argparse.ArgumentParser(
         usage='Usage: %s -f <source>' %
-        os.path.basename(sys.argv[0])
+              os.path.basename(sys.argv[0])
     )
 
     parser.add_argument(
@@ -37,7 +62,7 @@ def main():
     )
 
     parser.add_argument(
-        '--log-config', dest='log_config', help='path to logging configuration file'
+        '--log-config', dest='log_config', help='path to YAML logging configuration file'
     )
 
     parser.add_argument(
@@ -46,25 +71,40 @@ def main():
 
     args = parser.parse_args()
 
-    setup_logging()
-    logger = logging.getLogger(__name__)
-
     if args.filename is None:
         parser.print_help()
+        return None
+
+    return args
+
+
+def main():
+    args = parse_args()
+
+    logging_options = {}
+
+    if args is None:
+        return
+
+    if args.log_config:
+        logging_options['config_path'] = args.log_config
+
+    setup_logging(**logging_options)
+    logger = logging.getLogger(__name__)
+
+    r = rawdisk.reader.Reader()
+
+    try:
+        r.load(args.filename)
+    except IOError:
+        logger.error('Failed to open disk image file: {}'.format(args.filename))
+
+    if r.scheme == scheme.common.SCHEME_MBR:
+        print("Scheme: MBR")
+    elif r.scheme == scheme.common.SCHEME_GPT:
+        print("Scheme: GPT")
     else:
-        r = rawdisk.reader.Reader()
+        print("Scheme: Unknown")
 
-        try:
-            r.load(args.filename)
-        except IOError:
-            logger.error('Failed to open disk image file: {}'.format(args.filename))
-
-        if r.scheme == scheme.common.SCHEME_MBR:
-            print("Scheme: MBR")
-        elif r.scheme == scheme.common.SCHEME_GPT:
-            print("Scheme: GPT")
-        else:
-            print("Scheme: Unknown")
-
-        print("Partitions:")
-        r.list_partitions()
+    print("Partitions:")
+    r.list_partitions()
