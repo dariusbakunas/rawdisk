@@ -9,7 +9,7 @@ import yaml
 from . import scheme
 
 
-def setup_logging(config_path, logging_level=logging.INFO):
+def setup_logging(config_path=None, log_level=logging.INFO):
     """Setup logging configuration
     """
 
@@ -24,7 +24,7 @@ def setup_logging(config_path, logging_level=logging.INFO):
         'handlers': {
             'console': {
                 'class': 'logging.StreamHandler',
-                'level': logging_level,
+                'level': log_level,
                 'formatter': 'standard',
                 'stream': 'ext://sys.stdout'
             },
@@ -32,7 +32,7 @@ def setup_logging(config_path, logging_level=logging.INFO):
         'loggers': {
             '': {
                 'handlers': ['console'],
-                'level': logging_level,
+                'level': log_level,
                 'propagate': True
             }
         }
@@ -88,6 +88,9 @@ def main():
 
     if args.log_config:
         logging_options['config_path'] = args.log_config
+
+    if args.log_level:
+        logging_options['log_level'] = logging.getLevelName(args.log_level)
 
     setup_logging(**logging_options)
     logger = logging.getLogger(__name__)
