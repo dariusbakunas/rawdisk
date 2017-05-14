@@ -89,10 +89,10 @@ def parse_args():
 def main():
     args = parse_args()
 
-    logging_options = {}
-
     if args is None:
         return
+
+    logging_options = {}
 
     if args.log_config:
         logging_options['config_path'] = args.log_config
@@ -120,3 +120,6 @@ def main():
 
     print("Partitions:")
     r.list_partitions()
+
+if __name__ == '__main__':
+    main()
