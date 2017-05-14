@@ -11,7 +11,7 @@ SIG_SIZE = 8
 SIG_OFFSET = 0x03
 
 
-class NtfsPlugin(categories.IFilesystemPlugin):
+class Ntfs(categories.IFilesystemPlugin):
     """Filesystem plugin for NTFS partition.
     """
     def register(self):
