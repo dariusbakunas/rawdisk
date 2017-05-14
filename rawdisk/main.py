@@ -18,7 +18,8 @@ def setup_logging(config_path=None, log_level=logging.INFO):
         'disable_existing_loggers': False,  # this fixes the problem
         'formatters': {
             'standard': {
-                'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+                'format':
+                    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
             },
         },
         'handlers': {
@@ -47,7 +48,8 @@ def setup_logging(config_path=None, log_level=logging.INFO):
             with open(config_path, 'rt') as f:
                 config = yaml.safe_load(f.read())
         else:
-            print('Specified path does not exist: {}, using default config'.format(config_path))
+            print('Specified path does not exist: {}, '
+                  'using default config'.format(config_path))
 
     logging.config.dictConfig(config)
 
@@ -66,11 +68,13 @@ def parse_args():
     )
 
     parser.add_argument(
-        '--log-config', dest='log_config', help='path to YAML logging configuration file'
+        '--log-config', dest='log_config',
+        help='path to YAML logging configuration file'
     )
 
     parser.add_argument(
-        '--log-level', dest='log_level', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
+        '--log-level', dest='log_level',
+        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
     )
 
     args = parser.parse_args()
@@ -104,7 +108,8 @@ def main():
     try:
         r.load(args.filename)
     except IOError:
-        logger.error('Failed to open disk image file: {}'.format(args.filename))
+        logger.error(
+            'Failed to open disk image file: {}'.format(args.filename))
 
     if r.scheme == scheme.common.SCHEME_MBR:
         print("Scheme: MBR")

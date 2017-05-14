@@ -1,5 +1,5 @@
 [Core]
-Name = AppleBootPlugin
+Name = AppleBoot
 Module = apple_boot/apple_boot.py
 
 [Documentation]

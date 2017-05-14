@@ -1,5 +1,5 @@
 [Core]
-Name = HfsPlusPlugin
+Name = HfsPlus
 Module = hfs_plus/hfs_plus.py
 
 [Documentation]
