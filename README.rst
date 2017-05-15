@@ -8,8 +8,8 @@ rawdisk
 .. image:: https://badge.fury.io/py/rawdisk.svg
     :target: https://pypi.python.org/pypi/rawdisk
 
-.. image:: https://codecov.io/gh/dariusbakunas/rawdisk/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/dariusbakunas/rawdisk
+.. image:: https://coveralls.io/repos/github/dariusbakunas/rawdisk/badge.svg?branch=master
+    :target: https://coveralls.io/github/dariusbakunas/rawdisk?branch=master
 
 .. image:: https://pyup.io/repos/github/dariusbakunas/rawdisk/shield.svg
      :target: https://pyup.io/repos/github/dariusbakunas/rawdisk/
