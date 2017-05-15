@@ -15,6 +15,10 @@ rawdisk
      :target: https://pyup.io/repos/github/dariusbakunas/rawdisk/
      :alt: Updates
 
+.. image:: https://pyup.io/repos/github/dariusbakunas/rawdisk/python-3-shield.svg
+     :target: https://pyup.io/repos/github/dariusbakunas/rawdisk/
+     :alt: Python 3
+
 
 Experimental python code to explore different volume formats
 
