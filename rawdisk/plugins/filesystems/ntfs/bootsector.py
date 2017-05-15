@@ -53,7 +53,7 @@ class BootSector(RawStruct):
         Returns:
             int: MFT record size in bytes
         """
-        if (self.extended_bpb.clusters_per_mft < 0):
+        if self.extended_bpb.clusters_per_mft < 0:
             return 2 ** abs(self.extended_bpb.clusters_per_mft)
         else:
             return self.clusters_per_mft * self.sectors_per_cluster * \

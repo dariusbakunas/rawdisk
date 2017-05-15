@@ -93,7 +93,7 @@ class Reader(object):
                         )
                     )
 
-        elif (self.scheme == rawdisk.scheme.common.SCHEME_UNKNOWN):
+        elif self.scheme == rawdisk.scheme.common.SCHEME_UNKNOWN:
             print('Partitioning scheme is not supported.')
         else:
             print('Partitioning scheme could not be determined.')
