@@ -68,6 +68,8 @@ class FilesystemDetector(object, metaclass=Singleton):
             Volume object supplied by matched plugin.
             If there is no match, None is returned
         """
+        self.logger.info('Detecting MBR partition type')
+
         if fs_id not in self.mbr_plugins:
             return None
         else:
@@ -93,6 +95,8 @@ class FilesystemDetector(object, metaclass=Singleton):
             Volume object supplied by matched plugin.
             If there is no match, None is returned
         """
+        self.logger.info('Detecting GPT partition type')
+
         if fs_guid not in self.gpt_plugins:
             return None
         else:

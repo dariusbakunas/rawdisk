@@ -52,7 +52,7 @@ class PartitionTable(RawStruct):
     """Represents MBR partition table.
 
     Args:
-        data (str): byte array to initialize structure with.
+        data (bytes): byte array to initialize structure with.
 
     Attributes:
         entries (list): List of initialized :class:`PartitionEntry` objects
