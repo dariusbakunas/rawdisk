@@ -14,16 +14,16 @@ Subpackages
 Submodules
 ----------
 
-rawdisk.main module
--------------------
+rawdisk\.main module
+--------------------
 
 .. automodule:: rawdisk.main
     :members:
     :undoc-members:
     :show-inheritance:
 
-rawdisk.reader module
----------------------
+rawdisk\.reader module
+----------------------
 
 .. automodule:: rawdisk.reader
     :members:
