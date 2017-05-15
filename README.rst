@@ -11,6 +11,10 @@ rawdisk
 .. image:: https://codecov.io/gh/dariusbakunas/rawdisk/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/dariusbakunas/rawdisk
 
+.. image:: https://pyup.io/repos/github/dariusbakunas/rawdisk/shield.svg
+     :target: https://pyup.io/repos/github/dariusbakunas/rawdisk/
+     :alt: Updates
+
 
 Experimental python code to explore different volume formats
 
