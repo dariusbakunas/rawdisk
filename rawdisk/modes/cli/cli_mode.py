@@ -26,6 +26,7 @@ class CliShell(cmd.Cmd):
         self.reader.load_plugins()
 
     def do_plugins(self, arg):
+        """List loaded plugins"""
         plugins = self.reader.manager.fs_plugins
 
         data = [[plugin.name, plugin.author, plugin.version] for plugin in plugins]
