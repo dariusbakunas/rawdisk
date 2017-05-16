@@ -26,7 +26,8 @@ class Reader(object):
         self.filename = None
         self.manager = Manager()
 
-        # Load filesystem detection plugins
+    def load_plugins(self):
+        """Load filesystem detection plugins"""
         self.manager.load_plugins()
 
     def list_partitions(self):

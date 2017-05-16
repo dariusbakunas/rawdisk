@@ -8,6 +8,7 @@ class LegacyMode(Mode):
         logger = logging.getLogger(__name__)
 
         r = reader.Reader()
+        r.load_plugins()
 
         if args.filename is None:
             logger.error('-f FILENAME must be specified')
