@@ -3,7 +3,8 @@ import logging
 import numpy as np
 from rawdisk.reader import Reader
 from rawdisk.modes.mode import Mode
-from rawdisk.util.output import format_table
+from tabulate import tabulate
+
 
 class CliMode(Mode):
     @staticmethod
@@ -27,11 +28,8 @@ class CliShell(cmd.Cmd):
     def do_plugins(self, arg):
         plugins = self.reader.manager.fs_plugins
 
-        table = format_table(
-            headers=['NAME', 'AUTHOR', 'VERSION'],
-            columns=['name', 'author', 'version'],
-            values=plugins
-        )
+        data = [[plugin.name, plugin.author, plugin.version] for plugin in plugins]
+        table = tabulate(tabular_data=data, headers=['NAME', 'AUTHOR', 'VERSION'])
 
         print(table)
 
