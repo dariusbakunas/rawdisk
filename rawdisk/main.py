@@ -97,7 +97,9 @@ def main():
     if args.log_config:
         logging_options['config_path'] = args.log_config
 
-    if args.log_level:
+    if args.verbose:
+        logging_options['log_level'] = logging.DEBUG
+    elif args.log_level:
         logging_options['log_level'] = logging.getLevelName(args.log_level)
 
     setup_logging(**logging_options)
