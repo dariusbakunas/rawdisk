@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-__all__ = ['scheme', 'filesystems', 'reader', 'plugins', 'modes']
+__all__ = ['scheme', 'filesystems', 'session.py', 'plugins', 'modes']
 
 from . import scheme
 from . import filesystems
 from . import plugins
-from . import reader
+from . import session
 from . import modes
 
 __author__ = 'Darius Bakunas-Milanowski'

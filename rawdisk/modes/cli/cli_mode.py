@@ -1,8 +1,8 @@
-import cmd, sys
 import logging
-from rawdisk.reader import Reader
+from rawdisk.session import Session
 from rawdisk.modes.mode import Mode
 from tabulate import tabulate
+from cmd2 import Cmd
 
 
 class CliMode(Mode):
@@ -12,13 +12,13 @@ class CliMode(Mode):
         cli.initialize()
         cli.cmdloop()
 
-class CliShell(cmd.Cmd):
-    def __init__(self, completekey='tab', stdin=None, stdout=None):
-        super().__init__(completekey, stdin, stdout)
+class CliShell(Cmd):
+    def __init__(self):
+        super().__init__()
         self.prompt = self.get_prompt()
         self.ruler = '-'
         self.intro = 'Welcome to rawdisk shell. Type help or ? to list command.\n'
-        self.reader = Reader()
+        self.reader = Session()
         self.logger = logging.getLogger(__name__)
 
     def initialize(self):

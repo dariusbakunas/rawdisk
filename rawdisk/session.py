@@ -8,7 +8,7 @@ from rawdisk.filesystems.unknown_volume import UnknownVolume
 from rawdisk.scheme.mbr import SECTOR_SIZE
 
 
-class Reader(object):
+class Session(object):
     """Main class used to start filesystem analysis.
 
     Attributes:
