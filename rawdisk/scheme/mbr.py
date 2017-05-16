@@ -47,6 +47,10 @@ class MbrPartitionEntry(RawStruct):
     def part_type(self):
         return self.fields.part_type
 
+    @property
+    def total_sectors(self):
+        return self.fields.total_sectors
+
 
 class PartitionTable(RawStruct):
     """Represents MBR partition table.
