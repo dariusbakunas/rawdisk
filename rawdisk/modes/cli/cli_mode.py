@@ -1,6 +1,5 @@
 import cmd, sys
 import logging
-import numpy as np
 from rawdisk.reader import Reader
 from rawdisk.modes.mode import Mode
 from tabulate import tabulate
