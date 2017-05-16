@@ -1,5 +1,5 @@
 [Core]
-Name = EfiSystemPlugin
+Name = EfiSystem
 Module = efi_system/efi_system.py
 
 [Documentation]

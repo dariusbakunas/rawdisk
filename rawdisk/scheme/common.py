@@ -12,6 +12,7 @@ Attributes:
 from . import mbr
 from . import gpt
 import struct
+import logging
 
 SCHEME_UNKNOWN = 0x1
 SCHEME_MBR = 0x2
@@ -33,9 +34,12 @@ def detect_scheme(filename):
 
     >>> from rawdisk.scheme.common import *
     >>> scheme = detect_scheme('/dev/disk1')
-    >>> if (scheme == SCHEME_MBR):
+    >>> if scheme == SCHEME_MBR:
     >>> <...>
     """
+
+    logger = logging.getLogger(__name__)
+    logger.info('Detecting partitioning scheme')
 
     with open(filename, 'rb') as f:
         # Look for MBR signature first
@@ -43,8 +47,9 @@ def detect_scheme(filename):
         data = f.read(mbr.MBR_SIG_SIZE)
         signature = struct.unpack("<H", data)[0]
 
-        if (signature != mbr.MBR_SIGNATURE):
+        if signature != mbr.MBR_SIGNATURE:
             # Something else
+            logger.debug('Unknown partitioning scheme')
             return SCHEME_UNKNOWN
         else:
             # Could be MBR or GPT, look for GPT header
@@ -52,7 +57,9 @@ def detect_scheme(filename):
             data = f.read(gpt.GPT_SIG_SIZE)
             signature = struct.unpack("<8s", data)[0]
 
-            if (signature != gpt.GPT_SIGNATURE):
+            if signature != gpt.GPT_SIGNATURE:
+                logger.debug('MBR scheme detected')
                 return SCHEME_MBR
             else:
+                logger.debug('GPT scheme detected')
                 return SCHEME_GPT

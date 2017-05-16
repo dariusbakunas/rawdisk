@@ -7,7 +7,7 @@ from rawdisk.filesystems.detector import FilesystemDetector
 import rawdisk.plugins.filesystems.apple_boot.apple_boot_volume as volume
 
 
-class AppleBootPlugin(categories.IFilesystemPlugin):
+class AppleBoot(categories.IFilesystemPlugin):
     """Filesystem plugin for Apple_Boot partition.
     """
     def register(self):

@@ -7,7 +7,7 @@ from rawdisk.filesystems.detector import FilesystemDetector
 import rawdisk.plugins.filesystems.efi_system.efi_system_volume as volume
 
 
-class EfiSystemPlugin(categories.IFilesystemPlugin):
+class EfiSystem(categories.IFilesystemPlugin):
     """Filesystem plugin for EFI System partition.
     """
     def register(self):

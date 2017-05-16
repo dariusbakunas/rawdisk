@@ -3,6 +3,7 @@
 
 import os
 import rawdisk
+import logging
 from yapsy.PluginManager import PluginManagerSingleton
 from yapsy.VersionedPluginManager import VersionedPluginManager
 from rawdisk.plugins.categories import IFilesystemPlugin
@@ -19,10 +20,12 @@ class Manager(object):
     """
 
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
         self.fs_plugins = []
         self.search_path = []
 
     def load_plugins(self):
+        self.logger.info('Loading filesystem plugins')
         self._initialize_search_path()
         self._load_filesystem_plugins()
         self._register_filesystem_plugins()
@@ -30,19 +33,18 @@ class Manager(object):
     def _initialize_search_path(self):
         self.search_path = [os.path.join(
             os.path.dirname(rawdisk.__file__), "plugins/filesystems"), ]
-        [self.search_path.append(
-            os.path.join(path, APP_NAME, "plugins/filesystems")
-        )
-            for path in xdg_data_dirs]
+
+        self.search_path += [os.path.join(
+            path, APP_NAME, "plugins/filesystems") for path in xdg_data_dirs]
 
     def _register_filesystem_plugins(self):
         for pluginInfo in self.fs_plugins:
+            self.logger.debug(
+                'Registering {} filesystem plugin'.format(pluginInfo.name))
+
             pluginInfo.plugin_object.register()
 
     def _load_filesystem_plugins(self):
-        # import logging
-        # logging.basicConfig(level=logging.DEBUG)
-
         """Looks for *.yapsy-plugin files and loads them. It calls 'register' \
         method for each plugin, which in turn registers with \
         :class:`FilesystemDetector \

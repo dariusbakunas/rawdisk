@@ -5,6 +5,8 @@ detection routines that are internaly used by rawdisk.reader.Reader
 to match filesystems"""
 
 from rawdisk.util.singleton import Singleton
+from collections import defaultdict
+import logging
 
 
 class FilesystemDetector(object, metaclass=Singleton):
@@ -16,14 +18,18 @@ class FilesystemDetector(object, metaclass=Singleton):
         :class:`FilesystemDetectorSingleton` instead
     """
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
         # 2 dimensional array of fs_id : [list of plugins]
-        self.mbr_plugins = {}
+        self.mbr_plugins = defaultdict(list)
         # 2 dimensional array of fs_guid : [list of plugins]
-        self.gpt_plugins = {}
+        self.gpt_plugins = defaultdict(list)
 
     def _clear_plugins(self):
         self.mbr_plugins.clear()
         self.gpt_plugins.clear()
+
+    def _get_plugin_name(self, plugin):
+        return type(plugin).__name__
 
     def add_mbr_plugin(self, fs_id, plugin):
         """Used in plugin's registration routine,
@@ -33,11 +39,9 @@ class FilesystemDetector(object, metaclass=Singleton):
             fs_id: filesystem id that is read from MBR partition entry
             plugin: plugin that supports this filesystem
         """
-
-        if fs_id in self.mbr_plugins:
-            self.mbr_plugins.get(fs_id).append(plugin)
-        else:
-            self.mbr_plugins[fs_id] = [plugin, ]
+        self.logger.debug('MBR: {}, FS ID: {}'
+                          .format(self._get_plugin_name(plugin), fs_id))
+        self.mbr_plugins[fs_id].append(plugin)
 
     def add_gpt_plugin(self, fs_guid, plugin):
         """Used in plugin's registration routine,
@@ -47,13 +51,12 @@ class FilesystemDetector(object, metaclass=Singleton):
             fs_guid: filesystem guid that is read from GPT partition entry
             plugin: plugin that supports this filesystem
         """
-        if fs_guid in self.gpt_plugins:
-            self.gpt_plugins.get(fs_guid).append(plugin)
-        else:
-            self.gpt_plugins[fs_guid] = [plugin, ]
+        self.logger.debug('GPT: {}, GUID: {}'
+                          .format(self._get_plugin_name(plugin), fs_guid))
+        self.gpt_plugins[fs_guid].append(plugin)
 
     def detect_mbr(self, filename, offset, fs_id):
-        """Used by rawdisk.reader.Reader to match mbr partitions agains
+        """Used by rawdisk.reader.Reader to match mbr partitions against
         filesystem plugins.
 
         Args:
@@ -65,6 +68,8 @@ class FilesystemDetector(object, metaclass=Singleton):
             Volume object supplied by matched plugin.
             If there is no match, None is returned
         """
+        self.logger.info('Detecting MBR partition type')
+
         if fs_id not in self.mbr_plugins:
             return None
         else:
@@ -89,6 +94,8 @@ class FilesystemDetector(object, metaclass=Singleton):
             Volume object supplied by matched plugin.
             If there is no match, None is returned
         """
+        self.logger.info('Detecting GPT partition type')
+
         if fs_guid not in self.gpt_plugins:
             return None
         else:

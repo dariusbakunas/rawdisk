@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 from rawdisk.util.rawstruct import RawStruct
 from .headers import MBR_PARTITION_ENTRY
+import logging
 
 
 MBR_SIGNATURE = 0xAA55
 MBR_SIG_SIZE = 2
 MBR_SIG_OFFSET = 0x1FE
 MBR_SIZE = 512
-PT_ENTRY_SIZE = 16
-PT_TABLE_OFFSET = 0x1BE
-PT_TABLE_SIZE = PT_ENTRY_SIZE * 4
+MBR_NUM_PARTS = 4
+PARTITION_ENTRY_SIZE = 16
+PARTITION_TABLE_OFFSET = 0x1BE
+PARTITION_TABLE_SIZE = PARTITION_ENTRY_SIZE * MBR_NUM_PARTS
 SECTOR_SIZE = 512
+
+logger = logging.getLogger(__name__)
 
 
 class MbrPartitionEntry(RawStruct):
@@ -48,7 +52,7 @@ class PartitionTable(RawStruct):
     """Represents MBR partition table.
 
     Args:
-        data (str): byte array to initialize structure with.
+        data (bytes): byte array to initialize structure with.
 
     Attributes:
         entries (list): List of initialized :class:`PartitionEntry` objects
@@ -57,12 +61,12 @@ class PartitionTable(RawStruct):
         RawStruct.__init__(self, data)
         self.entries = []
 
-        for i in range(0, 4):
+        for i in range(0, MBR_NUM_PARTS):
             entry = MbrPartitionEntry(
-                self.get_chunk(PT_ENTRY_SIZE * i, PT_ENTRY_SIZE)
+                self.get_chunk(PARTITION_ENTRY_SIZE * i, PARTITION_ENTRY_SIZE)
             )
 
-            if (entry.fields.part_type != 0):
+            if entry.fields.part_type != 0:
                 self.entries.append(entry)
 
 
@@ -101,6 +105,7 @@ class Mbr(RawStruct):
         self.export(filename, 0, 446)
 
     def _load_partition_table(self):
+        logger.info('Loading partition table')
         self.partition_table = PartitionTable(
-            self.get_chunk(PT_TABLE_OFFSET, PT_TABLE_SIZE)
+            self.get_chunk(PARTITION_TABLE_OFFSET, PARTITION_TABLE_SIZE)
         )

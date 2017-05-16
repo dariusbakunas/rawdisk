@@ -7,7 +7,7 @@ from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.plugins.filesystems.hfs_plus.hfs_plus_volume import HfsPlusVolume
 
 
-class HfsPlusPlugin(categories.IFilesystemPlugin):
+class HfsPlus(categories.IFilesystemPlugin):
     """Filesystem plugin for HFS+ partition.
     """
     def register(self):

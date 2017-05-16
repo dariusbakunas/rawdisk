@@ -3,7 +3,7 @@
 
 import unittest
 import uuid
-from rawdisk.plugins.filesystems.ntfs.ntfs import NtfsPlugin
+from rawdisk.plugins.filesystems.ntfs.ntfs import Ntfs
 from rawdisk.plugins.filesystems.ntfs.bootsector import BootSector
 from rawdisk.plugins.filesystems.ntfs.mft import MftTable
 from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume, \
@@ -40,7 +40,7 @@ class TestNtfsPlugin(unittest.TestCase):
     def setUp(self):
         self.filename = 'sample_images/ntfs_mbr.vhd'
         self.offset = SAMPLE_NTFS_PART_OFFSET
-        self.p = NtfsPlugin()
+        self.p = Ntfs()
         self.detector = FilesystemDetector()
 
     def test_detect(self):

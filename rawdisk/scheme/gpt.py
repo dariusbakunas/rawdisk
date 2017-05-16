@@ -3,6 +3,7 @@
 
 import uuid
 import struct
+import logging
 from rawdisk.util.rawstruct import RawStruct
 from .headers import GPT_HEADER, GPT_PARTITION_ENTRY
 from ctypes import c_ubyte
@@ -11,6 +12,8 @@ from ctypes import c_ubyte
 GPT_HEADER_OFFSET = 0x200
 GPT_SIG_SIZE = 8
 GPT_SIGNATURE = b'EFI PART'
+
+logger = logging.getLogger(__name__)
 
 
 class GptPartitionEntry(RawStruct):
