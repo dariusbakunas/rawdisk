@@ -5,8 +5,8 @@ import os
 import sys
 import logging.config
 import yaml
-from .modes.cli.cli_mode import CliMode
-from .modes.legacy.legacy_mode import LegacyMode
+from rawdisk.modes.cli.cli_mode import CliMode
+from rawdisk.modes.legacy.legacy_mode import LegacyMode
 
 
 MODE_CLI = 'cli'

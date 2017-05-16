@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__all__ = ['scheme', 'filesystems', 'session.py', 'plugins', 'modes']
+__all__ = ['scheme', 'filesystems', 'session', 'plugins', 'modes']
 
 from . import scheme
 from . import filesystems
