@@ -19,6 +19,10 @@ rawdisk
      :target: https://pyup.io/repos/github/dariusbakunas/rawdisk/
      :alt: Python 3
 
+.. image:: https://readthedocs.org/projects/rawdisk/badge/?version=latest
+    :target: http://rawdisk.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
 
 Experimental python code to explore different volume formats
 
