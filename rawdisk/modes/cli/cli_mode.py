@@ -29,8 +29,8 @@ class CliShell(cmd.Cmd):
         """List loaded plugins"""
         plugins = self.reader.manager.fs_plugins
 
-        data = [[plugin.name, plugin.author, plugin.version] for plugin in plugins]
-        table = tabulate(tabular_data=data, headers=['NAME', 'AUTHOR', 'VERSION'])
+        data = [[plugin.name, plugin.author, plugin.version, plugin.description] for plugin in plugins]
+        table = tabulate(tabular_data=data, headers=['NAME', 'AUTHOR', 'VERSION', 'DESCRIPTION'])
 
         print(table)
 
