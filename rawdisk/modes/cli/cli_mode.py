@@ -43,9 +43,6 @@ class CliShell(cmd.Cmd):
         self.close()
         return True
 
-    def do_log(self, message):
-        self.logger.info(message)
-
     def get_prompt(self):
         return 'rawdisk > '
 
