@@ -2,7 +2,7 @@ import logging
 from rawdisk.session import Session
 from rawdisk.modes.mode import Mode
 from tabulate import tabulate
-from cmd2 import Cmd
+from cmd import Cmd
 
 
 class CliMode(Mode):
