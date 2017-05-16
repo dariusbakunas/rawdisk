@@ -4,13 +4,13 @@ from ..mode import Mode
 
 class LegacyMode(Mode):
     @staticmethod
-    def entry(args):
+    def entry(args=None):
         logger = logging.getLogger(__name__)
 
         r = reader.Reader()
         r.load_plugins()
 
-        if args.filename is None:
+        if args is None or args.filename is None:
             logger.error('-f FILENAME must be specified')
 
         try:
