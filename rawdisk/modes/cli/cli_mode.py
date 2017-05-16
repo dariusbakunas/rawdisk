@@ -12,12 +12,14 @@ class CliMode(Mode):
         cli.initialize()
         cli.cmdloop()
 
+
 class CliShell(Cmd):
     def __init__(self):
         super().__init__()
         self.prompt = self.get_prompt()
         self.ruler = '-'
-        self.intro = 'Welcome to rawdisk shell. Type help or ? to list command.\n'
+        self.intro = 'Welcome to rawdisk shell. ' \
+                     'Type help or ? to list command.\n'
         self.reader = Session()
         self.logger = logging.getLogger(__name__)
 
@@ -28,8 +30,13 @@ class CliShell(Cmd):
         """List loaded plugins"""
         plugins = self.reader.manager.fs_plugins
 
-        data = [[plugin.name, plugin.author, plugin.version, plugin.description] for plugin in plugins]
-        table = tabulate(tabular_data=data, headers=['NAME', 'AUTHOR', 'VERSION', 'DESCRIPTION'])
+        data = [
+            [plugin.name, plugin.author, plugin.version, plugin.description]
+            for plugin in plugins]
+
+        table = tabulate(
+            tabular_data=data,
+            headers=['NAME', 'AUTHOR', 'VERSION', 'DESCRIPTION'])
 
         print(table)
 
@@ -48,6 +55,7 @@ class CliShell(Cmd):
 
     def close(self):
         return
+
 
 if __name__ == '__main__':
     CliMode.entry()

@@ -3,6 +3,7 @@ from rawdisk import scheme
 from rawdisk.session import Session
 from ..mode import Mode
 
+
 class LegacyMode(Mode):
     @staticmethod
     def entry(args=None):

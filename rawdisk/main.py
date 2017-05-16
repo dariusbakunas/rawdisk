@@ -13,6 +13,7 @@ MODE_CLI = 'cli'
 MODE_LEGACY = 'legacy'
 MODES = [MODE_CLI, MODE_LEGACY]
 
+
 def setup_logging(config_path=None, log_level=logging.INFO):
     """Setup logging configuration
     """
@@ -111,6 +112,7 @@ def main():
         CliMode.entry(args)
     else:
         LegacyMode.entry(args)
+
 
 if __name__ == '__main__':
     main()
