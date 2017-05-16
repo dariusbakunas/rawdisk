@@ -15,7 +15,7 @@ def setup_logging(config_path=None, log_level=logging.INFO):
 
     config = {
         'version': 1,
-        'disable_existing_loggers': False,  # this fixes the problem
+        'disable_existing_loggers': False,
         'formatters': {
             'standard': {
                 'format':
