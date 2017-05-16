@@ -2,12 +2,14 @@
 
 
 from rawdisk.filesystems.volume import Volume
+import logging
 
 
 class EfiSystemVolume(Volume):
     """Structure for EFI System volume
     """
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
         self.fd = None
 
     def load(self, filename, offset):
@@ -17,8 +19,8 @@ class EfiSystemVolume(Volume):
             self.offset = offset
             # self.fd = open(filename, 'rb')
             # self.fd.close()
-        except IOError as e:
-            print(e)
+        except IOError:
+            self.logger.error('Unable to load EfiSystem volume')
 
     def dump_volume(self):
         print("TODO")

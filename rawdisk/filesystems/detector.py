@@ -76,7 +76,6 @@ class FilesystemDetector(object, metaclass=Singleton):
             plugins = self.mbr_plugins.get(fs_id)
             for plugin in plugins:
                 if plugin.detect(filename, offset):
-
                     return plugin.get_volume_object()
         return None
 
