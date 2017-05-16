@@ -1,7 +1,9 @@
 import cmd, sys
 import logging
+import numpy as np
 from rawdisk.reader import Reader
 from rawdisk.modes.mode import Mode
+from rawdisk.util.output import format_table
 
 class CliMode(Mode):
     @staticmethod
@@ -22,6 +24,16 @@ class CliShell(cmd.Cmd):
     def initialize(self):
         self.reader.load_plugins()
 
+    def do_plugins(self, arg):
+        plugins = self.reader.manager.fs_plugins
+
+        rows = format_table(
+            headers=['NAME', 'AUTHOR', 'VERSION'],
+            columns=['name', 'author', 'version'],
+            values=plugins
+        )
+
+        print('\n'.join(rows))
 
     def do_quit(self, arg):
         """Exit CLI"""
@@ -32,6 +44,9 @@ class CliShell(cmd.Cmd):
         """Exit CLI"""
         self.close()
         return True
+
+    def do_log(self, message):
+        self.logger.info(message)
 
     def get_prompt(self):
         return 'rawdisk > '
