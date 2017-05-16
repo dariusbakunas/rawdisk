@@ -8,6 +8,9 @@ import logging.config
 import yaml
 from . import scheme
 
+MODE_CLI = 'cli'
+MODE_LEGACY = 'legacy'
+MODES = [MODE_CLI, MODE_LEGACY]
 
 def setup_logging(config_path=None, log_level=logging.INFO):
     """Setup logging configuration
@@ -56,12 +59,15 @@ def setup_logging(config_path=None, log_level=logging.INFO):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        usage='Usage: %s -f <source>' %
+        usage='%s -m [{}]'.format(', '.join(MODES)) %
               os.path.basename(sys.argv[0])
     )
 
     parser.add_argument(
-        "--verbose", help="increase output verbosity", action="store_true")
+        '-m', '--mode', help='select mode', choices=MODES, required=True)
+
+    parser.add_argument(
+        '--verbose', help='increase output verbosity', action='store_true')
 
     parser.add_argument(
         '-f', '--file', dest='filename', help='specify source file',
@@ -79,18 +85,13 @@ def parse_args():
 
     args = parser.parse_args()
 
-    if args.filename is None:
-        parser.print_help()
-        return None
-
     return args
 
 
 def main():
-    args = parse_args()
+    global logger
 
-    if args is None:
-        return
+    args = parse_args()
 
     logging_options = {}
 
@@ -105,6 +106,16 @@ def main():
     setup_logging(**logging_options)
     logger = logging.getLogger(__name__)
 
+    if args.mode == MODE_CLI:
+        cli_mode(args)
+    else:
+        legacy_mode(args)
+
+
+def cli_mode(args):
+    print('in cli mode')
+
+def legacy_mode(args):
     r = rawdisk.reader.Reader()
 
     try:
@@ -114,15 +125,14 @@ def main():
             'Failed to open disk image file: {}'.format(args.filename))
 
     if r.scheme == scheme.common.SCHEME_MBR:
-        print("Scheme: MBR")
+        print('Scheme: MBR')
     elif r.scheme == scheme.common.SCHEME_GPT:
-        print("Scheme: GPT")
+        print('Scheme: GPT')
     else:
-        print("Scheme: Unknown")
+        print('Scheme: Unknown')
 
-    print("Partitions:")
+    print('Partitions:')
     r.list_partitions()
-
 
 if __name__ == '__main__':
     main()
