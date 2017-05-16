@@ -37,6 +37,9 @@ setup(
     packages=[
         'rawdisk',
         'rawdisk.filesystems',
+        'rawdisk.modes',
+        'rawdisk.modes.cli',
+        'rawdisk.modes.legacy',
         'rawdisk.plugins',
         'rawdisk.plugins.filesystems',
         'rawdisk.plugins.filesystems.apple_boot',

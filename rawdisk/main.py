@@ -7,6 +7,7 @@ import rawdisk
 import logging.config
 import yaml
 from . import scheme
+from .modes.cli.cli_mode import CliMode
 
 MODE_CLI = 'cli'
 MODE_LEGACY = 'legacy'
@@ -107,7 +108,7 @@ def main():
     logger = logging.getLogger(__name__)
 
     if args.mode == MODE_CLI:
-        cli_mode(args)
+        CliMode.entry()
     else:
         legacy_mode(args)
 
