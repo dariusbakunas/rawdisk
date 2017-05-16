@@ -21,15 +21,15 @@ class CliShell(Cmd):
         self.ruler = '-'
         self.intro = 'Welcome to rawdisk shell. ' \
                      'Type help or ? to list command.\n'
-        self.reader = Session()
+        self.session = Session()
         self.logger = logging.getLogger(__name__)
 
     def initialize(self):
-        self.reader.load_plugins()
+        self.session.load_plugins()
 
     def do_plugins(self, arg):
         """List loaded plugins"""
-        plugins = self.reader.manager.fs_plugins
+        plugins = self.session.manager.fs_plugins
 
         data = [
             [plugin.name, plugin.author, plugin.version, plugin.description]
@@ -42,7 +42,8 @@ class CliShell(Cmd):
         print(table)
 
     def do_shell(self, command):
-        """Execute shell command
+        """
+        Execute shell command
         
         Use shell [command] or ![command] syntax
         """
