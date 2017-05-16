@@ -3,11 +3,11 @@
 import argparse
 import os
 import sys
-import rawdisk
 import logging.config
 import yaml
-from . import scheme
 from .modes.cli.cli_mode import CliMode
+from .modes.legacy.legacy_mode import LegacyMode
+
 
 MODE_CLI = 'cli'
 MODE_LEGACY = 'legacy'
@@ -108,32 +108,9 @@ def main():
     logger = logging.getLogger(__name__)
 
     if args.mode == MODE_CLI:
-        CliMode.entry()
+        CliMode.entry(args)
     else:
-        legacy_mode(args)
-
-
-def cli_mode(args):
-    print('in cli mode')
-
-def legacy_mode(args):
-    r = rawdisk.reader.Reader()
-
-    try:
-        r.load(args.filename)
-    except IOError:
-        logger.error(
-            'Failed to open disk image file: {}'.format(args.filename))
-
-    if r.scheme == scheme.common.SCHEME_MBR:
-        print('Scheme: MBR')
-    elif r.scheme == scheme.common.SCHEME_GPT:
-        print('Scheme: GPT')
-    else:
-        print('Scheme: Unknown')
-
-    print('Partitions:')
-    r.list_partitions()
+        LegacyMode.entry(args)
 
 if __name__ == '__main__':
     main()

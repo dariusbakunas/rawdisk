@@ -3,7 +3,7 @@ from ..mode import Mode
 
 class CliMode(Mode):
     @staticmethod
-    def entry():
+    def entry(args):
         CliShell().cmdloop()
 
 class CliShell(cmd.Cmd):

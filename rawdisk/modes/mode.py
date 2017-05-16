@@ -5,5 +5,5 @@ from abc import ABCMeta
 
 class Mode(metaclass=ABCMeta):
     @staticmethod
-    def entry():
+    def entry(args):
         """Entry method for utility mode"""
