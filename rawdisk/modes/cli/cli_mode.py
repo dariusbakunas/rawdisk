@@ -24,6 +24,12 @@ class CliShell(cmd.Cmd):
 
 
     def do_quit(self, arg):
+        """Exit CLI"""
+        self.close()
+        return True
+
+    def do_exit(self, arg):
+        """Exit CLI"""
         self.close()
         return True
 
