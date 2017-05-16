@@ -27,13 +27,13 @@ class CliShell(cmd.Cmd):
     def do_plugins(self, arg):
         plugins = self.reader.manager.fs_plugins
 
-        rows = format_table(
+        table = format_table(
             headers=['NAME', 'AUTHOR', 'VERSION'],
             columns=['name', 'author', 'version'],
             values=plugins
         )
 
-        print('\n'.join(rows))
+        print(table)
 
     def do_quit(self, arg):
         """Exit CLI"""

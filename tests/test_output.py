@@ -12,12 +12,12 @@ class TestOutputModule(unittest.TestCase):
                  {'prop1': 'VAL1 LONG', 'prop2': 'VAL2', 'prop3': 'VAL3'})
         ]
 
-        expected = [
+        expected = '\n'.join([
             'COL1       COL2  LONG_COL_3',
             '---------  ----  ----------',
             'VAL1       VAL2  VAL3      ',
             'VAL1 LONG  VAL2  VAL3      ',
-        ]
+        ])
 
         actual = format_table(
             ['COL1', 'COL2', 'LONG_COL_3'],

@@ -22,4 +22,4 @@ def format_table(headers, columns, values, ruler='-'):
         printable_rows.append('  '.join([col.ljust(column_widths[idx])
                                          for idx, col in enumerate(row)]))
 
-    return printable_rows
+    return '\n'.join(printable_rows)
