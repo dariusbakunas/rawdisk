@@ -41,6 +41,13 @@ class CliShell(Cmd):
 
         print(table)
 
+    def do_load(self, filename):
+        """Load disk image for analysis"""
+        try:
+            self.session.load(filename)
+        except IOError as e:
+            self.logger.error(e.strerror)
+
     def do_shell(self, command):
         """
         Execute shell command
