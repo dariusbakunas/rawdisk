@@ -47,6 +47,7 @@ class Session(object):
             IOError - File/device does not exist or is not readable.
         """
         self.filename = filename
+        self.partitions = []
 
         # Detect partitioning scheme
         self.scheme = rawdisk.scheme.common.detect_scheme(filename)
