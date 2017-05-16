@@ -1,4 +1,5 @@
 import logging
+import os
 from rawdisk.session import Session
 from rawdisk.modes.mode import Mode
 from tabulate import tabulate
@@ -39,6 +40,13 @@ class CliShell(Cmd):
             headers=['NAME', 'AUTHOR', 'VERSION', 'DESCRIPTION'])
 
         print(table)
+
+    def do_shell(self, command):
+        """Execute shell command
+        
+        Use shell [command] or ![command] syntax
+        """
+        os.system(command)
 
     def do_quit(self, arg):
         """Exit CLI"""
