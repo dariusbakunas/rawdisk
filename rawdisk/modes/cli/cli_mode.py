@@ -27,8 +27,7 @@ class CliShell(Cmd):
     def initialize(self):
         self.session.load_plugins()
 
-    def do_plugins(self, arg):
-        """List loaded plugins"""
+    def list_plugins(self):
         plugins = self.session.manager.fs_plugins
 
         data = [
@@ -41,12 +40,29 @@ class CliShell(Cmd):
 
         print(table)
 
+    def do_list(self, resource):
+        """
+        Enumerate resources
+        
+        Possible values: plugins
+        """
+        if resource == 'plugins':
+            self.list_plugins()
+        else:
+            print("Unknown resource: '{}', type 'help list' "
+                  "to get more information".format(resource))
+
+
     def do_load(self, filename):
         """Load disk image for analysis"""
         try:
             self.session.load(filename)
         except IOError as e:
             self.logger.error(e.strerror)
+
+    def do_session(self, args):
+        """Print current session information"""
+        pass
 
     def do_shell(self, command):
         """
