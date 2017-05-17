@@ -12,10 +12,6 @@ import logging
 class FilesystemDetector(object, metaclass=Singleton):
     """A class that allows to match filesystem id or guid against available
     plugins.
-
-    Warning:
-        Do not use this class directly, use
-        :class:`FilesystemDetectorSingleton` instead
     """
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -68,7 +64,7 @@ class FilesystemDetector(object, metaclass=Singleton):
             Volume object supplied by matched plugin.
             If there is no match, None is returned
         """
-        self.logger.info('Detecting MBR partition type')
+        self.logger.debug('Detecting MBR partition type')
 
         if fs_id not in self.mbr_plugins:
             return None
@@ -94,7 +90,7 @@ class FilesystemDetector(object, metaclass=Singleton):
             Volume object supplied by matched plugin.
             If there is no match, None is returned
         """
-        self.logger.info('Detecting GPT partition type')
+        self.logger.debug('Detecting GPT partition type')
 
         if fs_guid not in self.gpt_plugins:
             return None
