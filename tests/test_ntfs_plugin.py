@@ -50,8 +50,8 @@ class TestNtfsPlugin(unittest.TestCase):
     def test_register(self):
         self.p.register()
 
-        mbr_plugins = self.detector.mbr_plugins.get(0x07)
-        gpt_plugins = self.detector.gpt_plugins.get(
+        mbr_plugins = self.detector.get_mbr_plugins(fs_id=0x07)
+        gpt_plugins = self.detector.get_gpt_plugins(fs_guid=
             uuid.UUID('{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}')
         )
 

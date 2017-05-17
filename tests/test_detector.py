@@ -14,27 +14,27 @@ class TestFilesystemDetector(unittest.TestCase):
 
     def test_singleton(self):
         detector = FilesystemDetector()
-        self.assertEqual(len(detector.mbr_plugins), 0)
+        self.assertEqual(len(detector.get_mbr_plugins()), 0)
         detector.add_mbr_plugin(self.mbr_fs_id, object())
         detector.add_gpt_plugin(self.guid_fs_id, object())
 
         detector2 = FilesystemDetector()
-        self.assertEqual(len(detector2.mbr_plugins), 1)
-        self.assertEqual(len(detector2.gpt_plugins), 1)
+        self.assertEqual(len(detector2.get_mbr_plugins()), 1)
+        self.assertEqual(len(detector2.get_gpt_plugins()), 1)
 
     def test_multiple_mbr_plugins_for_same_id(self):
         detector = FilesystemDetector()
         detector.add_mbr_plugin(self.mbr_fs_id, object())
         detector.add_mbr_plugin(self.mbr_fs_id, object())
 
-        self.assertEqual(len(detector.mbr_plugins.get(self.mbr_fs_id)), 2)
+        self.assertEqual(len(detector.get_mbr_plugins(fs_id=self.mbr_fs_id)), 2)
 
     def test_multiple_gpt_plugins_for_same_id(self):
         detector = FilesystemDetector()
         detector.add_gpt_plugin(self.guid_fs_id, object())
         detector.add_gpt_plugin(self.guid_fs_id, object())
 
-        self.assertEqual(len(detector.gpt_plugins.get(self.guid_fs_id)), 2)
+        self.assertEqual(len(detector.get_gpt_plugins(fs_guid=self.guid_fs_id)), 2)
 
     def test_detection_with_no_plugins(self):
         detector = FilesystemDetector()
