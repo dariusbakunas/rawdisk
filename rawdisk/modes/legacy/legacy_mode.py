@@ -1,6 +1,7 @@
 import logging
 from rawdisk import scheme
 from rawdisk.session import Session
+from rawdisk.plugins.manager import Manager
 from ..mode import Mode
 
 
@@ -9,7 +10,7 @@ class LegacyMode(Mode):
     def entry(args=None):
         logger = logging.getLogger(__name__)
 
-        s = Session()
+        s = Session(plugin_manager=Manager())
         s.load_plugins()
 
         if args is None or args.filename is None:

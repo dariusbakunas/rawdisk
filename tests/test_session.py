@@ -1,11 +1,12 @@
 import unittest
 from rawdisk.session import Session
+from rawdisk.plugins.manager import Manager
 from rawdisk.scheme.common import SCHEME_MBR
 
 
 class TestSession(unittest.TestCase):
     def setUp(self):
-        self.session = Session()
+        self.session = Session(plugin_manager=Manager())
 
     def test_load_mbr(self):
         self.session.load(filename='sample_images/ntfs_mbr.vhd')

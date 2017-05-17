@@ -2,6 +2,7 @@ import logging
 import os
 from rawdisk.session import Session
 from rawdisk.modes.mode import Mode
+from rawdisk.plugins.manager import Manager
 from tabulate import tabulate
 from cmd import Cmd
 
@@ -21,7 +22,7 @@ class CliShell(Cmd):
         self.ruler = '-'
         self.intro = 'Welcome to rawdisk shell. ' \
                      'Type help or ? to list command.\n'
-        self.session = Session()
+        self.session = Session(plugin_manager=Manager())
         self.logger = logging.getLogger(__name__)
 
     def initialize(self):

@@ -3,7 +3,6 @@
 import rawdisk.scheme
 import logging
 from rawdisk.filesystems.detector import FilesystemDetector
-from rawdisk.plugins.manager import Manager
 from rawdisk.filesystems.unknown_volume import UnknownVolume
 from rawdisk.scheme.mbr import SECTOR_SIZE
 
@@ -19,12 +18,12 @@ class Session(object):
         :attr:`SCHEME_MBR <rawdisk.scheme.common.SCHEME_MBR>` \
         or :attr:`SCHEME_GPT <rawdisk.scheme.common.SCHEME_GPT>`.
     """
-    def __init__(self):
+    def __init__(self, plugin_manager):
         self.logger = logging.getLogger(__name__)
         self.__volumes = []
         self.__partition_scheme = None
         self.__filename = None
-        self.__plugin_manager = Manager()
+        self.__plugin_manager = plugin_manager
 
     def load_plugins(self):
         """Load filesystem detection plugins"""

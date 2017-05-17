@@ -62,6 +62,8 @@ class Manager(object):
                * /usr/local/share/rawdisk/plugins/filesystems
                * /usr/share/rawdisk/plugins/filesystems
         """
+        self.__fs_plugins = []
+
         PluginManagerSingleton.setBehaviour([
             VersionedPluginManager,
         ])
