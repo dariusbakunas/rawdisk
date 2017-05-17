@@ -14,8 +14,17 @@ PARTITION_TABLE_OFFSET = 0x1BE
 PARTITION_TABLE_SIZE = PARTITION_ENTRY_SIZE * MBR_NUM_PARTS
 SECTOR_SIZE = 512
 
-logger = logging.getLogger(__name__)
+DEFAULT_GEOMETRY = {
+  'HPC': 255, # heads per cylinder
+  'SPT': 63,  # sectors per track
+}
 
+TYPES = {
+  0x0C: 'fat32_lba',
+  0x83: 'linux',
+}
+
+logger = logging.getLogger(__name__)
 
 class MbrPartitionEntry(RawStruct):
     def __init__(self, data):
@@ -25,18 +34,18 @@ class MbrPartitionEntry(RawStruct):
         tmp2 = self.get_ubyte(6)
 
         self.fields = MBR_PARTITION_ENTRY(
-            self.get_ubyte(0),          # boot indicator
+            self.get_ubyte(0),          # boot_indicator
             self.get_ubyte(1),          # starting_head
             tmp & 0x3F,                 # starting_sector
             ((tmp & 0xC0) << 2) +
-            self.get_ubyte(3),          # starting cylinder
+              self.get_ubyte(3),        # starting_cylinder
             self.get_ubyte(4),          # part_type
             self.get_ubyte(5),          # ending_head
             tmp2 & 0x3F,                # ending_sector
             ((tmp2 & 0xC0) << 2) +
-            self.get_ubyte(7),      # ending cylinder
-            self.get_uint_le(8),        # relative sector
-            self.get_uint_le(12),       # total sectors
+              self.get_ubyte(7),        # ending_cylinder
+            self.get_uint_le(8),        # relative_sector
+            self.get_uint_le(12),       # total_sectors
         )
 
     @property
@@ -46,6 +55,43 @@ class MbrPartitionEntry(RawStruct):
     @property
     def part_type(self):
         return self.fields.part_type
+
+    def chs2lba(self, cyl, head, sect, geometry=DEFAULT_GEOMETRY):
+        """ helper for consistency check """
+        hpc, spt = geometry['HPC'], geometry['SPT']
+        return sect-1 + head*spt + cyl*hpc*spt
+
+    def get_type_label(self):
+        if self.fields.part_type in TYPES:
+            return '%s' % TYPES[self.fields.part_type]
+        else:
+            return 'unknown'
+
+    def __str__(self):
+        # calculated values
+        fields = self.fields.copy()
+        fields['chs_start_sector'] = self.chs2lba(
+            self.fields.starting_cylinder,
+            self.fields.starting_head,
+            self.fields.starting_sector)
+        fields['chs_end_sector'] = self.chs2lba(
+            self.fields.ending_cylinder,
+            self.fields.ending_head,
+            self.fields.ending_sector)
+        fields['lba_start_sector'] = self.fields.relative_sector
+        fields['lba_end_sector'] = (self.relative_sector
+            + self.fields.total_sectors - 1)
+
+        fields['label'] = '(%s)' % self.get_type_label()
+
+        return """\
+Bootable: %(boot_indicator)s
+Type: 0x%(part_type)02X %(label)s
+Start (CHS): %(chs_start_sector)s
+End   (CHS): %(chs_end_sector)s
+Start (LBA): %(lba_start_sector)s
+End   (LBA): %(lba_end_sector)s
+""" % fields
 
 
 class PartitionTable(RawStruct):
