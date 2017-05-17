@@ -9,5 +9,5 @@ class TestSession(unittest.TestCase):
 
     def test_load_mbr(self):
         self.session.load(filename='sample_images/ntfs_mbr.vhd')
-        self.assertEquals(self.session.scheme, SCHEME_MBR)
-        self.assertEquals(len(self.session.partitions), 1)
+        self.assertEquals(self.session.partition_scheme, SCHEME_MBR)
+        self.assertEquals(len(self.session.volumes), 1)
