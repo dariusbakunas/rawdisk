@@ -39,6 +39,10 @@ class Session(object):
     def partition_scheme(self):
         return self.__partition_scheme
 
+    @property
+    def plugin_manager(self):
+        return self.__plugin_manager
+
     def load(self, filename, bs=512):
         """Starts filesystem analysis. Detects supported filesystems and \
         loads :attr:`partitions` array.
