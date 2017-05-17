@@ -28,15 +28,15 @@ class CliShell(Cmd):
         self.session.load_plugins()
 
     def list_plugins(self):
-        plugins = self.session.manager.fs_plugins
+        plugins = self.session.plugin_manager.filesystem_plugins
 
         data = [
-            [plugin.name, plugin.author, plugin.version, plugin.description]
-            for plugin in plugins]
+            [plugin.name, plugin.author, plugin.version,
+             plugin.description, plugin.plugin_object.identifier_string] for plugin in plugins]
 
         table = tabulate(
             tabular_data=data,
-            headers=['NAME', 'AUTHOR', 'VERSION', 'DESCRIPTION'])
+            headers=['NAME', 'AUTHOR', 'VERSION', 'DESCRIPTION', 'IDENTIFIERS'])
 
         print(table)
 
