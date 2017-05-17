@@ -26,9 +26,12 @@ class IFilesystemPlugin(IPlugin):
 
     @property
     def identifier_string(self):
-        return 'MBR: [{}], GPT: [{}]'\
-            .format(', '.join(map(str, self.mbr_identifiers)),
-                    ', '.join(map(str, self.gpt_identifiers)))
+        mbr_identifiers = map(
+            lambda mbr_id: '{:#x}'.format(mbr_id), self.mbr_identifiers)
+        gpt_identifiers = map(str, self.gpt_identifiers)
+
+        return 'MBR: [{}], GPT: [{}]'.format(
+            ', '.join(mbr_identifiers),', '.join(gpt_identifiers))
 
     def register(self):
         """Call this method to register plugin with :class:`FilesystemDetector \
