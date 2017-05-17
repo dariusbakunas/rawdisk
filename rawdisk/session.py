@@ -52,17 +52,19 @@ class Session(object):
         self.__filename = filename
         self.__volumes = []
 
+
+
         # Detect partitioning scheme
         self.__partition_scheme = rawdisk.scheme.common.detect_scheme(filename)
 
         if self.__partition_scheme == rawdisk.scheme.common.SCHEME_MBR:
-            self.__load_mbr_volumes(filename)
+            self.__load_mbr_volumes(filename, bs)
         elif self.__partition_scheme == rawdisk.scheme.common.SCHEME_GPT:
-            self.__load_gpt_volumes(filename)
+            self.__load_gpt_volumes(filename, bs)
         else:
             self.logger.warning('Partitioning scheme could not be determined.')
 
-    def __load_gpt_volumes(self, filename):
+    def __load_gpt_volumes(self, filename, bs=512):
         detector = FilesystemDetector()
         gpt = rawdisk.scheme.gpt.Gpt()
         gpt.load(filename)
@@ -88,7 +90,7 @@ class Session(object):
                     )
                 )
 
-    def __load_mbr_volumes(self, filename):
+    def __load_mbr_volumes(self, filename, bs=512):
         detector = FilesystemDetector()
         mbr = rawdisk.scheme.mbr.Mbr(filename)
         # Go through table entries and analyse ones that are supported
