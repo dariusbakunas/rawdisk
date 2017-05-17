@@ -12,6 +12,24 @@ class IFilesystemPlugin(IPlugin):
     """Base abstract class for filesystem plugins.
     """
 
+    @property
+    def gpt_identifiers(self):
+        """Should return a list (usually one) of GPT identifiers that 
+        are used to detect this volume"""
+        return []
+
+    @property
+    def mbr_identifiers(self):
+        """Should return a list (usually one) of MBR identifiers that 
+        are used to detect this volume"""
+        return []
+
+    @property
+    def identifier_string(self):
+        return 'MBR: [{}], GPT: [{}]'\
+            .format(', '.join(map(str, self.mbr_identifiers)),
+                    ', '.join(map(str, self.gpt_identifiers)))
+
     def register(self):
         """Call this method to register plugin with :class:`FilesystemDetector \
         <rawdisk.filesystems.detector.FilesystemDetector>`."""
