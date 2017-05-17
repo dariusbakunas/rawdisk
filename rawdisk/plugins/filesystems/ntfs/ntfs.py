@@ -13,6 +13,7 @@ SIG_OFFSET = 0x03
 MBR_ID = 0x07
 GPT_GUID = '{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}'
 
+
 class Ntfs(categories.IFilesystemPlugin):
     """Filesystem plugin for NTFS partition.
     """

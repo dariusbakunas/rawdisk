@@ -14,13 +14,13 @@ class IFilesystemPlugin(IPlugin):
 
     @property
     def gpt_identifiers(self):
-        """Should return a list (usually one) of GPT identifiers that 
+        """Should return a list (usually one) of GPT identifiers that
         are used to detect this volume"""
         return []
 
     @property
     def mbr_identifiers(self):
-        """Should return a list (usually one) of MBR identifiers that 
+        """Should return a list (usually one) of MBR identifiers that
         are used to detect this volume"""
         return []
 
@@ -31,7 +31,7 @@ class IFilesystemPlugin(IPlugin):
         gpt_identifiers = map(str, self.gpt_identifiers)
 
         return 'MBR: [{}], GPT: [{}]'.format(
-            ', '.join(mbr_identifiers),', '.join(gpt_identifiers))
+            ', '.join(mbr_identifiers), ', '.join(gpt_identifiers))
 
     def register(self):
         """Call this method to register plugin with :class:`FilesystemDetector \

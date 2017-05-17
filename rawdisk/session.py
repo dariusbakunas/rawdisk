@@ -56,8 +56,6 @@ class Session(object):
         self.__filename = filename
         self.__volumes = []
 
-
-
         # Detect partitioning scheme
         self.__partition_scheme = rawdisk.scheme.common.detect_scheme(filename)
 

@@ -31,19 +31,20 @@ class CliShell(Cmd):
         plugins = self.session.plugin_manager.filesystem_plugins
 
         data = [
-            [plugin.name, plugin.author, plugin.version,
-             plugin.description, plugin.plugin_object.identifier_string] for plugin in plugins]
+            [plugin.name, plugin.author, plugin.version, plugin.description,
+             plugin.plugin_object.identifier_string] for plugin in plugins]
 
         table = tabulate(
             tabular_data=data,
-            headers=['NAME', 'AUTHOR', 'VERSION', 'DESCRIPTION', 'IDENTIFIERS'])
+            headers=['NAME', 'AUTHOR', 'VERSION', 'DESCRIPTION', 'IDENTIFIERS']
+        )
 
         print(table)
 
     def do_list(self, resource):
         """
         Enumerate resources
-        
+
         Possible values: plugins
         """
         if resource == 'plugins':
@@ -51,7 +52,6 @@ class CliShell(Cmd):
         else:
             print("Unknown resource: '{}', type 'help list' "
                   "to get more information".format(resource))
-
 
     def do_load(self, filename):
         """Load disk image for analysis"""
@@ -67,7 +67,7 @@ class CliShell(Cmd):
     def do_shell(self, command):
         """
         Execute shell command
-        
+
         Use shell [command] or ![command] syntax
         """
         os.system(command)
