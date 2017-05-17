@@ -6,10 +6,17 @@ import uuid
 from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.plugins.filesystems.hfs_plus.hfs_plus_volume import HfsPlusVolume
 
+GPT_GUID = '{48465300-0000-11AA-AA11-00306543ECAC}'
+
 
 class HfsPlus(categories.IFilesystemPlugin):
     """Filesystem plugin for HFS+ partition.
     """
+
+    @property
+    def gpt_identifiers(self):
+        return [GPT_GUID]
+
     def register(self):
         """Registers this plugin with \
         :class:`~rawdisk.filesystems.detector.FilesystemDetector` \
@@ -17,7 +24,7 @@ class HfsPlus(categories.IFilesystemPlugin):
         """
         detector = FilesystemDetector()
         detector.add_gpt_plugin(
-            uuid.UUID('{48465300-0000-11AA-AA11-00306543ECAC}'),
+            uuid.UUID(GPT_GUID),
             self
         )
 
