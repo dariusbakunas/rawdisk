@@ -8,4 +8,4 @@ class ManagerModuleTest(unittest.TestCase):
 
     def test_load_plugins(self):
         self.manager.load_plugins()
-        self.assertEqual(len(self.manager.fs_plugins), 4)
+        self.assertEqual(len(self.manager.filesystem_plugins), 4)
