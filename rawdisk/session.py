@@ -4,6 +4,7 @@ import rawdisk.scheme
 import logging
 from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.filesystems.unknown_volume import UnknownVolume
+from rawdisk.plugins.plugin_manager import PluginManager
 from rawdisk.scheme.mbr import SECTOR_SIZE
 
 
@@ -18,16 +19,21 @@ class Session(object):
         :attr:`SCHEME_MBR <rawdisk.scheme.common.SCHEME_MBR>` \
         or :attr:`SCHEME_GPT <rawdisk.scheme.common.SCHEME_GPT>`.
     """
-    def __init__(self, plugin_manager):
+    def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.__volumes = []
         self.__partition_scheme = None
         self.__filename = None
-        self.__plugin_manager = plugin_manager
+        self.__fs_plugins = []
+
+    @property
+    def filesystem_plugins(self):
+        return self.__fs_plugins
 
     def load_plugins(self):
         """Load filesystem detection plugins"""
-        self.__plugin_manager.load_plugins()
+        plugin_manager = PluginManager()
+        self.__fs_plugins = plugin_manager.load_filesystem_plugins()
 
     @property
     def volumes(self):
@@ -37,10 +43,6 @@ class Session(object):
     @property
     def partition_scheme(self):
         return self.__partition_scheme
-
-    @property
-    def plugin_manager(self):
-        return self.__plugin_manager
 
     def load(self, filename, bs=512):
         """Starts filesystem analysis. Detects supported filesystems and \
@@ -58,20 +60,22 @@ class Session(object):
         # Detect partitioning scheme
         self.__partition_scheme = rawdisk.scheme.common.detect_scheme(filename)
 
+        plugin_objects = [plugin.plugin_object for plugin in self.__fs_plugins]
+        fs_detector = FilesystemDetector(fs_plugins=plugin_objects)
+
         if self.__partition_scheme == rawdisk.scheme.common.SCHEME_MBR:
-            self.__load_mbr_volumes(filename, bs)
+            self.__load_mbr_volumes(filename, fs_detector, bs)
         elif self.__partition_scheme == rawdisk.scheme.common.SCHEME_GPT:
-            self.__load_gpt_volumes(filename, bs)
+            self.__load_gpt_volumes(filename, fs_detector, bs)
         else:
             self.logger.warning('Partitioning scheme could not be determined.')
 
-    def __load_gpt_volumes(self, filename, bs=512):
-        detector = FilesystemDetector()
+    def __load_gpt_volumes(self, filename, fs_detector, bs=512):
         gpt = rawdisk.scheme.gpt.Gpt()
         gpt.load(filename)
 
         for entry in gpt.partition_entries:
-            volume = detector.detect_gpt(
+            volume = fs_detector.detect_gpt(
                 filename,
                 entry.first_lba * bs,
                 entry.type_guid
@@ -91,12 +95,11 @@ class Session(object):
                     )
                 )
 
-    def __load_mbr_volumes(self, filename, bs=512):
-        detector = FilesystemDetector()
+    def __load_mbr_volumes(self, filename, fs_detector, bs=512):
         mbr = rawdisk.scheme.mbr.Mbr(filename)
         # Go through table entries and analyse ones that are supported
         for entry in mbr.partition_table.entries:
-            volume = detector.detect_mbr(
+            volume = fs_detector.detect_mbr(
                 filename,
                 entry.part_offset,
                 entry.part_type

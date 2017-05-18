@@ -8,7 +8,6 @@ from rawdisk.plugins.filesystems.ntfs.bootsector import BootSector
 from rawdisk.plugins.filesystems.ntfs.mft import MftTable
 from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume, \
     NUM_SYSTEM_ENTRIES
-from rawdisk.filesystems.detector import FilesystemDetector
 
 # These are real values for the sample 'ntfs_mbr.vhd' volume:
 SAMPLE_OEM_ID = b'NTFS    '
@@ -40,27 +39,11 @@ class TestNtfsPlugin(unittest.TestCase):
     def setUp(self):
         self.filename = 'sample_images/ntfs_mbr.vhd'
         self.offset = SAMPLE_NTFS_PART_OFFSET
-        self.p = Ntfs()
-        self.detector = FilesystemDetector()
+        self.plugin = Ntfs()
 
     def test_detect(self):
-        self.assertTrue(self.p.detect(self.filename, self.offset))
-        self.assertFalse(self.p.detect(self.filename, self.offset+1))
-
-    def test_register(self):
-        self.p.register()
-
-        mbr_plugins = self.detector.get_mbr_plugins(fs_id=0x07)
-        gpt_plugins = self.detector.get_gpt_plugins(fs_guid=
-            uuid.UUID('{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}')
-        )
-
-        self.assertEqual(len(mbr_plugins), 1)
-        self.assertEqual(len(gpt_plugins), 1)
-
-    def tearDown(self):
-        # remove plugin registration
-        self.detector._clear_plugins()
+        self.assertTrue(self.plugin.detect(self.filename, self.offset))
+        self.assertFalse(self.plugin.detect(self.filename, self.offset + 1))
 
 
 class TestBootsector(unittest.TestCase):
