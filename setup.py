@@ -64,7 +64,7 @@ setup(
     tests_require=test_requirements,
     entry_points={
         'console_scripts': [
-            'rawdisk = rawdisk.main:main',
+            'rawdisk = rawdisk.__main__:main',
         ]
     }
 )

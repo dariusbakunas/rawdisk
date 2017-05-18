@@ -14,10 +14,10 @@ Subpackages
 Submodules
 ----------
 
-rawdisk\.main module
+rawdisk\.__main__ module
 --------------------
 
-.. automodule:: rawdisk.main
+.. automodule:: rawdisk.__main__
     :members:
     :undoc-members:
     :show-inheritance:
