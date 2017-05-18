@@ -61,15 +61,16 @@ class MbrPartitionEntry(RawStruct):
         hpc, spt = geometry['HPC'], geometry['SPT']
         return sect-1 + head*spt + cyl*hpc*spt
 
-    def get_type_label(self):
+    @property
+    def type_label(self):
         if self.fields.part_type in TYPES:
-            return '%s' % TYPES[self.fields.part_type]
+            return str(TYPES[self.fields.part_type])
         else:
             return 'unknown'
 
     def __str__(self):
         # calculated values
-        fields = self.fields.copy()
+        fields = {'self': self}
         fields['chs_start_sector'] = self.chs2lba(
             self.fields.starting_cylinder,
             self.fields.starting_head,
@@ -79,19 +80,14 @@ class MbrPartitionEntry(RawStruct):
             self.fields.ending_head,
             self.fields.ending_sector)
         fields['lba_start_sector'] = self.fields.relative_sector
-        fields['lba_end_sector'] = (self.relative_sector
+        fields['lba_end_sector'] = (self.fields.relative_sector
             + self.fields.total_sectors - 1)
-
-        fields['label'] = '(%s)' % self.get_type_label()
-
         return """\
-Bootable: %(boot_indicator)s
-Type: 0x%(part_type)02X %(label)s
-Start (CHS): %(chs_start_sector)s
-End   (CHS): %(chs_end_sector)s
-Start (LBA): %(lba_start_sector)s
-End   (LBA): %(lba_end_sector)s
-""" % fields
+Bootable: {self.fields.boot_indicator}
+Type: {self.part_type:02X} ({self.type_label})
+Start-End (by CHS): {chs_start_sector}-{chs_end_sector}
+Start-End (by LBA): {lba_start_sector}-{lba_end_sector}
+""".format(**fields)
 
 
 class PartitionTable(RawStruct):
@@ -114,6 +110,9 @@ class PartitionTable(RawStruct):
 
             if entry.fields.part_type != 0:
                 self.entries.append(entry)
+
+    def __getitem__(self, index):
+        return self.entries.__getitem__(index)
 
 
 class Mbr(RawStruct):
