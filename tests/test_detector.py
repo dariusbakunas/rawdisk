@@ -12,16 +12,6 @@ class TestFilesystemDetector(unittest.TestCase):
         self.guid_fs_id = uuid.UUID('{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}')
         self.mbr_fs_id = 0x07
 
-    def test_singleton(self):
-        detector = FilesystemDetector()
-        self.assertEqual(len(detector.get_mbr_plugins()), 0)
-        detector.add_mbr_plugin(self.mbr_fs_id, object())
-        detector.add_gpt_plugin(self.guid_fs_id, object())
-
-        detector2 = FilesystemDetector()
-        self.assertEqual(len(detector2.get_mbr_plugins()), 1)
-        self.assertEqual(len(detector2.get_gpt_plugins()), 1)
-
     def test_multiple_mbr_plugins_for_same_id(self):
         detector = FilesystemDetector()
         detector.add_mbr_plugin(self.mbr_fs_id, object())

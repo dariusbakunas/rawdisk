@@ -4,12 +4,11 @@
 detection routines that are internaly used by rawdisk.reader.Reader
 to match filesystems"""
 
-from rawdisk.util.singleton import Singleton
 from collections import defaultdict
 import logging
 
 
-class FilesystemDetector(object, metaclass=Singleton):
+class FilesystemDetector(object):
     """A class that allows to match filesystem id or guid against available
     plugins.
     """
