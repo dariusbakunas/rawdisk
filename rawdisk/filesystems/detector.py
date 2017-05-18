@@ -12,12 +12,27 @@ class FilesystemDetector(object):
     """A class that allows to match filesystem id or guid against available
     plugins.
     """
-    def __init__(self):
+    def __init__(self, fs_plugins=None):
         self.logger = logging.getLogger(__name__)
         # 2 dimensional array of fs_id : [list of plugins]
         self.__mbr_plugins = defaultdict(list)
         # 2 dimensional array of fs_guid : [list of plugins]
         self.__gpt_plugins = defaultdict(list)
+
+        if fs_plugins is not None:
+            self.__register_plugins(fs_plugins=fs_plugins)
+
+    def __register_plugins(self, fs_plugins):
+        for plugin in fs_plugins:
+            gpt_identifiers = plugin.gpt_identifiers
+            mbr_identifiers = plugin.mbr_identifiers
+
+            map(
+                lambda fs_id:
+                self.add_mbr_plugin(fs_id=fs_id, plugin=plugin), mbr_identifiers)
+            map(
+                lambda fs_guid:
+                self.add_gpt_plugin(fs_guid=fs_guid, plugin=plugin), gpt_identifiers)
 
     def _clear_plugins(self):
         self.__mbr_plugins.clear()
