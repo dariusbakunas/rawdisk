@@ -9,5 +9,5 @@ class TestReader(unittest.TestCase):
 
     def test_load_mbr(self):
         self.reader.load(filename='sample_images/ntfs_mbr.vhd')
-        self.assertEquals(self.reader.scheme, SCHEME_MBR)
-        self.assertEquals(len(self.reader.partitions), 1)
+        self.assertEqual(self.reader.scheme, SCHEME_MBR)
+        self.assertEqual(len(self.reader.partitions), 1)
