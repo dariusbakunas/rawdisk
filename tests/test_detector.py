@@ -4,7 +4,7 @@
 import unittest
 import uuid
 from rawdisk.filesystems.detector import FilesystemDetector
-from mock import Mock
+from mock import Mock, PropertyMock
 
 
 class TestFilesystemDetector(unittest.TestCase):
@@ -30,6 +30,24 @@ class TestFilesystemDetector(unittest.TestCase):
         detector = FilesystemDetector()
         self.assertIsNone(detector.detect_mbr("filename", 0, self.mbr_fs_id))
         self.assertIsNone(detector.detect_gpt("filename", 0, self.guid_fs_id))
+
+    def test_init_with_plugin_list_registers_plugins(self):
+        mbr_plugin_mock = Mock()
+        mbr_plugin_mock.mbr_identifiers = [self.mbr_fs_id]
+        mbr_plugin_mock.gpt_identifiers = []
+
+
+        gpt_plugin_mock = Mock()
+        gpt_plugin_mock.mbr_identifiers = []
+        gpt_plugin_mock.gpt_identifiers = [self.guid_fs_id]
+
+        detector = FilesystemDetector(fs_plugins=[mbr_plugin_mock, gpt_plugin_mock])
+
+        detector.detect_mbr(filename="filename", offset=0x10, fs_id=self.mbr_fs_id)
+        mbr_plugin_mock.detect.assert_called_once_with("filename", 0x10)
+
+        detector.detect_gpt(filename="filename", offset=0x20, fs_guid=self.guid_fs_id)
+        gpt_plugin_mock.detect.assert_called_once_with("filename", 0x20)
 
     def test_detect_mbr_calls_detect_on_mbr_plugin(self):
         filename = "filename"

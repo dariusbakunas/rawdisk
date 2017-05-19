@@ -27,12 +27,11 @@ class FilesystemDetector(object):
             gpt_identifiers = plugin.gpt_identifiers
             mbr_identifiers = plugin.mbr_identifiers
 
-            map(
-                lambda fs_id:
-                self.add_mbr_plugin(fs_id=fs_id, plugin=plugin), mbr_identifiers)
-            map(
-                lambda fs_guid:
-                self.add_gpt_plugin(fs_guid=fs_guid, plugin=plugin), gpt_identifiers)
+            for fs_id in mbr_identifiers:
+                self.add_mbr_plugin(fs_id=fs_id, plugin=plugin)
+
+            for fs_guid in gpt_identifiers:
+                self.add_gpt_plugin(fs_guid=fs_guid, plugin=plugin)
 
     def _clear_plugins(self):
         self.__mbr_plugins.clear()
