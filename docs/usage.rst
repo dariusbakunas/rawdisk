@@ -5,16 +5,18 @@ Basic Usage
 Loading data file
 =================
 
-In order to start filesystem analysis, you need to create :class:`~rawdisk.reader.Reader` instance::
+In order to start filesystem analysis, you need to create :class:`~rawdisk.session.Session` instance::
 
-    from rawdisk.reader import Reader
+    from rawdisk.session import Session
 
-    r = Reader()
-    r.load('sample_images/ntfs_mbr.vhd')
+    session = Session()
+    session.load_plugins()
+    session.load('sample_images/ntfs_mbr.vhd')
 
 Last line looks through available filesystem plugins in *rawdisk/plugins/filesystem*. If filesystem is matched, it initializes plugin's volume object. In order to print a list of available partitions (will only show those that were matched), type::
 
-    r.list_partitions()
+    for volume in session.volumes:
+        print(volume)
 
 .. code-block:: sh
 
@@ -25,29 +27,29 @@ Show selected volume information
 
 To print selected volume information::
 
-    ntfs_vol = r.partitions[0]
+    ntfs_vol = session.volumes[0]
     ntfs_vol.dump_volume()
 
 Output::
 
     Volume Information
-        Volume Name: New Volume
+        Volume Name: NTFS Volume
         Volume Version: 3.1
-        Volume Size: 1.00GB
+        Volume Size: 7.00MB
         Volume Offset: 0x10000
-        Total Sectors: 2091007
-        Total Clusters: 261375
-        MFT Offset: 0x15455000 (from beginning of volume)
+        Total Sectors: 14335
+        Total Clusters: 1791
+        MFT Offset: 0x265000 (from beginning of volume)
         MFT Mirror Offset: 0x2000
         MFT Record Size: 1.00KB
-        MFT Size: 127.62MB (12% of drive)
+        MFT Size: 0.87MB (12% of drive)
 
 Analysing selected partition
 ============================
 
 r.partitions is a list that contains matched volume objects. For example to get NTFS volume object (:class:`NtfsVolume <rawdisk.plugins.filesystems.ntfs.ntfs_volume.NtfsVolume>`)from the listing above::
 
-    ntfs_vol = r.partitions[0]
+    ntfs_vol = session.volumes[0]
 
 To get $MFT entry (index: 0)::
 
