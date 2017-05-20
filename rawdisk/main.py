@@ -69,7 +69,8 @@ def main():
         print('Scheme: Unknown')
 
     print('Partitions:')
-    session.volumes()
+    for volume in session.volumes:
+        print(volume)
 
 if __name__ == '__main__':
     main()
