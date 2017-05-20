@@ -6,12 +6,12 @@ import sys
 import logging.config
 import yaml
 from rawdisk.modes.cli.cli_mode import CliMode
-from rawdisk.modes.legacy.legacy_mode import LegacyMode
+from rawdisk.modes.scripted.scripted_mode import ScriptedMode
 
 
 MODE_CLI = 'cli'
-MODE_LEGACY = 'legacy'
-MODES = [MODE_CLI, MODE_LEGACY]
+MODE_SCRIPTED = 'scripted'
+MODES = [MODE_CLI, MODE_SCRIPTED]
 
 
 def setup_logging(config_path=None, log_level=logging.INFO):
@@ -108,10 +108,12 @@ def main():
     setup_logging(**logging_options)
     logger = logging.getLogger(__name__)
 
+    mode = ScriptedMode
+
     if args.mode == MODE_CLI:
-        CliMode.entry(args)
-    else:
-        LegacyMode.entry(args)
+        mode = CliMode
+
+    mode.entry(args)
 
 
 if __name__ == '__main__':

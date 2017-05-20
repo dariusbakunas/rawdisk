@@ -39,7 +39,7 @@ setup(
         'rawdisk.filesystems',
         'rawdisk.modes',
         'rawdisk.modes.cli',
-        'rawdisk.modes.legacy',
+        'rawdisk.modes.scripted',
         'rawdisk.plugins',
         'rawdisk.plugins.filesystems',
         'rawdisk.plugins.filesystems.apple_boot',

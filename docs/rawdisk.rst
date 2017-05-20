@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
 
     rawdisk.filesystems
+    rawdisk.modes
     rawdisk.plugins
     rawdisk.scheme
     rawdisk.util
@@ -22,10 +23,10 @@ rawdisk\.main module
     :undoc-members:
     :show-inheritance:
 
-rawdisk\.reader module
-----------------------
+rawdisk\.session module
+-----------------------
 
-.. automodule:: rawdisk.reader
+.. automodule:: rawdisk.session
     :members:
     :undoc-members:
     :show-inheritance:
