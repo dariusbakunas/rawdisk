@@ -1,33 +1,37 @@
 import logging
 import os
 from rawdisk.session import Session
-from rawdisk.modes.mode import Mode
 from tabulate import tabulate
 from cmd import Cmd
 
 
-class CliMode(Mode):
+class CliMode:
     @staticmethod
-    def entry(args=None):
+    def start():
         cli = CliShell()
         cli.initialize()
         cli.cmdloop()
 
 
 class CliShell(Cmd):
-    def __init__(self):
+    def __init__(self, session=None):
         super().__init__()
         self.prompt = self.get_prompt()
         self.ruler = '-'
         self.intro = 'Welcome to rawdisk shell. ' \
                      'Type help or ? to list command.\n'
-        self.session = Session()
+
+        if session is None:
+            self.session = Session()
+        else:
+            self.session = session
+
         self.logger = logging.getLogger(__name__)
 
     def initialize(self):
         self.session.load_plugins()
 
-    def list_plugins(self):
+    def __list_plugins(self):
         plugins = self.session.filesystem_plugins
 
         data = [
@@ -41,16 +45,21 @@ class CliShell(Cmd):
 
         print(table)
 
+    def __list_volumes(self):
+        pass
+
     def do_list(self, resource):
         """
         Enumerate resources
 
-        Possible values: plugins
+        Possible values: plugins, volumes
         """
         if resource == 'plugins':
-            self.list_plugins()
+            self.__list_plugins()
+        elif resource == 'volumes':
+            self.__list_volumes()
         else:
-            print("Unknown resource: '{}', type 'help list' "
+            self.logger.error("Unknown resource: '{}', type 'help list' "
                   "to get more information".format(resource))
 
     def do_load(self, filename):
@@ -87,7 +96,3 @@ class CliShell(Cmd):
 
     def close(self):
         return
-
-
-if __name__ == '__main__':
-    CliMode.entry()

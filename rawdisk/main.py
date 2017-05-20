@@ -1,78 +1,19 @@
 # -*- coding: utf-8 -*-
-
 import argparse
-import os
-import sys
-import logging.config
-import yaml
-from rawdisk.modes.cli.cli_mode import CliMode
-from rawdisk.modes.scripted.scripted_mode import ScriptedMode
-
-
-MODE_CLI = 'cli'
-MODE_SCRIPTED = 'scripted'
-MODES = [MODE_CLI, MODE_SCRIPTED]
-
-
-def setup_logging(config_path=None, log_level=logging.INFO):
-    """Setup logging configuration
-    """
-
-    config = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'formatters': {
-            'standard': {
-                'format':
-                    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            },
-        },
-        'handlers': {
-            'console': {
-                'class': 'logging.StreamHandler',
-                'level': log_level,
-                'formatter': 'standard',
-                'stream': 'ext://sys.stdout'
-            },
-        },
-        'loggers': {
-            '': {
-                'handlers': ['console'],
-                'level': log_level,
-                'propagate': True
-            },
-            'yapsy': {
-                'handlers': ['console'],
-                'level': logging.INFO
-            }
-        }
-    }
-
-    if config_path:
-        if os.path.exists(config_path):
-            with open(config_path, 'rt') as f:
-                config = yaml.safe_load(f.read())
-        else:
-            print('Specified path does not exist: {}, '
-                  'using default config'.format(config_path))
-
-    logging.config.dictConfig(config)
-
+import logging
+from rawdisk.util.logging import setup_logging
+from rawdisk.session import Session
+from rawdisk import scheme
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        usage='%s -m [{}]'.format(', '.join(MODES)) %
-              os.path.basename(sys.argv[0])
-    )
-
-    parser.add_argument(
-        '-m', '--mode', help='select mode', choices=MODES, required=True)
+    parser = argparse.ArgumentParser()
 
     parser.add_argument(
         '--verbose', help='increase output verbosity', action='store_true')
 
     parser.add_argument(
         '-f', '--file', dest='filename', help='specify source file',
+        required=True
     )
 
     parser.add_argument(
@@ -89,10 +30,7 @@ def parse_args():
 
     return args
 
-
 def main():
-    global logger
-
     args = parse_args()
 
     logging_options = {}
@@ -106,15 +44,32 @@ def main():
         logging_options['log_level'] = logging.getLevelName(args.log_level)
 
     setup_logging(**logging_options)
+
     logger = logging.getLogger(__name__)
 
-    mode = ScriptedMode
+    if args is None or args.filename is None:
+        logger.error('-f FILENAME must be specified')
+        exit(0)
 
-    if args.mode == MODE_CLI:
-        mode = CliMode
+    session = Session()
+    session.load_plugins()
 
-    mode.entry(args)
+    try:
+        session.load(args.filename)
+    except IOError:
+        logger.error(
+            'Failed to open disk image file: {}'.format(args.filename))
+        exit(1)
 
+    if session.partition_scheme == scheme.common.SCHEME_MBR:
+        print('Scheme: MBR')
+    elif session.partition_scheme == scheme.common.SCHEME_GPT:
+        print('Scheme: GPT')
+    else:
+        print('Scheme: Unknown')
+
+    print('Partitions:')
+    session.volumes()
 
 if __name__ == '__main__':
     main()
