@@ -28,16 +28,16 @@ class FilesystemDetector(object):
             mbr_identifiers = plugin.mbr_identifiers
 
             for fs_id in mbr_identifiers:
-                self.add_mbr_plugin(fs_id=fs_id, plugin=plugin)
+                self.register_mbr_plugin(fs_id=fs_id, plugin=plugin)
 
             for fs_guid in gpt_identifiers:
-                self.add_gpt_plugin(fs_guid=fs_guid, plugin=plugin)
+                self.register_gpt_plugin(fs_guid=fs_guid, plugin=plugin)
 
-    def _clear_plugins(self):
+    def clear_plugins(self):
         self.__mbr_plugins.clear()
         self.__gpt_plugins.clear()
 
-    def _get_plugin_name(self, plugin):
+    def __get_plugin_name(self, plugin):
         return type(plugin).__name__
 
     def get_gpt_plugins(self, fs_guid=None):
@@ -52,7 +52,7 @@ class FilesystemDetector(object):
         else:
             return self.__mbr_plugins.get(fs_id)
 
-    def add_mbr_plugin(self, fs_id, plugin):
+    def register_mbr_plugin(self, fs_id, plugin):
         """Used in plugin's registration routine,
         to associate it's detection method with given filesystem id
 
@@ -61,10 +61,10 @@ class FilesystemDetector(object):
             plugin: plugin that supports this filesystem
         """
         self.logger.debug('MBR: {}, FS ID: {}'
-                          .format(self._get_plugin_name(plugin), fs_id))
+                          .format(self.__get_plugin_name(plugin), fs_id))
         self.__mbr_plugins[fs_id].append(plugin)
 
-    def add_gpt_plugin(self, fs_guid, plugin):
+    def register_gpt_plugin(self, fs_guid, plugin):
         """Used in plugin's registration routine,
         to associate it's detection method with given filesystem guid
 
@@ -73,7 +73,7 @@ class FilesystemDetector(object):
             plugin: plugin that supports this filesystem
         """
         self.logger.debug('GPT: {}, GUID: {}'
-                          .format(self._get_plugin_name(plugin), fs_guid))
+                          .format(self.__get_plugin_name(plugin), fs_guid))
         self.__gpt_plugins[fs_guid].append(plugin)
 
     def detect_mbr(self, filename, offset, fs_id):

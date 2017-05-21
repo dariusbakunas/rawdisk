@@ -14,15 +14,15 @@ class TestFilesystemDetector(unittest.TestCase):
 
     def test_multiple_mbr_plugins_for_same_id(self):
         detector = FilesystemDetector()
-        detector.add_mbr_plugin(self.mbr_fs_id, object())
-        detector.add_mbr_plugin(self.mbr_fs_id, object())
+        detector.register_mbr_plugin(self.mbr_fs_id, object())
+        detector.register_mbr_plugin(self.mbr_fs_id, object())
 
         self.assertEqual(len(detector.get_mbr_plugins(fs_id=self.mbr_fs_id)), 2)
 
     def test_multiple_gpt_plugins_for_same_id(self):
         detector = FilesystemDetector()
-        detector.add_gpt_plugin(self.guid_fs_id, object())
-        detector.add_gpt_plugin(self.guid_fs_id, object())
+        detector.register_gpt_plugin(self.guid_fs_id, object())
+        detector.register_gpt_plugin(self.guid_fs_id, object())
 
         self.assertEqual(len(detector.get_gpt_plugins(fs_guid=self.guid_fs_id)), 2)
 
@@ -55,7 +55,7 @@ class TestFilesystemDetector(unittest.TestCase):
         detector = FilesystemDetector()
         mbr_plugin_mock = Mock()
         mbr_plugin_mock.get_volume_object.return_value = "volume"
-        detector.add_mbr_plugin(self.mbr_fs_id, mbr_plugin_mock)
+        detector.register_mbr_plugin(self.mbr_fs_id, mbr_plugin_mock)
         detector.detect_mbr(filename, offset, self.mbr_fs_id)
 
         mbr_plugin_mock.detect.assert_called_once_with(filename, offset)
@@ -65,7 +65,7 @@ class TestFilesystemDetector(unittest.TestCase):
         mbr_plugin_mock = Mock()
         mbr_plugin_mock.get_volume_object.return_value = "volume"
         mbr_plugin_mock.detect.return_value = True
-        detector.add_mbr_plugin(self.mbr_fs_id, mbr_plugin_mock)
+        detector.register_mbr_plugin(self.mbr_fs_id, mbr_plugin_mock)
         volume_object = detector.detect_mbr("filename", 0, self.mbr_fs_id)
         self.assertEqual(volume_object, "volume")
 
@@ -74,7 +74,7 @@ class TestFilesystemDetector(unittest.TestCase):
         mbr_plugin_mock = Mock()
         mbr_plugin_mock.get_volume_object.return_value = "volume"
         mbr_plugin_mock.detect.return_value = False
-        detector.add_mbr_plugin(self.mbr_fs_id, mbr_plugin_mock)
+        detector.register_mbr_plugin(self.mbr_fs_id, mbr_plugin_mock)
         volume_object = detector.detect_mbr("filename", 0, self.mbr_fs_id)
         self.assertIsNone(volume_object)
 
@@ -84,7 +84,7 @@ class TestFilesystemDetector(unittest.TestCase):
         detector = FilesystemDetector()
         gpt_plugin_mock = Mock()
         gpt_plugin_mock.get_volume_object.return_value = "volume"
-        detector.add_gpt_plugin(self.guid_fs_id, gpt_plugin_mock)
+        detector.register_gpt_plugin(self.guid_fs_id, gpt_plugin_mock)
         detector.detect_gpt(filename, offset, self.guid_fs_id)
 
         gpt_plugin_mock.detect.assert_called_once_with(filename, offset)
@@ -94,7 +94,7 @@ class TestFilesystemDetector(unittest.TestCase):
         gpt_plugin_mock = Mock()
         gpt_plugin_mock.get_volume_object.return_value = "volume"
         gpt_plugin_mock.detect.return_value = True
-        detector.add_gpt_plugin(self.guid_fs_id, gpt_plugin_mock)
+        detector.register_gpt_plugin(self.guid_fs_id, gpt_plugin_mock)
         volume_object = detector.detect_gpt("filename", 0, self.guid_fs_id)
         self.assertEqual(volume_object, "volume")
 
@@ -103,7 +103,7 @@ class TestFilesystemDetector(unittest.TestCase):
         gpt_plugin_mock = Mock()
         gpt_plugin_mock.get_volume_object.return_value = "volume"
         gpt_plugin_mock.detect.return_value = False
-        detector.add_gpt_plugin(self.guid_fs_id, gpt_plugin_mock)
+        detector.register_gpt_plugin(self.guid_fs_id, gpt_plugin_mock)
         volume_object = detector.detect_gpt("filename", 0, self.guid_fs_id)
         self.assertIsNone(volume_object)
 
