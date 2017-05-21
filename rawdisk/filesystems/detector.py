@@ -75,7 +75,7 @@ class FilesystemDetector(object):
             fs_guid: filesystem guid that is read from GPT partition entry
             plugin: plugin that supports this filesystem
         """
-        key = uuid.UUID(fs_guid)
+        key = uuid.UUID(fs_guid.lower())
 
         self.logger.debug('GPT: {}, GUID: {}'
                           .format(self.__get_plugin_name(plugin), fs_guid))
