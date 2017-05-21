@@ -46,7 +46,11 @@ class CliShell(Cmd):
         print(table)
 
     def __list_volumes(self):
-        pass
+        if self.__session.filename is None:
+            self.logger.warning('Please load disk image first')
+        else:
+            for volume in self.__session.volumes:
+                print(volume)
 
     def do_list(self, resource):
         """
@@ -71,7 +75,10 @@ class CliShell(Cmd):
 
     def do_session(self, args):
         """Print current session information"""
-        pass
+        filename = 'Not specified' if self.__session.filename is None \
+            else self.__session.filename
+
+        print('{0: <30}: {1}'.format('Filename', filename))
 
     def do_shell(self, command):
         """
