@@ -26,19 +26,6 @@ class Ntfs(categories.IFilesystemPlugin):
     def gpt_identifiers(self):
         return [GPT_GUID]
 
-    def register(self):
-        """Registers this plugin with :class:`FilesystemDetector \
-        <rawdisk.filesystems.detector.FilesystemDetector>` as gpt plugin, \
-        with type guid *{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}* and \
-        as mbr plugin with type id 0x07
-        """
-        detector = FilesystemDetector()
-        detector.add_mbr_plugin(MBR_ID, self)
-        detector.add_gpt_plugin(
-            uuid.UUID(GPT_GUID),
-            self
-        )
-
     def detect(self, filename, offset):
         """Verifies NTFS filesystem signature.
 

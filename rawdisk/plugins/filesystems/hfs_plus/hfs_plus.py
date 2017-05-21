@@ -17,17 +17,6 @@ class HfsPlus(categories.IFilesystemPlugin):
     def gpt_identifiers(self):
         return [GPT_GUID]
 
-    def register(self):
-        """Registers this plugin with \
-        :class:`~rawdisk.filesystems.detector.FilesystemDetector` \
-        as gpt plugin, with type guid *{48465300-0000-11AA-AA11-00306543ECAC}*
-        """
-        detector = FilesystemDetector()
-        detector.add_gpt_plugin(
-            uuid.UUID(GPT_GUID),
-            self
-        )
-
     def detect(self, filename, offset):
         """Always returns True, since there is only one partition with \
         this type GUID, no need to do further verification.
