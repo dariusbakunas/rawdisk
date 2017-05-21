@@ -14,10 +14,10 @@ class TestMbrModule(unittest.TestCase):
         self.assertEqual(self.mbr.partition_table.size, PARTITION_TABLE_SIZE)
 
     def test_partition_table_has_one_entry(self):
-        self.assertEqual(len(self.mbr.partition_table.entries), 1)
+        self.assertEqual(len(self.mbr.partition_table.partitions), 1)
 
     def test_partition_entry(self):
-        part = self.mbr.partition_table.entries[0]
+        part = self.mbr.partition_table.partitions[0]
 
         self.assertEqual(part.fields.boot_indicator, 0)
         self.assertEqual(part.fields.starting_head, 2)

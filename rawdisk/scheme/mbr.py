@@ -63,7 +63,7 @@ class PartitionTable(RawStruct):
     """
     def __init__(self, data):
         RawStruct.__init__(self, data)
-        self.entries = []
+        self.__partitions = []
 
         for i in range(0, MBR_NUM_PARTS):
             entry = MbrPartitionEntry(
@@ -71,7 +71,11 @@ class PartitionTable(RawStruct):
             )
 
             if entry.fields.part_type != 0:
-                self.entries.append(entry)
+                self.__partitions.append(entry)
+
+    @property
+    def partitions(self):
+        return self.__partitions
 
 
 class Mbr(RawStruct):
@@ -103,13 +107,17 @@ class Mbr(RawStruct):
             raise Exception("Invalid MBR signature")
 
         if load_partition_table:
-            self._load_partition_table()
+            self.__load_partition_table()
+
+    @property
+    def partition_table(self):
+        return self.__partition_table
 
     def export_bootstrap(self, filename):
         self.export(filename, 0, 446)
 
-    def _load_partition_table(self):
+    def __load_partition_table(self):
         logger.info('Loading partition table')
-        self.partition_table = PartitionTable(
+        self.__partition_table = PartitionTable(
             self.get_chunk(PARTITION_TABLE_OFFSET, PARTITION_TABLE_SIZE)
         )

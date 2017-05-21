@@ -108,7 +108,7 @@ class Session(object):
     def __load_mbr_volumes(self, filename, fs_detector, bs=512):
         mbr = rawdisk.scheme.mbr.Mbr(filename)
         # Go through table entries and analyse ones that are supported
-        for entry in mbr.partition_table.entries:
+        for entry in mbr.partition_table.partitions:
             volume = fs_detector.detect_mbr(
                 filename,
                 entry.part_offset,

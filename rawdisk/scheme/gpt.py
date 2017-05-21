@@ -49,7 +49,11 @@ class Gpt(object):
         header (GptHeader): Initialized :class:`GptHeader` object
     """
     def __init__(self):
-        self.partition_entries = []
+        self.__partition_entries = []
+
+    @property
+    def partition_entries(self):
+        return self.__partition_entries
 
     def load(self, filename, bs=512):
         """Loads GPT partition table.
@@ -72,9 +76,9 @@ class Gpt(object):
             if (self.header.signature != GPT_SIGNATURE):
                 raise Exception("Invalid GPT signature")
 
-            self._load_partition_entries(f, bs)
+            self.__load_partition_entries(f, bs)
 
-    def _load_partition_entries(self, fd, bs):
+    def __load_partition_entries(self, fd, bs):
         """Loads the list of :class:`GptPartition` partition entries
 
         Args:
@@ -88,7 +92,7 @@ class Gpt(object):
             if entry.type_guid != uuid.UUID(
                 '{00000000-0000-0000-0000-000000000000}'
             ):
-                self.partition_entries.append(entry)
+                self.__partition_entries.append(entry)
             else:
                 # stop loading on empty partition entry
                 break
