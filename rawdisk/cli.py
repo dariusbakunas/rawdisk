@@ -36,7 +36,7 @@ def main():
     elif args.log_level:
         logging_options['log_level'] = logging.getLevelName(args.log_level)
 
-    logging_options['formatter'] = 'cli'
+    logging_options['formatter'] = 'ui'
 
     setup_logging(**logging_options)
 

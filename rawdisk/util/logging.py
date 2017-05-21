@@ -14,7 +14,7 @@ def setup_logging(config_path=None, log_level=logging.INFO, formatter='standard'
                 'format':
                     '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
             },
-            'cli': {
+            'ui': {
                 'format':
                     '[%(levelname)s] %(message)s'
             }
