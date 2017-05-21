@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 import argparse
 import logging
+import sys
+from collections import namedtuple
+
 from rawdisk.util.logging import setup_logging
 from rawdisk.session import Session
-from rawdisk import scheme
+from rawdisk.scheme.common import PartitionScheme
 
-def parse_args():
+def parse_args(args):
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -26,30 +29,35 @@ def parse_args():
         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
     )
 
-    args = parser.parse_args()
+    parsed_args = parser.parse_args(args)
 
-    return args
+    Options = namedtuple('Options', ['log_level', 'log_config', 'filename'])
 
-def main():
-    args = parse_args()
+    options = Options(
+        log_level='DEBUG' if parsed_args.verbose
+            else parsed_args.log_level,
+        log_config=parsed_args.log_config,
+        filename=parsed_args.filename
+    )
 
+    return options
+
+def configure_logging(args):
     logging_options = {}
 
     if args.log_config:
         logging_options['config_path'] = args.log_config
 
-    if args.verbose:
-        logging_options['log_level'] = logging.DEBUG
-    elif args.log_level:
+    if args.log_level:
         logging_options['log_level'] = logging.getLevelName(args.log_level)
 
     setup_logging(**logging_options)
 
-    logger = logging.getLogger(__name__)
+def main():
+    args = parse_args(sys.argv[1:])
+    configure_logging(args)
 
-    if args is None or args.filename is None:
-        logger.error('-f FILENAME must be specified')
-        exit(0)
+    logger = logging.getLogger(__name__)
 
     session = Session()
     session.load_plugins()
@@ -61,9 +69,9 @@ def main():
             'Failed to open disk image file: {}'.format(args.filename))
         exit(1)
 
-    if session.partition_scheme == scheme.common.SCHEME_MBR:
+    if session.partition_scheme == PartitionScheme.SCHEME_MBR:
         print('Scheme: MBR')
-    elif session.partition_scheme == scheme.common.SCHEME_GPT:
+    elif session.partition_scheme == PartitionScheme.SCHEME_GPT:
         print('Scheme: GPT')
     else:
         print('Scheme: Unknown')

@@ -1,6 +1,5 @@
 import unittest
 from rawdisk.session import Session
-from rawdisk.scheme.common import PartitionScheme
 from rawdisk.filesystems.unknown_volume import UnknownVolume
 from rawdisk.scheme.common import PartitionScheme
 
