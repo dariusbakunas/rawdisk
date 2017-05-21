@@ -6,6 +6,7 @@ to match filesystems"""
 
 from collections import defaultdict
 import logging
+import uuid
 
 
 class FilesystemDetector(object):
@@ -74,9 +75,11 @@ class FilesystemDetector(object):
             fs_guid: filesystem guid that is read from GPT partition entry
             plugin: plugin that supports this filesystem
         """
+        key = uuid.UUID(fs_guid)
+
         self.logger.debug('GPT: {}, GUID: {}'
                           .format(self.__get_plugin_name(plugin), fs_guid))
-        self.__gpt_plugins[fs_guid].append(plugin)
+        self.__gpt_plugins[key].append(plugin)
 
     def detect_mbr(self, filename, offset, fs_id):
         """Used by rawdisk.session.Session to match mbr partitions against

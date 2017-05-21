@@ -9,7 +9,7 @@ from mock import Mock, PropertyMock
 
 class TestFilesystemDetector(unittest.TestCase):
     def setUp(self):
-        self.guid_fs_id = uuid.UUID('{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}')
+        self.guid_fs_id = '{EBD0A0A2-B9E5-4433-87C0-68B6B72699C7}'
         self.mbr_fs_id = 0x07
 
     def test_multiple_mbr_plugins_for_same_id(self):
@@ -24,7 +24,7 @@ class TestFilesystemDetector(unittest.TestCase):
         detector.register_gpt_plugin(self.guid_fs_id, object())
         detector.register_gpt_plugin(self.guid_fs_id, object())
 
-        self.assertEqual(len(detector.get_gpt_plugins(fs_guid=self.guid_fs_id)), 2)
+        self.assertEqual(len(detector.get_gpt_plugins(fs_guid=uuid.UUID(self.guid_fs_id))), 2)
 
     def test_detection_with_no_plugins(self):
         detector = FilesystemDetector()
@@ -46,7 +46,7 @@ class TestFilesystemDetector(unittest.TestCase):
         detector.detect_mbr(filename="filename", offset=0x10, fs_id=self.mbr_fs_id)
         mbr_plugin_mock.detect.assert_called_once_with("filename", 0x10)
 
-        detector.detect_gpt(filename="filename", offset=0x20, fs_guid=self.guid_fs_id)
+        detector.detect_gpt(filename="filename", offset=0x20, fs_guid=uuid.UUID(self.guid_fs_id))
         gpt_plugin_mock.detect.assert_called_once_with("filename", 0x20)
 
     def test_detect_mbr_calls_detect_on_mbr_plugin(self):
@@ -85,7 +85,7 @@ class TestFilesystemDetector(unittest.TestCase):
         gpt_plugin_mock = Mock()
         gpt_plugin_mock.get_volume_object.return_value = "volume"
         detector.register_gpt_plugin(self.guid_fs_id, gpt_plugin_mock)
-        detector.detect_gpt(filename, offset, self.guid_fs_id)
+        detector.detect_gpt(filename, offset, uuid.UUID(self.guid_fs_id))
 
         gpt_plugin_mock.detect.assert_called_once_with(filename, offset)
 
@@ -95,7 +95,7 @@ class TestFilesystemDetector(unittest.TestCase):
         gpt_plugin_mock.get_volume_object.return_value = "volume"
         gpt_plugin_mock.detect.return_value = True
         detector.register_gpt_plugin(self.guid_fs_id, gpt_plugin_mock)
-        volume_object = detector.detect_gpt("filename", 0, self.guid_fs_id)
+        volume_object = detector.detect_gpt("filename", 0, uuid.UUID(self.guid_fs_id))
         self.assertEqual(volume_object, "volume")
 
     def test_detect_gpt_returns_none_when_plugin_returns_false(self):
