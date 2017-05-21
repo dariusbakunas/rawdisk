@@ -23,10 +23,9 @@ class PluginManager(object):
         self.logger = logging.getLogger(__name__)
 
     def load_filesystem_plugins(self):
-        """Looks for *.yapsy-plugin files and loads them. It calls 'register' \
-                method for each plugin, which in turn registers with \
-                :class:`FilesystemDetector \
-                <rawdisk.filesystems.detector.FilesystemDetector>`.
+        """Looks for *.yapsy-plugin files, loads them and returns a list
+            of :class:`VersionedPluginInfo \
+            <yapsy.VersionedPluginManager.VersionedPluginInfo>` objects
 
                 Note:
                     Plugin search locations:

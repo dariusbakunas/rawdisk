@@ -7,13 +7,21 @@ Subpackages
 .. toctree::
 
     rawdisk.filesystems
-    rawdisk.modes
     rawdisk.plugins
     rawdisk.scheme
+    rawdisk.ui
     rawdisk.util
 
 Submodules
 ----------
+
+rawdisk\.cli module
+-------------------
+
+.. automodule:: rawdisk.cli
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 rawdisk\.main module
 --------------------
