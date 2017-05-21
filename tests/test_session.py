@@ -1,6 +1,6 @@
 import unittest
 from rawdisk.session import Session
-from rawdisk.scheme.common import SCHEME_MBR
+from rawdisk.scheme.common import PartitionScheme
 from rawdisk.filesystems.unknown_volume import UnknownVolume
 
 
@@ -13,7 +13,7 @@ class TestSession(unittest.TestCase):
 
     def test_load_mbr_without_plugins(self):
         self.session.load(filename='sample_images/ntfs_mbr.vhd')
-        self.assertEqual(self.session.partition_scheme, SCHEME_MBR)
+        self.assertEqual(self.session.partition_scheme, PartitionScheme.SCHEME_MBR)
         self.assertEqual(len(self.session.volumes), 1)
         self.assertEqual(type(self.session.volumes[0]), UnknownVolume)
 

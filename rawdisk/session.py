@@ -6,7 +6,7 @@ from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.filesystems.unknown_volume import UnknownVolume
 from rawdisk.plugins.plugin_manager import PluginManager
 from rawdisk.scheme.mbr import SECTOR_SIZE
-
+from rawdisk.scheme.common import PartitionScheme
 
 class Session(object):
     """Main class used to start filesystem analysis.
@@ -44,6 +44,16 @@ class Session(object):
     def partition_scheme(self):
         return self.__partition_scheme
 
+    @property
+    def filename(self):
+        return self.__filename
+
+    def __analyze_disk_image(self, filename, bs=512):
+        pass
+
+    def reload(self):
+        pass
+
     def load(self, filename, bs=512):
         """Starts filesystem analysis. Detects supported filesystems and \
         loads :attr:`partitions` array.
@@ -63,9 +73,9 @@ class Session(object):
         plugin_objects = [plugin.plugin_object for plugin in self.__fs_plugins]
         fs_detector = FilesystemDetector(fs_plugins=plugin_objects)
 
-        if self.__partition_scheme == rawdisk.scheme.common.SCHEME_MBR:
+        if self.__partition_scheme == PartitionScheme.SCHEME_MBR:
             self.__load_mbr_volumes(filename, fs_detector, bs)
-        elif self.__partition_scheme == rawdisk.scheme.common.SCHEME_GPT:
+        elif self.__partition_scheme == PartitionScheme.SCHEME_GPT:
             self.__load_gpt_volumes(filename, fs_detector, bs)
         else:
             self.logger.warning('Partitioning scheme could not be determined.')
