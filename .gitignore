@@ -45,3 +45,5 @@ docs/_build
 
 coverage.xml
 .eggs
+
+.DS_Store
