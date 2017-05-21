@@ -23,6 +23,8 @@ class FilesystemDetector(object):
             self.__register_plugins(fs_plugins=fs_plugins)
 
     def __register_plugins(self, fs_plugins):
+        self.logger.debug('Registering filesystem plugins')
+
         for plugin in fs_plugins:
             gpt_identifiers = plugin.gpt_identifiers
             mbr_identifiers = plugin.mbr_identifiers
