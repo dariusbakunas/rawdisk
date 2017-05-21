@@ -68,7 +68,7 @@ setup(
     entry_points={
         'console_scripts': [
             'rawdisk = rawdisk.main:main',
-            'rawdisk-ui = rawdisk.ui:main'
+            'rawdisk-cli = rawdisk.cli:main'
         ]
     }
 )
