@@ -1,6 +1,6 @@
 [Core]
-Name = Ext2Plugin
-Module = linux/ext2.py
+Name = Ext2
+Module = ext2/ext2.py
 
 [Documentation]
 Author = anatoly techtonik

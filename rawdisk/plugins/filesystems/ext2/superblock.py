@@ -1,17 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Linux Ext2 volume:
-
-offset  size   description
---------------------------
-0x0     1024   boot block (unused)
-0x400   1024   superblock
-
-"""
 import math
-
-import rawdisk.plugins.categories as categories
-from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.util.rawstruct import RawStruct
 
 
@@ -66,30 +53,8 @@ class SuperBlock(RawStruct):
         )
 
         return """\
-Block size: {block_size}
-Blocks: {blocks}
-Block groups: {groups}
-Inodes: {inodes}
-Total size: {size} """.format(**fields)
-
-
-
-class LinuxPlugin(categories.IFilesystemPlugin):
-    """Plugin for Linux partition(s)"""
-
-    def register(self):
-        """Registers as mbr plugin for partition type 0x83 """
-        detector = FilesystemDetector()
-        detector.add_mbr_plugin(0x83, self)
-
-    def detect(self, filename, offset):
-        sb = SuperBlock(
-            filename=filename,
-            offset=offset + 1024,
-            length=1024)
-
-        if sb.magic == 0xef53:
-            # ext2
-            return True
-
-        return False
+            Block size: {block_size}
+            Blocks: {blocks}
+            Block groups: {groups}
+            Inodes: {inodes}
+            Total size: {size} """.format(**fields)
