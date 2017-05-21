@@ -22,17 +22,17 @@ class CliShell(Cmd):
                      'Type help or ? to list command.\n'
 
         if session is None:
-            self.session = Session()
+            self.__session = Session()
         else:
-            self.session = session
+            self.__session = session
 
         self.logger = logging.getLogger(__name__)
 
     def initialize(self):
-        self.session.load_plugins()
+        self.__session.load_plugins()
 
     def __list_plugins(self):
-        plugins = self.session.filesystem_plugins
+        plugins = self.__session.filesystem_plugins
 
         data = [
             [plugin.name, plugin.author, plugin.version, plugin.description,
@@ -65,7 +65,7 @@ class CliShell(Cmd):
     def do_load(self, filename):
         """Load disk image for analysis"""
         try:
-            self.session.load(filename)
+            self.__session.load(filename)
         except IOError as e:
             self.logger.error(e.strerror)
 
