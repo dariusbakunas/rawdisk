@@ -6,20 +6,16 @@ import uuid
 from rawdisk.filesystems.detector import FilesystemDetector
 import rawdisk.plugins.filesystems.efi_system.efi_system_volume as volume
 
+GPT_GUID = '{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}'
+
 
 class EfiSystem(categories.IFilesystemPlugin):
     """Filesystem plugin for EFI System partition.
     """
-    def register(self):
-        """Registers this plugin with \
-        :class:`~rawdisk.filesystems.detector.FilesystemDetector` \
-        as gpt plugin, with type guid *{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}*
-        """
-        detector = FilesystemDetector()
-        detector.add_gpt_plugin(
-            uuid.UUID('{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}'),
-            self
-        )
+
+    @property
+    def gpt_identifiers(self):
+        return [GPT_GUID]
 
     def detect(self, filename, offset):
         """Always returns True, since there is only one partition with this type GUID,

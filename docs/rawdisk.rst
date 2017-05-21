@@ -9,10 +9,19 @@ Subpackages
     rawdisk.filesystems
     rawdisk.plugins
     rawdisk.scheme
+    rawdisk.ui
     rawdisk.util
 
 Submodules
 ----------
+
+rawdisk\.cli module
+-------------------
+
+.. automodule:: rawdisk.cli
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 rawdisk\.main module
 --------------------
@@ -22,10 +31,10 @@ rawdisk\.main module
     :undoc-members:
     :show-inheritance:
 
-rawdisk\.reader module
-----------------------
+rawdisk\.session module
+-----------------------
 
-.. automodule:: rawdisk.reader
+.. automodule:: rawdisk.session
     :members:
     :undoc-members:
     :show-inheritance:

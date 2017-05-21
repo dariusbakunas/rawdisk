@@ -1,20 +1,13 @@
-# -*- coding: utf-8 -*-
 import argparse
 import logging
+from rawdisk.ui.cli.cli_mode import CliMode
 from rawdisk.util.logging import setup_logging
-from rawdisk.session import Session
-from rawdisk import scheme
 
 def parse_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
         '--verbose', help='increase output verbosity', action='store_true')
-
-    parser.add_argument(
-        '-f', '--file', dest='filename', help='specify source file',
-        required=True
-    )
 
     parser.add_argument(
         '--log-config', dest='log_config',
@@ -43,34 +36,11 @@ def main():
     elif args.log_level:
         logging_options['log_level'] = logging.getLevelName(args.log_level)
 
+    logging_options['formatter'] = 'cli'
+
     setup_logging(**logging_options)
 
-    logger = logging.getLogger(__name__)
-
-    if args is None or args.filename is None:
-        logger.error('-f FILENAME must be specified')
-        exit(0)
-
-    session = Session()
-    session.load_plugins()
-
-    try:
-        session.load(args.filename)
-    except IOError:
-        logger.error(
-            'Failed to open disk image file: {}'.format(args.filename))
-        exit(1)
-
-    if session.partition_scheme == scheme.common.SCHEME_MBR:
-        print('Scheme: MBR')
-    elif session.partition_scheme == scheme.common.SCHEME_GPT:
-        print('Scheme: GPT')
-    else:
-        print('Scheme: Unknown')
-
-    print('Partitions:')
-    for volume in session.volumes:
-        print(volume)
+    CliMode.start()
 
 if __name__ == '__main__':
     main()

@@ -6,20 +6,15 @@ import uuid
 from rawdisk.filesystems.detector import FilesystemDetector
 import rawdisk.plugins.filesystems.apple_boot.apple_boot_volume as volume
 
+GPT_GUID = '{426f6f74-0000-11aa-aa11-00306543ecac}'
+
 
 class AppleBoot(categories.IFilesystemPlugin):
     """Filesystem plugin for Apple_Boot partition.
     """
-    def register(self):
-        """Registers this plugin with \
-        :class:`~rawdisk.filesystems.detector.FilesystemDetector` \
-        as gpt plugin, with type guid *{426f6f74-0000-11aa-aa11-00306543ecac}*
-        """
-        detector = FilesystemDetector()
-        detector.add_gpt_plugin(
-            uuid.UUID('{426f6f74-0000-11aa-aa11-00306543ecac}'),
-            self
-        )
+    @property
+    def gpt_identifiers(self):
+        return [GPT_GUID]
 
     def detect(self, filename, offset):
         """Always returns True, since there is only one partition \

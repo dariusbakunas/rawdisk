@@ -8,16 +8,16 @@ Attributes:
     SCHEME_GPT (int): GPT Scheme was identified
     SCHEME_MBR (int): MBR Scheme was indentified
 """
-
-from . import mbr
-from . import gpt
 import struct
 import logging
+from enum import Enum
+from rawdisk.scheme import mbr
+from rawdisk.scheme import gpt
 
-SCHEME_UNKNOWN = 0x1
-SCHEME_MBR = 0x2
-SCHEME_GPT = 0x4
-
+class PartitionScheme(Enum):
+    SCHEME_UNKNOWN = 0x1
+    SCHEME_MBR = 0x2
+    SCHEME_GPT = 0x4
 
 def detect_scheme(filename):
     """Detects partitioning scheme of the source
@@ -34,7 +34,7 @@ def detect_scheme(filename):
 
     >>> from rawdisk.scheme.common import *
     >>> scheme = detect_scheme('/dev/disk1')
-    >>> if scheme == SCHEME_MBR:
+    >>> if scheme == PartitionScheme.SCHEME_MBR:
     >>> <...>
     """
 
@@ -50,7 +50,7 @@ def detect_scheme(filename):
         if signature != mbr.MBR_SIGNATURE:
             # Something else
             logger.debug('Unknown partitioning scheme')
-            return SCHEME_UNKNOWN
+            return PartitionScheme.SCHEME_UNKNOWN
         else:
             # Could be MBR or GPT, look for GPT header
             f.seek(gpt.GPT_HEADER_OFFSET)
@@ -59,7 +59,7 @@ def detect_scheme(filename):
 
             if signature != gpt.GPT_SIGNATURE:
                 logger.debug('MBR scheme detected')
-                return SCHEME_MBR
+                return PartitionScheme.SCHEME_MBR
             else:
                 logger.debug('GPT scheme detected')
-                return SCHEME_GPT
+                return PartitionScheme.SCHEME_GPT

@@ -37,12 +37,15 @@ setup(
     packages=[
         'rawdisk',
         'rawdisk.filesystems',
+        'rawdisk.ui',
+        'rawdisk.ui.cli',
         'rawdisk.plugins',
         'rawdisk.plugins.filesystems',
         'rawdisk.plugins.filesystems.apple_boot',
         'rawdisk.plugins.filesystems.efi_system',
         'rawdisk.plugins.filesystems.hfs_plus',
         'rawdisk.plugins.filesystems.ntfs',
+        'rawdisk.plugins.filesystems.ext2',
         'rawdisk.scheme',
         'rawdisk.util',
     ],
@@ -65,6 +68,7 @@ setup(
     entry_points={
         'console_scripts': [
             'rawdisk = rawdisk.main:main',
+            'rawdisk-cli = rawdisk.cli:main'
         ]
     }
 )
