@@ -2,7 +2,7 @@ import unittest
 from rawdisk.plugins.plugin_manager import PluginManager
 
 
-class ManagerModuleTest(unittest.TestCase):
+class PluginManagerModuleTest(unittest.TestCase):
     def setUp(self):
         self.manager = PluginManager()
 
