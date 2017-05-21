@@ -1,5 +1,6 @@
 import unittest
 import mock
+from textwrap import dedent
 from rawdisk.scheme.mbr import Mbr
 from rawdisk.scheme.mbr import PARTITION_TABLE_SIZE
 
@@ -38,3 +39,14 @@ class TestMbrModule(unittest.TestCase):
             Mbr(
                 filename='sample_images/ntfs_mbr.vhd',
             )
+
+    def test_partition_table_info(self):
+        self.assertEqual(
+            str(self.mbr.partition_table[0]),
+            dedent("""\
+                Bootable: 0
+                Type: 07 (unknown)
+                Start-End (by CHS): 128-14463
+                Start-End (by LBA): 128-14463
+            """)
+        )
