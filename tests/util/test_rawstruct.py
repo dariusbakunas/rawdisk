@@ -39,15 +39,17 @@ class TestRawStruct(unittest.TestCase):
         length = 3
         file_mock = mock.MagicMock()
         with mock.patch('builtins.open', file_mock):
-            manager = file_mock.return_value.__enter__.return_value
-            manager.read.side_effect = \
-                lambda length: self.sample_data[offset:offset+length]
-            r = RawStruct(filename='test', offset=offset, length=length)
+            with mock.patch('os.stat') as stat_mock:
+                stat_mock.return_value = mock.Mock(st_size=6)
+                manager = file_mock.return_value.__enter__.return_value
+                manager.read.side_effect = \
+                    lambda length: self.sample_data[offset:offset+length]
+                r = RawStruct(filename='test', offset=offset, length=length)
 
-            self.assertEqual(
-                (r.size, r.data),
-                (length, self.sample_data[offset:offset + length])
-            )
+                self.assertEqual(
+                    (r.size, r.data),
+                    (length, self.sample_data[offset:offset + length])
+                )
 
     def test_init_without_filename_or_data(self):
         with self.assertRaises(ValueError):
@@ -136,7 +138,9 @@ class TestRawStruct(unittest.TestCase):
     def test_export(self):
         m = mock.mock_open()
         with mock.patch('builtins.open', m, create=True):
-            self.rwstruct.export('filename')
+            with mock.patch('os.stat') as stat_mock:
+                stat_mock.return_value = mock.Mock(st_size=7)
+                self.rwstruct.export('filename')
 
         m.assert_called_once_with('filename', 'w')
         handle = m()
@@ -147,11 +151,13 @@ class TestRawStruct(unittest.TestCase):
         length = 4
         m = mock.mock_open()
         with mock.patch('builtins.open', m, create=True):
-            self.rwstruct.export('filename', offset, length)
-            handle = m()
-            handle.write.assert_called_once_with(
-                self.sample_data[offset:length]
-            )
+            with mock.patch('os.stat') as stat_mock:
+                stat_mock.return_value = mock.Mock(st_size=7)
+                self.rwstruct.export('filename', offset, length)
+                handle = m()
+                handle.write.assert_called_once_with(
+                    self.sample_data[offset:length]
+                )
 
     @mock.patch('hexdump.hexdump')
     def test_hexdump(self, mock_hexdump):

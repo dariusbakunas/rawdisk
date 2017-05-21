@@ -3,6 +3,8 @@
 import struct
 import hexdump
 import uuid
+import logging
+import os
 
 
 class RawStruct(object):
@@ -24,6 +26,8 @@ class RawStruct(object):
             else:
                 self._data = data[offset:offset+length]
         elif filename is not None:
+            self.__validate_offset(filename=filename, offset=offset, length=length)
+
             with open(filename, 'rb') as f:
                 f.seek(offset)
                 if length is None:
@@ -32,6 +36,15 @@ class RawStruct(object):
                     self._data = f.read(length)
         else:
             raise ValueError("Data or filename must be specified.")
+
+    def __validate_offset(self, filename, offset, length):
+        file_size = os.path.getsize(filename)
+        expected = offset + int(0 if length is None else length)
+
+        if expected > file_size:
+            raise IOError(
+                '{} offset is beyond current file size: {}'.format(expected,
+                                                                   file_size))
 
     @property
     def data(self):
@@ -196,6 +209,8 @@ class RawStruct(object):
             filename (str): destination to output file
             offset (int): byte offset (default: 0)
         """
+        self.__validate_offset(filename=filename, offset=offset, length=length)
+
         with open(filename, 'w') as f:
             if length is None:
                 length = len(self.data) - offset
