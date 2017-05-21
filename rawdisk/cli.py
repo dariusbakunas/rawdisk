@@ -36,6 +36,8 @@ def main():
     elif args.log_level:
         logging_options['log_level'] = logging.getLevelName(args.log_level)
 
+    logging_options['formatter'] = 'cli'
+
     setup_logging(**logging_options)
 
     CliMode.start()

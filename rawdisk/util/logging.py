@@ -2,7 +2,7 @@ import logging.config
 import yaml
 import os
 
-def setup_logging(config_path=None, log_level=logging.INFO):
+def setup_logging(config_path=None, log_level=logging.INFO, formatter='standard'):
     """Setup logging configuration
     """
 
@@ -14,12 +14,16 @@ def setup_logging(config_path=None, log_level=logging.INFO):
                 'format':
                     '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
             },
+            'cli': {
+                'format':
+                    '[%(levelname)s] %(message)s'
+            }
         },
         'handlers': {
             'console': {
                 'class': 'logging.StreamHandler',
                 'level': log_level,
-                'formatter': 'standard',
+                'formatter': formatter,
                 'stream': 'ext://sys.stdout'
             },
         },
