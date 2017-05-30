@@ -49,7 +49,7 @@ class MbrPartitionEntry(RawStruct):
         )
 
         # use chs if relative_sector is 0 (which is the case for small images,
-        # formatted with linux fdisk)        
+        # formatted with linux fdisk)
         if (lba != self.fields.relative_sector and self.fields.relative_sector != 0):
             lba = self.fields.relative_sector
 
