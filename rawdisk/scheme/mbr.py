@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from rawdisk.util.rawstruct import RawStruct
 from .headers import MBR_PARTITION_ENTRY
+from rawdisk.util.addressing import chs2lba
 import logging
 
 
@@ -41,7 +42,18 @@ class MbrPartitionEntry(RawStruct):
 
     @property
     def part_offset(self):
-        return SECTOR_SIZE * self.fields.relative_sector
+        lba = chs2lba(
+            cylinder=self.fields.starting_cylinder,
+            head=self.fields.starting_head,
+            sector=self.fields.starting_sector
+        )
+
+        # use chs if relative_sector is 0 (which is the case for small images,
+        # formatted with linux fdisk)        
+        if (lba != self.fields.relative_sector and self.fields.relative_sector != 0):
+            lba = self.fields.relative_sector
+
+        return SECTOR_SIZE * lba
 
     @property
     def part_type(self):
