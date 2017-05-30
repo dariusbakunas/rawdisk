@@ -39,6 +39,14 @@ class GptPartitionEntry(RawStruct):
     def part_guid(self):
         return uuid.UUID(bytes_le=bytes(self.fields.part_guid))
 
+    @property
+    def first_lba(self):
+        return self.fields.first_lba
+
+    @property
+    def last_lba(self):
+        return self.fields.last_lba
+
 
 class Gpt(object):
     """Represents GPT partition table.
