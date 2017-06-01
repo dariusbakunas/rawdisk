@@ -105,10 +105,13 @@ class Mbr(RawStruct):
         Exception: If source has invalid MBR signature
     """
 
-    def __init__(self, filename=None, load_partition_table=True):
+    def __init__(self, filename=None, load_partition_table=True, offset=0):
+        self.__offset = offset
+
         RawStruct.__init__(
             self,
             filename=filename,
+            offset=offset,
             length=MBR_SIZE
         )
 
@@ -124,6 +127,10 @@ class Mbr(RawStruct):
     @property
     def partition_table(self):
         return self.__partition_table
+
+    @property
+    def offset(self):
+        return self.__offset
 
     def export_bootstrap(self, filename):
         self.export(filename, 0, 446)

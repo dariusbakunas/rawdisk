@@ -57,13 +57,18 @@ class Gpt(object):
         header (GptHeader): Initialized :class:`GptHeader` object
     """
     def __init__(self):
+        self.__offset = 0
         self.__partition_entries = []
 
     @property
     def partition_entries(self):
         return self.__partition_entries
 
-    def load(self, filename, bs=512):
+    @property
+    def offset(self):
+        return self.__offset
+
+    def load(self, filename, bs=512, offset=GPT_HEADER_OFFSET):
         """Loads GPT partition table.
 
         Args:
@@ -73,10 +78,12 @@ class Gpt(object):
         Raises:
             IOError: If file does not exist or not readable
         """
+        self.__offset = offset
+
         with open(filename, 'rb') as f:
-            f.seek(GPT_HEADER_OFFSET + 0x0C)
+            f.seek(self.__offset + 0x0C)
             header_size = struct.unpack("<I", f.read(4))[0]
-            f.seek(GPT_HEADER_OFFSET)
+            f.seek(self.__offset)
 
             header_data = f.read(header_size)
             self.header = GPT_HEADER(header_data)
