@@ -7,6 +7,7 @@ to match filesystems"""
 from collections import defaultdict
 import logging
 import uuid
+import itertools
 
 
 class FilesystemDetector(object):
@@ -21,7 +22,6 @@ class FilesystemDetector(object):
         self.__gpt_plugins = defaultdict(list)
 
         if fs_plugins is not None:
-            self.__fs_plugins = fs_plugins
             self.__register_plugins(fs_plugins=fs_plugins)
 
     def __register_plugins(self, fs_plugins):
@@ -43,6 +43,12 @@ class FilesystemDetector(object):
 
     def __get_plugin_name(self, plugin):
         return type(plugin).__name__
+
+    @property
+    def all_plugins(self):
+        gpt_plugins = list(itertools.chain.from_iterable(self.__gpt_plugins.values()))
+        mbr_plugins = list(itertools.chain.from_iterable(self.__mbr_plugins.values()))
+        return gpt_plugins + mbr_plugins
 
     def get_gpt_plugins(self, fs_guid=None):
         if fs_guid is None:
@@ -83,7 +89,7 @@ class FilesystemDetector(object):
         self.__gpt_plugins[key].append(plugin)
 
     def detect_standalone(self, filename, offset):
-        for plugin in self.__fs_plugins:
+        for plugin in self.all_plugins:
             if plugin.detect(filename, offset, standalone=True):
                 return plugin.get_volume_object()
 
