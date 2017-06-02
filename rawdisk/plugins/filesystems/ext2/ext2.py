@@ -26,7 +26,7 @@ class Ext2(categories.IFilesystemPlugin):
     def mbr_identifiers(self):
         return [MBR_ID]
 
-    def detect(self, filename, offset):
+    def detect(self, filename, offset, standalone=False):
         sb = SuperBlock(
             filename=filename,
             offset=offset + 1024,

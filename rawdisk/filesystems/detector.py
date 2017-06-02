@@ -21,6 +21,7 @@ class FilesystemDetector(object):
         self.__gpt_plugins = defaultdict(list)
 
         if fs_plugins is not None:
+            self.__fs_plugins = fs_plugins
             self.__register_plugins(fs_plugins=fs_plugins)
 
     def __register_plugins(self, fs_plugins):
@@ -80,6 +81,11 @@ class FilesystemDetector(object):
         self.logger.debug('GPT: {}, GUID: {}'
                           .format(self.__get_plugin_name(plugin), fs_guid))
         self.__gpt_plugins[key].append(plugin)
+
+    def detect_standalone(self, filename, offset):
+        for plugin in self.__fs_plugins:
+            if plugin.detect(filename, offset, standalone=True):
+                return plugin.get_volume_object()
 
     def detect_mbr(self, filename, offset, fs_id):
         """Used by rawdisk.session.Session to match mbr partitions against

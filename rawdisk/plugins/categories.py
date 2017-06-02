@@ -33,7 +33,7 @@ class IFilesystemPlugin(IPlugin):
         return 'MBR: [{}], GPT: [{}]'.format(
             ', '.join(mbr_identifiers), ', '.join(gpt_identifiers))
 
-    def detect(self, filename, offset):
+    def detect(self, filename, offset, standalone=False):
         """Method is called by detector for each plugin, that is registered
         with :class:`FilesystemDetector \
         <rawdisk.filesystems.detector.FilesystemDetector>`."""

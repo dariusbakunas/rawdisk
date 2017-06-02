@@ -17,10 +17,13 @@ class HfsPlus(categories.IFilesystemPlugin):
     def gpt_identifiers(self):
         return [GPT_GUID]
 
-    def detect(self, filename, offset):
+    def detect(self, filename, offset, standalone=False):
         """Always returns True, since there is only one partition with \
         this type GUID, no need to do further verification.
         """
+        if standalone:
+            return False
+
         return True
 
     def get_volume_object(self):

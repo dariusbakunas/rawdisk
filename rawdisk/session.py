@@ -79,6 +79,14 @@ class Session(object):
             self.__load_gpt_volumes(filename, fs_detector, bs)
         else:
             self.logger.warning('Partitioning scheme could not be determined.')
+            # try detecting standalone volume
+            volume = fs_detector.detect_standalone(filename, offset=0)
+            if volume is not None:
+                volume.load(filename, offset=0)
+                self.__volumes.append(volume)
+            else:
+                self.logger.warning(
+                    'Were not able to detect standalone volume type')
 
     def __load_gpt_volumes(self, filename, fs_detector, bs=512):
         gpt = rawdisk.scheme.gpt.Gpt()

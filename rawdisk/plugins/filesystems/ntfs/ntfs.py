@@ -26,7 +26,7 @@ class Ntfs(categories.IFilesystemPlugin):
     def gpt_identifiers(self):
         return [GPT_GUID]
 
-    def detect(self, filename, offset):
+    def detect(self, filename, offset, standalone=False):
         """Verifies NTFS filesystem signature.
 
         Returns:
