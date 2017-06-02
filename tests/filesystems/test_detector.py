@@ -107,6 +107,18 @@ class TestFilesystemDetector(unittest.TestCase):
         volume_object = detector.detect_gpt("filename", 0, self.guid_fs_id)
         self.assertIsNone(volume_object)
 
+    def test_detect_standalone_calls_plugin_detect_with_standalone_arg(self):
+        detector = FilesystemDetector()
+        offset = 0x10
+        filename = "filename"
+        mbr_plugin_mock = Mock()
+        mbr_plugin_mock.get_volume_object.return_value = "volume"
+        detector.register_mbr_plugin(self.mbr_fs_id, mbr_plugin_mock)
+        detector.detect_standalone(filename, offset)
+
+        mbr_plugin_mock.detect.assert_called_once_with(filename, offset, standalone=True)
+
+
     def tearDown(self):
         FilesystemDetector._instances = {}
 
