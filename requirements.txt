@@ -7,4 +7,4 @@ mock==2.0.0
 docutils==0.13.1
 Sphinx==1.6.4
 PyYAML==3.12
-tabulate==0.7.7
+tabulate==0.8.0
