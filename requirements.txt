@@ -4,7 +4,7 @@ Yapsy==1.11.223
 pyxdg==0.25
 nose>=1.0
 mock==2.0.0
-docutils==0.13.1
-Sphinx==1.6.4
+docutils==0.14
+Sphinx==1.6.3
 PyYAML==3.12
 tabulate==0.7.7
