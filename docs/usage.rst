@@ -10,7 +10,6 @@ In order to start filesystem analysis, you need to create :class:`~rawdisk.sessi
     from rawdisk.session import Session
 
     session = Session()
-    session.load_plugins()
     session.load('sample_images/ntfs_mbr.vhd')
 
 Last line looks through available filesystem plugins in *rawdisk/plugins/filesystem*. If filesystem is matched, it initializes plugin's volume object. In order to print a list of available partitions (will only show those that were matched), type::
