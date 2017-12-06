@@ -7,6 +7,7 @@ class SuperBlock(RawStruct):
     Ext2 (and probably other ExtN) superblock.
     See http://wiki.osdev.org/Ext2#Superblock
     """
+
     def __init__(self, **kwargs):
         RawStruct.__init__(self, **kwargs)
 
@@ -44,12 +45,12 @@ class SuperBlock(RawStruct):
     def __str__(self):
         block_size = 1024 << self.log_block_size
         fields = dict(
-            block_size = block_size,
-            inodes = self.inodes_count,
-            blocks = self.blocks_count,
-            groups = int(math.ceil(
+            block_size=block_size,
+            inodes=self.inodes_count,
+            blocks=self.blocks_count,
+            groups=int(math.ceil(
                 float(self.blocks_count) / self.blocks_per_group)),
-            size = 1024 + self.blocks_count * block_size
+            size=1024 + self.blocks_count * block_size
         )
 
         return """\

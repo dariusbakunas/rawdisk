@@ -9,12 +9,9 @@ offset  size   description
 
 """
 
-
 import rawdisk.plugins.categories as categories
-from rawdisk.util.rawstruct import RawStruct
 from rawdisk.plugins.filesystems.ext2.superblock import SuperBlock
 from rawdisk.plugins.filesystems.ext2.ext2_volume import Ext2Volume
-
 
 MBR_ID = 0x83
 
@@ -26,7 +23,7 @@ class Ext2(categories.IFilesystemPlugin):
     def mbr_identifiers(self):
         return [MBR_ID]
 
-    def detect(self, filename, offset):
+    def detect(self, filename, offset, standalone=False):
         sb = SuperBlock(
             filename=filename,
             offset=offset + 1024,

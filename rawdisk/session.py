@@ -8,6 +8,7 @@ from rawdisk.plugins.plugin_manager import PluginManager
 from rawdisk.scheme.mbr import SECTOR_SIZE
 from rawdisk.scheme.common import PartitionScheme
 
+
 class Session(object):
     """Main class used to start filesystem analysis.
 
@@ -19,12 +20,15 @@ class Session(object):
         :attr:`SCHEME_MBR <rawdisk.scheme.common.SCHEME_MBR>` \
         or :attr:`SCHEME_GPT <rawdisk.scheme.common.SCHEME_GPT>`.
     """
-    def __init__(self):
+    def __init__(self, load_plugins=True):
         self.logger = logging.getLogger(__name__)
         self.__volumes = []
         self.__partition_scheme = None
         self.__filename = None
         self.__fs_plugins = []
+
+        if load_plugins:
+            self.load_plugins()
 
     @property
     def filesystem_plugins(self):
@@ -79,6 +83,14 @@ class Session(object):
             self.__load_gpt_volumes(filename, fs_detector, bs)
         else:
             self.logger.warning('Partitioning scheme could not be determined.')
+            # try detecting standalone volume
+            volume = fs_detector.detect_standalone(filename, offset=0)
+            if volume is not None:
+                volume.load(filename, offset=0)
+                self.__volumes.append(volume)
+            else:
+                self.logger.warning(
+                    'Were not able to detect standalone volume type')
 
     def __load_gpt_volumes(self, filename, fs_detector, bs=512):
         gpt = rawdisk.scheme.gpt.Gpt()

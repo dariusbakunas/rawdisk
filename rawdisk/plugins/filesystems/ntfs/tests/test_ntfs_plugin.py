@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import uuid
 from rawdisk.plugins.filesystems.ntfs.ntfs import Ntfs
 from rawdisk.plugins.filesystems.ntfs.bootsector import BootSector
 from rawdisk.plugins.filesystems.ntfs.mft import MftTable

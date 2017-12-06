@@ -7,6 +7,7 @@ to match filesystems"""
 from collections import defaultdict
 import logging
 import uuid
+import itertools
 
 
 class FilesystemDetector(object):
@@ -43,15 +44,23 @@ class FilesystemDetector(object):
     def __get_plugin_name(self, plugin):
         return type(plugin).__name__
 
+    @property
+    def all_plugins(self):
+        gpt_plugins = self.get_gpt_plugins()
+        mbr_plugins = self.get_mbr_plugins()
+        return gpt_plugins + mbr_plugins
+
     def get_gpt_plugins(self, fs_guid=None):
         if fs_guid is None:
-            return self.__gpt_plugins
+            return list(
+                itertools.chain.from_iterable(self.__gpt_plugins.values()))
         else:
             return self.__gpt_plugins.get(fs_guid)
 
     def get_mbr_plugins(self, fs_id=None):
         if fs_id is None:
-            return self.__mbr_plugins
+            return list(
+                itertools.chain.from_iterable(self.__mbr_plugins.values()))
         else:
             return self.__mbr_plugins.get(fs_id)
 
@@ -80,6 +89,11 @@ class FilesystemDetector(object):
         self.logger.debug('GPT: {}, GUID: {}'
                           .format(self.__get_plugin_name(plugin), fs_guid))
         self.__gpt_plugins[key].append(plugin)
+
+    def detect_standalone(self, filename, offset):
+        for plugin in self.all_plugins:
+            if plugin.detect(filename, offset, standalone=True):
+                return plugin.get_volume_object()
 
     def detect_mbr(self, filename, offset, fs_id):
         """Used by rawdisk.session.Session to match mbr partitions against

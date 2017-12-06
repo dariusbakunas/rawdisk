@@ -5,6 +5,7 @@ from collections import namedtuple
 from rawdisk.ui.cli.cli_mode import CliMode
 from rawdisk.util.logging import setup_logging
 
+
 def parse_args(args):
     parser = argparse.ArgumentParser()
 
@@ -33,6 +34,7 @@ def parse_args(args):
 
     return options
 
+
 def configure_logging(args):
     logging_options = {}
 
@@ -46,11 +48,13 @@ def configure_logging(args):
 
     setup_logging(**logging_options)
 
+
 def main():
     args = parse_args(sys.argv[1:])
     configure_logging(args)
 
     CliMode.start()
+
 
 if __name__ == '__main__':
     main()
