@@ -6,7 +6,7 @@ from rawdisk.scheme.common import PartitionScheme
 
 class TestSession(unittest.TestCase):
     def setUp(self):
-        self.session = Session()
+        self.session = Session(load_plugins=False)
 
     def test_load_fileystem_plugins(self):
         self.session.load_plugins()
