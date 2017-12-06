@@ -20,12 +20,15 @@ class Session(object):
         :attr:`SCHEME_MBR <rawdisk.scheme.common.SCHEME_MBR>` \
         or :attr:`SCHEME_GPT <rawdisk.scheme.common.SCHEME_GPT>`.
     """
-    def __init__(self):
+    def __init__(self, load_plugins=True):
         self.logger = logging.getLogger(__name__)
         self.__volumes = []
         self.__partition_scheme = None
         self.__filename = None
         self.__fs_plugins = []
+
+        if load_plugins:
+            self.load_plugins()
 
     @property
     def filesystem_plugins(self):
