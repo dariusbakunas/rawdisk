@@ -64,7 +64,7 @@ class CliShell(Cmd):
             self.__list_volumes()
         else:
             self.logger.error("Unknown resource: '{}', type 'help list' "
-                  "to get more information".format(resource))
+                              "to get more information".format(resource))
 
     def do_load(self, filename):
         """Load disk image for analysis"""

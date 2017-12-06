@@ -2,7 +2,9 @@ import logging.config
 import yaml
 import os
 
-def setup_logging(config_path=None, log_level=logging.INFO, formatter='standard'):
+
+def setup_logging(config_path=None, log_level=logging.INFO,
+                  formatter='standard'):
     """Setup logging configuration
     """
 

@@ -2,8 +2,6 @@
 
 
 import rawdisk.plugins.categories as categories
-import uuid
-from rawdisk.filesystems.detector import FilesystemDetector
 import rawdisk.plugins.filesystems.efi_system.efi_system_volume as volume
 
 GPT_GUID = '{C12A7328-F81F-11D2-BA4B-00A0C93EC93B}'

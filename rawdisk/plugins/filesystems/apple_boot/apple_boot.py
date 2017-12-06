@@ -2,8 +2,6 @@
 
 
 import rawdisk.plugins.categories as categories
-import uuid
-from rawdisk.filesystems.detector import FilesystemDetector
 import rawdisk.plugins.filesystems.apple_boot.apple_boot_volume as volume
 
 GPT_GUID = '{426f6f74-0000-11aa-aa11-00306543ecac}'

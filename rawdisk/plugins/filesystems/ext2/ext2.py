@@ -9,12 +9,9 @@ offset  size   description
 
 """
 
-
 import rawdisk.plugins.categories as categories
-from rawdisk.util.rawstruct import RawStruct
 from rawdisk.plugins.filesystems.ext2.superblock import SuperBlock
 from rawdisk.plugins.filesystems.ext2.ext2_volume import Ext2Volume
-
 
 MBR_ID = 0x83
 

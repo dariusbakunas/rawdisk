@@ -2,8 +2,6 @@
 
 
 import rawdisk.plugins.categories as categories
-import uuid
-from rawdisk.filesystems.detector import FilesystemDetector
 from rawdisk.plugins.filesystems.hfs_plus.hfs_plus_volume import HfsPlusVolume
 
 GPT_GUID = '{48465300-0000-11AA-AA11-00306543ECAC}'

@@ -8,6 +8,7 @@ from rawdisk.plugins.plugin_manager import PluginManager
 from rawdisk.scheme.mbr import SECTOR_SIZE
 from rawdisk.scheme.common import PartitionScheme
 
+
 class Session(object):
     """Main class used to start filesystem analysis.
 

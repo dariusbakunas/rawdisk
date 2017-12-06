@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-import uuid
 import rawdisk.plugins.categories as categories
 from rawdisk.util.rawstruct import RawStruct
 from rawdisk.plugins.filesystems.ntfs.ntfs_volume import NtfsVolume
-from rawdisk.filesystems.detector import FilesystemDetector
 
 SIG_SIZE = 8
 SIG_OFFSET = 0x03

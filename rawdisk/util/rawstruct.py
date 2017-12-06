@@ -3,7 +3,6 @@
 import struct
 import hexdump
 import uuid
-import logging
 import os
 
 
@@ -16,6 +15,7 @@ class RawStruct(object):
         offset (int): Offset into data or file (if specified).
         length (int): Number of bytes to read.
     """
+
     def __init__(self, data=None, offset=None, length=None, filename=None):
         if offset is None:
             offset = 0
@@ -24,9 +24,10 @@ class RawStruct(object):
             if length is None:
                 self._data = data[offset:]
             else:
-                self._data = data[offset:offset+length]
+                self._data = data[offset:offset + length]
         elif filename is not None:
-            self.__validate_offset(filename=filename, offset=offset, length=length)
+            self.__validate_offset(filename=filename, offset=offset,
+                                   length=length)
 
             with open(filename, 'rb') as f:
                 f.seek(offset)
@@ -70,7 +71,7 @@ class RawStruct(object):
         Returns:
             bytes: Custom length byte array of the structure.
         """
-        return self.data[offset:offset+length]
+        return self.data[offset:offset + length]
 
     def get_uuid_le(self, offset):
         """Returns Python uuid object initialized with bytes at specified offset
@@ -99,7 +100,7 @@ class RawStruct(object):
         See Also:
             https://docs.python.org/2/library/struct.html#format-characters
         """
-        return struct.unpack(format, self.data[offset:offset+length])[0]
+        return struct.unpack(format, self.data[offset:offset + length])[0]
 
     def get_ubyte(self, offset):
         """Returns unsigned char (1 byte)
@@ -107,7 +108,7 @@ class RawStruct(object):
         Args:
             offset (uchar): unsigned char offset in byte array
         """
-        return struct.unpack("B", self.data[offset:offset+1])[0]
+        return struct.unpack("B", self.data[offset:offset + 1])[0]
 
     def get_byte(self, offset):
         """Returns char (1 byte)
@@ -115,7 +116,7 @@ class RawStruct(object):
         Args:
             offset (char): signed char offset in byte array
         """
-        return struct.unpack("b", self.data[offset:offset+1])[0]
+        return struct.unpack("b", self.data[offset:offset + 1])[0]
 
     def get_ushort_le(self, offset):
         """Returns unsigned short (2 bytes),
@@ -124,7 +125,7 @@ class RawStruct(object):
         Args:
             offset (int): unsigned short offset in byte array.
         """
-        return struct.unpack("<H", self.data[offset:offset+2])[0]
+        return struct.unpack("<H", self.data[offset:offset + 2])[0]
 
     def get_ushort_be(self, offset):
         """Returns unsigned short (2 bytes),
@@ -133,7 +134,7 @@ class RawStruct(object):
         Args:
             offset (int): unsigned short offset in byte array.
         """
-        return struct.unpack(">H", self.data[offset:offset+2])[0]
+        return struct.unpack(">H", self.data[offset:offset + 2])[0]
 
     def get_uint_le(self, offset):
         """Returns unsigned int (4 bytes)
@@ -141,7 +142,7 @@ class RawStruct(object):
         Args:
             offset (int): unsigned int offset in little-endian byte array
         """
-        return struct.unpack("<I", self.data[offset:offset+4])[0]
+        return struct.unpack("<I", self.data[offset:offset + 4])[0]
 
     def get_uint_be(self, offset):
         """Returns unsigned int (4 bytes)
@@ -149,7 +150,7 @@ class RawStruct(object):
         Args:
             offset (int): unsigned int offset in big-endian byte array
         """
-        return struct.unpack(">I", self.data[offset:offset+4])[0]
+        return struct.unpack(">I", self.data[offset:offset + 4])[0]
 
     def get_int_le(self, offset):
         """Returns int (4 bytes)
@@ -157,7 +158,7 @@ class RawStruct(object):
         Args:
             offset (int): int offset in little-endian byte array
         """
-        return struct.unpack("<I", self.data[offset:offset+4])[0]
+        return struct.unpack("<I", self.data[offset:offset + 4])[0]
 
     def get_ulong_le(self, offset):
         """Returns unsigned long (4 bytes)
@@ -165,7 +166,7 @@ class RawStruct(object):
         Args:
             offset (int): unsigned long offset in little-endian byte array
         """
-        return struct.unpack("<L", self.data[offset:offset+4])[0]
+        return struct.unpack("<L", self.data[offset:offset + 4])[0]
 
     def get_ulong_be(self, offset):
         """Returns unsigned long (4 bytes)
@@ -173,7 +174,7 @@ class RawStruct(object):
         Args:
             offset (int): unsigned long offset in big-endian byte array
         """
-        return struct.unpack(">L", self.data[offset:offset+4])[0]
+        return struct.unpack(">L", self.data[offset:offset + 4])[0]
 
     def get_ulonglong_le(self, offset):
         """Returns unsigned long long (8 bytes)
@@ -181,7 +182,7 @@ class RawStruct(object):
         Args:
             offset (int): unsigned long long offset in little-endian byte array
         """
-        return struct.unpack("<Q", self.data[offset:offset+8])[0]
+        return struct.unpack("<Q", self.data[offset:offset + 8])[0]
 
     def get_ulonglong_be(self, offset):
         """Returns unsigned long long (8 bytes)
@@ -189,7 +190,7 @@ class RawStruct(object):
         Args:
             offset (int): unsigned long long offset in big-endian byte array
         """
-        return struct.unpack(">Q", self.data[offset:offset+8])[0]
+        return struct.unpack(">Q", self.data[offset:offset + 8])[0]
 
     def get_string(self, offset, length):
         """Returns string (length bytes)
@@ -199,8 +200,8 @@ class RawStruct(object):
             length (int): string length
         """
         return struct.unpack(str(length) + "s", self.data[
-            offset:offset+length
-        ])[0]
+                                                offset:offset + length
+                                                ])[0]
 
     def export(self, filename, offset=0, length=None):
         """Exports byte array to specified destination

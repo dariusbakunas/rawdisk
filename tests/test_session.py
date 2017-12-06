@@ -4,7 +4,6 @@ from rawdisk.filesystems.unknown_volume import UnknownVolume
 from rawdisk.scheme.common import PartitionScheme
 
 
-
 class TestSession(unittest.TestCase):
     def setUp(self):
         self.session = Session()
@@ -32,5 +31,3 @@ class TestSession(unittest.TestCase):
         self.assertEqual(self.session.partition_scheme,
                          PartitionScheme.SCHEME_GPT)
         self.assertEqual(len(self.session.volumes), 2)
-
-

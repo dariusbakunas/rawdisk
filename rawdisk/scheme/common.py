@@ -14,10 +14,12 @@ from enum import Enum
 from rawdisk.scheme import mbr
 from rawdisk.scheme import gpt
 
+
 class PartitionScheme(Enum):
     SCHEME_UNKNOWN = 0x1
     SCHEME_MBR = 0x2
     SCHEME_GPT = 0x4
+
 
 def detect_scheme(filename):
     """Detects partitioning scheme of the source

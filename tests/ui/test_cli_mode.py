@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from rawdisk.ui.cli.cli_mode import CliMode, CliShell
+from rawdisk.ui.cli.cli_mode import CliShell
 
 
 class CliModeTest(unittest.TestCase):
