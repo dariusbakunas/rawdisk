@@ -7,6 +7,7 @@ from rawdisk.filesystems.unknown_volume import UnknownVolume
 from rawdisk.plugins.plugin_manager import PluginManager
 from rawdisk.scheme.mbr import SECTOR_SIZE
 from rawdisk.scheme.common import PartitionScheme
+from rawdisk.exporting.binary_exporter import BinaryExporter
 
 
 class Session(object):
@@ -20,7 +21,7 @@ class Session(object):
         :attr:`SCHEME_MBR <rawdisk.scheme.common.SCHEME_MBR>` \
         or :attr:`SCHEME_GPT <rawdisk.scheme.common.SCHEME_GPT>`.
     """
-    def __init__(self, load_plugins=True):
+    def __init__(self, filename=None, bs=512, load_plugins=True):
         self.logger = logging.getLogger(__name__)
         self.__volumes = []
         self.__partition_scheme = None
@@ -29,6 +30,9 @@ class Session(object):
 
         if load_plugins:
             self.load_plugins()
+
+        if filename:
+            self.load(filename, bs)
 
     @property
     def filesystem_plugins(self):
