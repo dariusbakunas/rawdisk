@@ -43,6 +43,14 @@ Output::
         MFT Record Size: 1.00KB
         MFT Size: 0.87MB (12% of drive)
 
+Exporting NTFS volume to a file
+===============================
+
+To export volume to binary file::
+
+    ntfs_vol = session.volumes[0]
+    ntfs_vol.export_binary(filename='volume.bin')
+
 Analysing selected partition
 ============================
 

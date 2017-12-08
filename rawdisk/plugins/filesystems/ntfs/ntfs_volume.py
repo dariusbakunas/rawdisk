@@ -127,6 +127,7 @@ class NtfsVolume(Volume):
                 self.bootsector.volume_size * 100
                 )
             ))
+
     def export_binary(self, filename):
         exporter = BinaryExporter()
         exporter.export(self.filename, output_filename=filename, start_offset=self.offset, size=self.size)
