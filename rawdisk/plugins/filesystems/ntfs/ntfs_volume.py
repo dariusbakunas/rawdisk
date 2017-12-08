@@ -6,6 +6,7 @@ from .mft import MftTable, ENTRY_VOLUME
 from .mft_attribute import MFT_ATTR_VOLUME_NAME, MFT_ATTR_VOLUME_INFO
 from .bootsector import BootSector
 from rawdisk.filesystems.volume import Volume
+from rawdisk.exporting.binary_exporter import BinaryExporter
 
 NTFS_BOOTSECTOR_SIZE = 512
 
@@ -126,6 +127,9 @@ class NtfsVolume(Volume):
                 self.bootsector.volume_size * 100
                 )
             ))
+    def export_binary(self, filename):
+        exporter = BinaryExporter()
+        exporter.export(self.filename, output_filename=filename, start_offset=self.offset, size=self.size)
 
     @property
     def size(self):
