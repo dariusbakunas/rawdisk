@@ -19,7 +19,7 @@ class BinaryExporterTest(unittest.TestCase):
         return hash_md5.hexdigest()
 
     def test_ntfs_boot_sector_export(self):
-        output = '{}/{}'.format(tempfile.gettempdir(), 'test.bin');
+        output = os.path.join(tempfile.gettempdir(), 'test.bin')
 
         self.exporter.export(
             input_filename='sample_images/ntfs_mbr.vhd',
