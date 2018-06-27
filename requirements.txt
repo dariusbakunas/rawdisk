@@ -6,5 +6,5 @@ nose>=1.0
 mock==2.0.0
 docutils==0.14
 Sphinx==1.6.5
-PyYAML==3.12
+PyYAML==4.1
 tabulate==0.8.2
