@@ -37,6 +37,7 @@ setup(
     packages=[
         'rawdisk',
         'rawdisk.filesystems',
+        'rawdisk.exporting',
         'rawdisk.ui',
         'rawdisk.ui.cli',
         'rawdisk.plugins',
