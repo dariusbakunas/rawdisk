@@ -5,6 +5,6 @@ pyxdg==0.26
 nose>=1.0
 mock==2.0.0
 docutils==0.15.2
-Sphinx==1.7.9
+Sphinx==3.1.1
 PyYAML==5.1
 tabulate==0.8.2
